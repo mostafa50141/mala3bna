@@ -37,7 +37,7 @@ class UserInfoInHomeScreen extends StatelessWidget {
         IconButton(
           onPressed: () {},
           icon: Icon(Icons.notifications_on_sharp),
-          iconSize: 30,
+          iconSize: 25,
           color: Colors.white,
         ),
       ],
