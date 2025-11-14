@@ -29,6 +29,7 @@ class CustomBtn extends StatelessWidget {
         decoration: BoxDecoration(
           color: color ?? AppColors.primaryColor,
           borderRadius: BorderRadius.circular(radius),
+          border: Border.all(color: Colors.white, width: 2),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
