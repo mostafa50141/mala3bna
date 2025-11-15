@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/features/home/widgets/games_category.dart';
+import 'package:mala3bna/features/home/widgets/list-view-of-coach-category.dart';
+import 'package:mala3bna/features/home/widgets/list_view-of-courts-category.dart';
+import 'package:mala3bna/features/home/widgets/list_view_of_academic_category.dart';
 import 'package:mala3bna/features/home/widgets/user_info_search_field_container.dart';
+import 'package:mala3bna/shared/custom_text.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -20,26 +24,66 @@ class _HomeViewState extends State<HomeView> {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-          body: Column(
-            children: [
-              Gap(15),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Gap(15),
 
-              UserInfoAndSearchFieldContainer(),
+                  UserInfoAndSearchFieldContainer(),
 
-              Gap(15),
+                  Gap(15),
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: GamesCategory(
-                    selectedIndex: selectedIndex,
-                    category: category,
+                  SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    child: GamesCategory(
+                      selectedIndex: selectedIndex,
+                      category: category,
+                    ),
                   ),
-                ),
+
+                  Gap(25),
+
+                  customText(
+                    text: 'Nearby Courts',
+                    size: 25,
+                    weight: FontWeight.bold,
+                  ),
+
+                  Gap(10),
+
+                  ListViewOfCourtsCategory(),
+
+                  Gap(25),
+
+                  customText(
+                    text: 'Featured Coaches',
+                    size: 25,
+                    weight: FontWeight.bold,
+                  ),
+
+                  Gap(10),
+
+                  ListViewOfCoachCategory(),
+
+                  Gap(25),
+
+                  customText(
+                    text: 'Training Academies',
+                    size: 25,
+                    weight: FontWeight.bold,
+                  ),
+
+                  Gap(10),
+
+                  ListViewOfAcademicCategory(),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

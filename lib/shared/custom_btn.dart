@@ -11,6 +11,10 @@ class CustomBtn extends StatelessWidget {
     required this.width,
     required this.radius,
     this.color,
+    this.border,
+    this.colorText,
+    this.sizeText,
+    this.weightText,
   });
   final String text;
   final Function()? onTap;
@@ -18,6 +22,10 @@ class CustomBtn extends StatelessWidget {
   final double width;
   final double radius;
   final Color? color;
+  final BoxBorder? border;
+  final Color? colorText;
+  final double? sizeText;
+  final FontWeight? weightText;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +37,16 @@ class CustomBtn extends StatelessWidget {
         decoration: BoxDecoration(
           color: color ?? AppColors.primaryColor,
           borderRadius: BorderRadius.circular(radius),
-          border: Border.all(color: Colors.white, width: 2),
+          border: border,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             customText(
               text: text,
-              color: Colors.white,
-              size: 18,
-              weight: FontWeight.w500,
+              color: colorText,
+              size: sizeText,
+              weight: weightText,
             ),
           ],
         ),
