@@ -31,11 +31,11 @@ class _HomeViewState extends State<HomeView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gap(15),
+                  const Gap(15),
 
                   UserInfoAndSearchFieldContainer(),
 
-                  Gap(15),
+                  const Gap(15),
 
                   SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
 
-                  Gap(25),
+                  const Gap(25),
 
                   customText(
                     text: 'Nearby Courts',
@@ -54,11 +54,11 @@ class _HomeViewState extends State<HomeView> {
                     weight: FontWeight.bold,
                   ),
 
-                  Gap(10),
+                  const Gap(10),
 
                   ListViewOfCourtsCategory(),
 
-                  Gap(25),
+                  const Gap(25),
 
                   customText(
                     text: 'Featured Coaches',
@@ -66,11 +66,11 @@ class _HomeViewState extends State<HomeView> {
                     weight: FontWeight.bold,
                   ),
 
-                  Gap(10),
+                  const Gap(10),
 
                   ListViewOfCoachCategory(),
 
-                  Gap(25),
+                  const Gap(25),
 
                   customText(
                     text: 'Training Academies',
@@ -78,7 +78,7 @@ class _HomeViewState extends State<HomeView> {
                     weight: FontWeight.bold,
                   ),
 
-                  Gap(10),
+                  const Gap(10),
 
                   ListViewOfAcademicCategory(),
                 ],
