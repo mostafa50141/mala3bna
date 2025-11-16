@@ -37,7 +37,7 @@ class CoachCategory extends StatelessWidget {
                 backgroundImage: AssetImage(imageUrl),
               ),
             ),
-            Gap(5),
+            const Gap(5),
             customText(
               text: coachName,
               size: 16,
@@ -45,7 +45,7 @@ class CoachCategory extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            Gap(5),
+            const Gap(5),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -59,7 +59,7 @@ class CoachCategory extends StatelessWidget {
                 customText(text: sport, color: Colors.grey, size: 12),
               ],
             ),
-            Gap(5),
+            const Gap(5),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

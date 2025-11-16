@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/features/home/widgets/coach_category.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/coach_category.dart';
 
 // ignore: must_be_immutable
 class ListViewOfCoachCategory extends StatelessWidget {

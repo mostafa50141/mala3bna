@@ -1,6 +1,6 @@
 // ignore: must_be_immutable
 import 'package:flutter/material.dart';
-import 'package:mala3bna/features/home/widgets/Academics_category.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/Academics_category.dart';
 
 // ignore: must_be_immutable
 class ListViewOfAcademicCategory extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/home/widgets/search_field.dart';
-import 'package:mala3bna/features/home/widgets/user_info_home_screen.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/search_field.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/user_info_home_screen.dart';
 
 class UserInfoAndSearchFieldContainer extends StatelessWidget {
   const UserInfoAndSearchFieldContainer({super.key});

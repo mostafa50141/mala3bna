@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/features/home/widgets/courts_category.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/courts_category.dart';
 
 // ignore: must_be_immutable
 class ListViewOfCourtsCategory extends StatelessWidget {

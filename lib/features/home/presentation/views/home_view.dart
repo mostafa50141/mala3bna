@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:mala3bna/features/home/widgets/games_category.dart';
-import 'package:mala3bna/features/home/widgets/list-view-of-coach-category.dart';
-import 'package:mala3bna/features/home/widgets/list_view-of-courts-category.dart';
-import 'package:mala3bna/features/home/widgets/list_view_of_academic_category.dart';
-import 'package:mala3bna/features/home/widgets/user_info_search_field_container.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/games_category.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/list-view-of-coach-category.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/list_view-of-courts-category.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/list_view_of_academic_category.dart';
+import 'package:mala3bna/features/home/presentation/views/widgets/user_info_search_field_container.dart';
 import 'package:mala3bna/shared/custom_text.dart';
 
 class HomeView extends StatefulWidget {
