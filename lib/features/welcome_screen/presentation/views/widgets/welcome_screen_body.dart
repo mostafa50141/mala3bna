@@ -7,15 +7,16 @@ import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
 import 'package:mala3bna/features/home/presentation/views/home_view.dart';
 import 'package:mala3bna/shared/custom_btn.dart';
+import 'package:mala3bna/shared/custome_circular_avatar.dart';
 
 class WelcomeScreenBody extends StatelessWidget {
   const WelcomeScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(AssetsData.wlcscreenBackground),
@@ -26,9 +27,7 @@ class WelcomeScreenBody extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              const CircleAvatar(
-                backgroundColor: Color(0xFF39E079),
-                radius: 45,
+              CustomeCirculerAvtar(
                 backgroundImage: AssetImage(AssetsData.logo),
               ),
               const Spacer(flex: 2),
