@@ -26,7 +26,7 @@ class CustomeContinueWith extends StatelessWidget {
             ],
           ),
         ),
-        const Gap(40),
+        const Gap(10),
         Row(
           children: [
             const Spacer(flex: 3),

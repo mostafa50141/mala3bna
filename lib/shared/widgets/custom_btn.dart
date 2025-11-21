@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/shared/custom_text.dart';
+import 'package:mala3bna/shared/widgets/custom_text.dart';
 
 class CustomBtn extends StatelessWidget {
   const CustomBtn({

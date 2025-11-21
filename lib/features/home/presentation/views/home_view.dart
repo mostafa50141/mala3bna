@@ -5,7 +5,7 @@ import 'package:mala3bna/features/home/presentation/views/widgets/list-view-of-c
 import 'package:mala3bna/features/home/presentation/views/widgets/list_view-of-courts-category.dart';
 import 'package:mala3bna/features/home/presentation/views/widgets/list_view_of_academic_category.dart';
 import 'package:mala3bna/features/home/presentation/views/widgets/user_info_search_field_container.dart';
-import 'package:mala3bna/shared/custom_text.dart';
+import 'package:mala3bna/shared/widgets/custom_text.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

@@ -6,8 +6,8 @@ import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
 import 'package:mala3bna/features/home/presentation/views/home_view.dart';
-import 'package:mala3bna/shared/custom_btn.dart';
-import 'package:mala3bna/shared/custome_circular_avatar.dart';
+import 'package:mala3bna/shared/widgets/custom_btn.dart';
+import 'package:mala3bna/shared/widgets/custome_circular_avatar.dart';
 
 class WelcomeScreenBody extends StatelessWidget {
   const WelcomeScreenBody({super.key});

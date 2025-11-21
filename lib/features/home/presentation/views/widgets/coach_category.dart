@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:mala3bna/shared/custom_text.dart';
+import 'package:mala3bna/shared/widgets/custom_text.dart';
 
 class CoachCategory extends StatelessWidget {
   const CoachCategory({

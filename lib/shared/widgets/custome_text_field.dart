@@ -10,6 +10,7 @@ class CustomTextfield extends StatelessWidget {
     this.width,
     this.height,
     this.fillcolor,
+    this.suffixIcon,
   });
   final Function(String)? onChanged;
   final String? hintText;
@@ -18,15 +19,15 @@ class CustomTextfield extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? fillcolor;
-
+final Widget? suffixIcon;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 28),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: SizedBox(
         width: width,
         height: height,
-        child: TextFormField(
+        child: TextFormField(          
           validator: validator,
           onChanged: onChanged,
           obscureText: obscureText,
@@ -34,8 +35,10 @@ class CustomTextfield extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hintText,
             fillColor: fillcolor,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // ← CONTROL IT HERE
             hintStyle: const TextStyle(color: Colors.white70),
             filled: true,
+            suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(24),
               // borderSide: const BorderSide(color: Colors.white),
