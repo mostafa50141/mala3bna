@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:mala3bna/features/courts/views/court_details.dart';
 import 'package:mala3bna/features/home/presentation/views/widgets/games_category.dart';
 import 'package:mala3bna/features/home/presentation/views/widgets/list-view-of-coach-category.dart';
 import 'package:mala3bna/features/home/presentation/views/widgets/list_view-of-courts-category.dart';
@@ -56,7 +60,16 @@ class _HomeViewState extends State<HomeView> {
 
                   const Gap(10),
 
-                  ListViewOfCourtsCategory(),
+                  GestureDetector(
+                    onDoubleTap: () {
+                      Get.to(
+                        () => const BookingsView(),
+                        transition: Transition.fadeIn,
+                        duration: const Duration(milliseconds: 500),
+                      );
+                    },
+                    child: ListViewOfCourtsCategory(),
+                  ),
 
                   const Gap(25),
 

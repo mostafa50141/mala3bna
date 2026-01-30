@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/shared/widgets/custom_text.dart';
+import 'package:mala3bna/features/courts/views/widgets/court_details_body.dart';
 
 class BookingsView extends StatelessWidget {
   const BookingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(child: customText(text: 'Bookings screen', size: 30)),
-    );
+    return Scaffold(body: SafeArea(child: CourtDetailsBody()));
   }
 }

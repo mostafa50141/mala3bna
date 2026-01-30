@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/bookings/views/bookings_view.dart';
+import 'package:mala3bna/features/courts/views/court_details.dart';
 import 'package:mala3bna/features/home/presentation/views/home_view.dart';
 import 'package:mala3bna/features/messages/views/messages_view.dart';
 import 'package:mala3bna/features/profile/views/profile_view.dart';
