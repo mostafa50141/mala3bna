@@ -3,15 +3,15 @@ import 'package:gap/gap.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/utils/style.dart';
-import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/custome_Choice_Chip.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/custome_toggle_tab.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/navigate_to_term.dart';
+import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
+import 'package:mala3bna/features/home/presentation/views/home_view.dart';
 import 'package:mala3bna/shared/widgets/custom_btn.dart';
 import 'package:mala3bna/shared/widgets/custome_gradiant.dart';
 import 'package:mala3bna/shared/widgets/custome_text_field.dart';
-
 class SignUpBody extends StatelessWidget {
   const SignUpBody({super.key});
 
@@ -40,19 +40,20 @@ class SignUpBody extends StatelessWidget {
                   ),
                   const Gap(10),
                   const Text("Password", style: Style.textStyle16Bold),
-                  CustomTextfield(
-                    hintText: "Password",
-                    obscureText: true,
-                    width: 350,
-                    fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.visibility_off),
-                      color: Colors.white70,
-                      onPressed: () {
-                        
-                      },
-                    ),
-                  ),
+                  PasswordTextField(),
+                  // CustomTextfield(
+                  //   hintText: "Password",
+                  //   obscureText: true,
+                  //   width: 350,
+                  //   fillcolor: Color(0xFF2C3617).withOpacity(0.3),
+                  //   suffixIcon: IconButton(
+                  //     icon: Icon(Icons.visibility_off),
+                  //     color: Colors.white70,
+                  //     onPressed: () {
+
+                  //     },
+                  //   ),
+                  // ),
                   const Gap(10),
                   const Text("Full name ", style: Style.textStyle16Bold),
                   CustomTextfield(
@@ -82,7 +83,7 @@ class SignUpBody extends StatelessWidget {
                     weightText: FontWeight.bold,
                     sizeText: 18,
                     onTap: () {
-                      Get.to(const LoginScreen());
+                      Get.to(const HomeView());
                     },
                   ),
                   const Gap(30),

@@ -5,6 +5,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/auth/presentation/views/widgets/forget_password_body.dart';
 import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
@@ -70,7 +71,9 @@ class LoginScreenBody extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(const ForgetPasswordBody());
+                      },
                       child: Text(
                         'Forgot Password?',
                         style: Style.textStyle16.copyWith(

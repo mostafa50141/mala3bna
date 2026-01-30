@@ -19,7 +19,7 @@ class CustomTextfield extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? fillcolor;
-final Widget? suffixIcon;
+  final Widget? suffixIcon;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,7 +27,7 @@ final Widget? suffixIcon;
       child: SizedBox(
         width: width,
         height: height,
-        child: TextFormField(          
+        child: TextFormField(
           validator: validator,
           onChanged: onChanged,
           obscureText: obscureText,
@@ -35,16 +35,25 @@ final Widget? suffixIcon;
           decoration: InputDecoration(
             hintText: hintText,
             fillColor: fillcolor,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // ← CONTROL IT HERE
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 18,
+            ), // ← CONTROL IT HERE
             hintStyle: const TextStyle(color: Colors.white70),
             filled: true,
             suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(24),
+              borderSide: const BorderSide(color: Color(0xFF52C77A)),
               // borderSide: const BorderSide(color: Colors.white),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(24),
+              // borderSide: const BorderSide(color: Colors.white),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(24),
+              borderSide: const BorderSide(color: Color(0xFF52C77A)),
               // borderSide: const BorderSide(color: Colors.white),
             ),
           ),
