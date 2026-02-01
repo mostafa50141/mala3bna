@@ -6,6 +6,7 @@ import 'package:mala3bna/features/courts/views/widgets/amenities_item_builder.da
 import 'package:mala3bna/features/courts/views/widgets/custom_app_bar_court.dart';
 import 'package:mala3bna/features/courts/views/widgets/custom_carousel_slider.dart';
 import 'package:mala3bna/features/courts/views/widgets/custom_container.dart';
+import 'package:mala3bna/features/courts/views/widgets/table_calendar.dart';
 
 class CourtDetailsBody extends StatelessWidget {
   const CourtDetailsBody({super.key});
@@ -95,16 +96,23 @@ class CourtDetailsBody extends StatelessWidget {
                   ),
                 ),
               ),
-            
             ),
             SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(' Select Date and Time', style: Style.textStyle20Bold),
+                    const Gap(10),
+                    CustomTableCalendar() ,
+                    const Gap(20),
 
-                ],
+
+                  ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
