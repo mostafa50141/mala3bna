@@ -38,6 +38,8 @@ dependencies:
   gap: ^3.0.1
   get: ^4.7.2
   google_fonts: ^6.3.2
+  smooth_page_indicator: ^2.0.1
+  table_calendar: ^3.2.0
 
 dev_dependencies:
   flutter_lints: ^5.0.0
