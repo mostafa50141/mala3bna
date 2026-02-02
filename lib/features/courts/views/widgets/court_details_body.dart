@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/courts/views/widgets/amenities_item_builder.dart';
+import 'package:mala3bna/features/courts/views/widgets/chip_chioce_time.dart';
 import 'package:mala3bna/features/courts/views/widgets/custom_app_bar_court.dart';
 import 'package:mala3bna/features/courts/views/widgets/custom_carousel_slider.dart';
 import 'package:mala3bna/features/courts/views/widgets/custom_container.dart';
@@ -105,10 +106,9 @@ class CourtDetailsBody extends StatelessWidget {
                   children: [
                     Text(' Select Date and Time', style: Style.textStyle20Bold),
                     const Gap(10),
-                    CustomTableCalendar() ,
+                    CustomTableCalendar(),
                     const Gap(20),
-
-
+                    CustomeChoiceChipTime(),
                   ],
                 ),
               ),
