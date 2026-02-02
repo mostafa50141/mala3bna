@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/courts_booking/views/court_booking_summry.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/amenities_item_builder.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/chip_chioce_time.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/custom_app_bar_court.dart';
@@ -113,13 +116,15 @@ class CourtDetailsBody extends StatelessWidget {
                     const Gap(30),
                     Center(
                       child: CustomBtn(
-                        text: ' Log In ',
+                        text: ' Book Now ',
                         height: 50,
                         width: 350,
                         radius: 25,
                         weightText: FontWeight.bold,
                         sizeText: 18,
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(() => const CourtBookingSummry());
+                        },
                       ),
                     ),
                     const Gap(30),
