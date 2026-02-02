@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mala3bna/features/courts/views/widgets/amenities_item.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/amenities_item.dart';
 
 class AmenitiesItemBuilder extends StatelessWidget {
   const AmenitiesItemBuilder({super.key});

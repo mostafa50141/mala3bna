@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
-import 'package:mala3bna/features/courts/views/widgets/amenities_item_builder.dart';
-import 'package:mala3bna/features/courts/views/widgets/chip_chioce_time.dart';
-import 'package:mala3bna/features/courts/views/widgets/custom_app_bar_court.dart';
-import 'package:mala3bna/features/courts/views/widgets/custom_carousel_slider.dart';
-import 'package:mala3bna/features/courts/views/widgets/custom_container.dart';
-import 'package:mala3bna/features/courts/views/widgets/table_calendar.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/amenities_item_builder.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/chip_chioce_time.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/custom_app_bar_court.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/custom_carousel_slider.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/custom_container.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/table_calendar.dart';
 import 'package:mala3bna/shared/widgets/custom_btn.dart';
 
 class CourtDetailsBody extends StatelessWidget {

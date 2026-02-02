@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/courts/views/widgets/time_slot.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/time_slot.dart';
 
 class CustomeChoiceChipTime extends StatefulWidget {
   const CustomeChoiceChipTime({super.key});
