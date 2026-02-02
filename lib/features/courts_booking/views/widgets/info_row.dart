@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class InfoRow extends StatelessWidget {
-  const InfoRow({super.key, 
+  const InfoRow({
+    super.key,
     required this.label,
     required this.value,
     this.valueColor,
@@ -18,13 +19,10 @@ class InfoRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(color: Colors.grey)),
+          Text(label, style: TextStyle(color: valueColor)),
           Text(
             value,
-            style: TextStyle(
-              color: valueColor ?? Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
+            style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
           ),
         ],
       ),

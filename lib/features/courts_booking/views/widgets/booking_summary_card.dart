@@ -94,7 +94,12 @@ class BookingSummaryCard extends StatelessWidget {
                 ),
                 Text(extraMoney),
                 Spacer(),
-                Text("+ $extraMoneyvaue EGP"),
+                Text(
+                  "+ $extraMoneyvaue EGP",
+                  style: Style.textStyle16Bold.copyWith(
+                    color: Color(0xff91A16C),
+                  ),
+                ),
               ],
             ),
           ],
