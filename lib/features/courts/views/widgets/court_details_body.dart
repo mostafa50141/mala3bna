@@ -8,6 +8,7 @@ import 'package:mala3bna/features/courts/views/widgets/custom_app_bar_court.dart
 import 'package:mala3bna/features/courts/views/widgets/custom_carousel_slider.dart';
 import 'package:mala3bna/features/courts/views/widgets/custom_container.dart';
 import 'package:mala3bna/features/courts/views/widgets/table_calendar.dart';
+import 'package:mala3bna/shared/widgets/custom_btn.dart';
 
 class CourtDetailsBody extends StatelessWidget {
   const CourtDetailsBody({super.key});
@@ -109,6 +110,19 @@ class CourtDetailsBody extends StatelessWidget {
                     CustomTableCalendar(),
                     const Gap(20),
                     CustomeChoiceChipTime(),
+                    const Gap(30),
+                    Center(
+                      child: CustomBtn(
+                        text: ' Log In ',
+                        height: 50,
+                        width: 350,
+                        radius: 25,
+                        weightText: FontWeight.bold,
+                        sizeText: 18,
+                        onTap: () {},
+                      ),
+                    ),
+                    const Gap(30),
                   ],
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/courts/views/widgets/time_slot.dart';
 
 class CustomeChoiceChipTime extends StatefulWidget {
   const CustomeChoiceChipTime({super.key});
@@ -9,24 +10,27 @@ class CustomeChoiceChipTime extends StatefulWidget {
 }
 
 class _CustomeChoiceChipTimeState extends State<CustomeChoiceChipTime> {
-  List<String> options = [
-    "4:0 PM",
-    "5:0 PM",
-    "6:0 PM",
-    "7:0 PM",
-    "8:0 PM",
-    "9:0 PM",
-    "10:0 PM",
-    "11:0 PM",
-    "12:0 AM",
-  ];
-  String selectedOption = "4:00 PM";
+  late List<String> timeSlots;
+  String? selectedOption;
+
+  @override
+  void initState() {
+    super.initState();
+    timeSlots = TimeSlot.generateTimeSlots(
+      start: TimeOfDay(hour: 16, minute: 0), // 4:00 PM
+      end: TimeOfDay(hour: 4, minute: 0), // 12:00 AM
+      intervalMinutes: 60,
+    );
+    if (timeSlots.isNotEmpty) {
+      selectedOption = timeSlots[0];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 12,
-      children: options.map((option) {
+      children: timeSlots.map((option) {
         final isSelected = selectedOption == option;
         return ChoiceChip(
           label: Text(option),
