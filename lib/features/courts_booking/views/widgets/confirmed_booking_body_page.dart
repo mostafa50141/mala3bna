@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/navigation_button_card.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/qr_card.dart';
+import 'package:mala3bna/features/home/presentation/views/home_view.dart';
 
 class ConfirmedBookingBodyPage extends StatelessWidget {
   const ConfirmedBookingBodyPage({super.key});
@@ -77,7 +80,9 @@ class ConfirmedBookingBodyPage extends StatelessWidget {
                 NavigationButtonCard(
                   title: "Home",
                   icon: Icons.home,
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(const HomeView());
+                  },
                 ),
               ],
             ),
