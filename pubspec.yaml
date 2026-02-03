@@ -39,6 +39,8 @@ dependencies:
   get: ^4.7.2
   google_fonts: ^6.3.2
   intl: ^0.20.2
+  lottie: ^3.3.2
+  qr_flutter: ^4.1.0
   smooth_page_indicator: ^2.0.1
   table_calendar: ^3.2.0
 
@@ -59,6 +61,7 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
+    - assets/animations/Confirm.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see

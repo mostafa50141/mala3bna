@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/utils/style.dart';
-import 'package:mala3bna/features/courts_booking/views/court_booking_summry.dart';
+import 'package:mala3bna/features/courts_booking/views/confirmed_booking_page.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/booking_summary_card.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/custom_app_bar_court.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/payment_card.dart';
@@ -76,7 +76,7 @@ class CourtBookingSummryBody extends StatelessWidget {
                       weightText: FontWeight.bold,
                       sizeText: 18,
                       onTap: () {
-                        Get.to(() => const CourtBookingSummry());
+                        Get.to(() => const ConfirmedBookingPage());
                       },
                     ),
                   ),
