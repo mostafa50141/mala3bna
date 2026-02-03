@@ -61,7 +61,7 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
-    - assets/animations/Confirm.json
+    - assets/animations/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see
