@@ -66,7 +66,6 @@ class QrCard extends StatelessWidget {
             ),
             child: Column(
               children: [
-                // Placeholder for QR code
                 Container(
                   width: 80,
                   height: 80,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/navigation_button_card.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/qr_card.dart';
 
 class ConfirmedBookingBodyPage extends StatelessWidget {
@@ -12,7 +13,7 @@ class ConfirmedBookingBodyPage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Gap(110),
+          Gap(70),
           Center(
             child: Lottie.asset(
               'assets/animations/Confirm.json',
@@ -38,11 +39,50 @@ class ConfirmedBookingBodyPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          Gap(50),
+          Gap(85),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: const QrCard(),
           ),
+          Gap(20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                NavigationButtonCard(
+                  title: "Directions",
+                  icon: Icons.directions,
+                  onPressed: () {},
+                ),
+                NavigationButtonCard(
+                  title: "Contact Owner",
+                  icon: Icons.phone,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          Gap(20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                NavigationButtonCard(
+                  title: "Add to Calendar",
+                  icon: Icons.calendar_today_outlined,
+                  onPressed: () {},
+                ),
+                NavigationButtonCard(
+                  title: "Home",
+                  icon: Icons.home,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          Gap(50),
         ],
       ),
     );
