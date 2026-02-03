@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/courts_booking/views/widgets/qr_card.dart';
 
 class ConfirmedBookingBodyPage extends StatelessWidget {
   const ConfirmedBookingBodyPage({super.key});
@@ -37,7 +38,11 @@ class ConfirmedBookingBodyPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          
+          Gap(50),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: const QrCard(),
+          ),
         ],
       ),
     );
