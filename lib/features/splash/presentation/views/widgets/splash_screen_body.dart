@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
-import 'package:mala3bna/features/Splash_Screen/presentation/views/widgets/sliding_text.dart';
+import 'package:mala3bna/features/splash/presentation/views/widgets/sliding_text.dart';
 import 'package:mala3bna/features/welcome_screen/presentation/views/welcome_screen.dart';
 
 class SplashScreenBody extends StatefulWidget {

@@ -8,10 +8,11 @@ import 'package:mala3bna/features/auth/presentation/views/widgets/custome_Choice
 import 'package:mala3bna/features/auth/presentation/views/widgets/custome_toggle_tab.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/navigate_to_term.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
-import 'package:mala3bna/features/home/presentation/views/home_view.dart';
+import 'package:mala3bna/shared/navigation/main_navigation.dart';
 import 'package:mala3bna/shared/widgets/custom_btn.dart';
 import 'package:mala3bna/shared/widgets/custome_gradiant.dart';
 import 'package:mala3bna/shared/widgets/custome_text_field.dart';
+
 class SignUpBody extends StatelessWidget {
   const SignUpBody({super.key});
 
@@ -83,7 +84,7 @@ class SignUpBody extends StatelessWidget {
                     weightText: FontWeight.bold,
                     sizeText: 18,
                     onTap: () {
-                      Get.to(const HomeView());
+                      Get.offAll(() => const MainNavigation());
                     },
                   ),
                   const Gap(30),

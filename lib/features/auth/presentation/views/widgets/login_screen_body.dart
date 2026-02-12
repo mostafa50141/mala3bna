@@ -10,6 +10,7 @@ import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
 import 'package:mala3bna/features/home/presentation/views/home_view.dart';
+import 'package:mala3bna/shared/navigation/main_navigation.dart';
 import 'package:mala3bna/shared/widgets/custom_btn.dart';
 import 'package:mala3bna/shared/widgets/custome_circular_avatar.dart';
 import 'package:mala3bna/shared/widgets/custome_gradiant.dart';
@@ -94,7 +95,7 @@ class LoginScreenBody extends StatelessWidget {
                     weightText: FontWeight.bold,
                     sizeText: 18,
                     onTap: () {
-                      Get.to(const HomeView());
+                      Get.offAll(() => const MainNavigation());
                     },
                   ),
                 ),

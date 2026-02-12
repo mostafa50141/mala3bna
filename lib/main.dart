@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/Splash_Screen/presentation/views/splash_screen.dart';
-// import 'package:mala3bna/root.dart';
+import 'package:mala3bna/features/splash/presentation/views/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
