@@ -48,10 +48,11 @@ class _MainNavigationState extends State<MainNavigation> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.confirmation_number_outlined),
-              activeIcon: Icon(Icons.confirmation_number),
-              label: 'Bookings',
+              icon: Icon(Icons.sports_score),
+              activeIcon: Icon(Icons.sports_score_outlined),
+              label: 'Courts',
             ),
+
             BottomNavigationBarItem(
               icon: Icon(Icons.chat_outlined),
               activeIcon: Icon(Icons.chat),

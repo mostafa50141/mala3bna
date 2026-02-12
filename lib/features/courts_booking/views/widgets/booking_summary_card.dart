@@ -35,7 +35,7 @@ class BookingSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: const Color(0xFF1F2A24),
+      color: const Color.fromARGB(255, 40, 54, 46),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -57,7 +57,7 @@ class BookingSummaryCard extends StatelessWidget {
                     Text(
                       location,
                       style: Style.textStyle16.copyWith(
-                        color: Color(0xff91A16C),
+                        color: AppColors.primaryColor,
                       ),
                     ),
                   ],
@@ -70,19 +70,19 @@ class BookingSummaryCard extends StatelessWidget {
             InfoRow(
               label: dateLabel,
               value: dateValue,
-              valueColor: Color(0xff91A16C),
+              valueColor: AppColors.primaryColor,
             ),
             const Gap(10),
             InfoRow(
               label: timeLabel,
               value: timeValue,
-              valueColor: Color(0xff91A16C),
+              valueColor: AppColors.primaryColor,
             ),
             const Gap(10),
             InfoRow(
               label: rentalLabel,
               value: rentalValue,
-              valueColor: Color(0xff91A16C),
+              valueColor: AppColors.primaryColor,
             ),
             const Gap(10),
             Row(
@@ -97,7 +97,7 @@ class BookingSummaryCard extends StatelessWidget {
                 Text(
                   "+ $extraMoneyvaue EGP",
                   style: Style.textStyle16Bold.copyWith(
-                    color: Color(0xff91A16C),
+                    color: AppColors.primaryColor,
                   ),
                 ),
               ],

@@ -30,7 +30,7 @@ class AmenitiesItem extends StatelessWidget {
         ),
 
         const SizedBox(height: 8),
-        Text(label, style: Style.textStyle16, textAlign: TextAlign.center),
+        Text(label, style: Style.textStyle14, textAlign: TextAlign.center),
       ],
     );
   }

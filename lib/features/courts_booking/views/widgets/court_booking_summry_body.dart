@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/courts_booking/views/confirmed_booking_page.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/booking_summary_card.dart';
@@ -53,7 +54,6 @@ class CourtBookingSummryBody extends StatelessWidget {
               child: Column(
                 children: [
                   const Divider(),
-                  const Gap(20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -61,7 +61,7 @@ class CourtBookingSummryBody extends StatelessWidget {
                       Text(
                         "200 EGP",
                         style: Style.textStyle20Bold.copyWith(
-                          color: Color(0xff91A16C),
+                          color: AppColors.primaryColor,
                         ),
                       ),
                     ],

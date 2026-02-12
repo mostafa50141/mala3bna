@@ -28,7 +28,7 @@ class CourtDetailsBody extends StatelessWidget {
               backgroundColor: Colors.transparent,
               elevation: 0,
               flexibleSpace: const CustomCarouselSlider(),
-              expandedHeight: 250,
+              expandedHeight: 220,
               title: const CustomAppBarCourt(title: "Court Details"),
             ),
             SliverToBoxAdapter(
@@ -37,7 +37,12 @@ class CourtDetailsBody extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text("Sky Padel - Court1", style: Style.textStyle26),
+                    child: Text(
+                      "Sky Padel - Court1",
+                      style: Style.textStyle26.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   const Gap(10),
                   Padding(
@@ -52,7 +57,7 @@ class CourtDetailsBody extends StatelessWidget {
                         Gap(10),
                         CustomContainer(
                           height: 40,
-                          text1: "Ratig: ",
+                          text1: "Rating: ",
                           text2: "4.5 Stars",
                         ),
                       ],
@@ -61,9 +66,8 @@ class CourtDetailsBody extends StatelessWidget {
                   const Gap(20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text("Amenities", style: Style.textStyle20Bold),
+                    child: Text("Amenities", style: Style.textStyle18Bold),
                   ),
-                  const Gap(10),
                 ],
               ),
             ),
@@ -72,7 +76,10 @@ class CourtDetailsBody extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: SizedBox(
                   height: 90,
-                  child: const AmenitiesItemBuilder(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: const AmenitiesItemBuilder(),
+                  ),
                 ),
               ),
             ),
@@ -87,12 +94,12 @@ class CourtDetailsBody extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Gap(10),
-                      Text('Price: ', style: Style.textStyle16Bold),
+                      Gap(20),
+                      Text('Price', style: Style.textStyle16Bold),
                       Spacer(),
                       Text(
-                        '\$150/hour',
-                        style: Style.textStyle16Bold.copyWith(
+                        '150 EGP/ hr',
+                        style: Style.textStyle20.copyWith(
                           color: AppColors.primaryColor,
                         ),
                       ),
@@ -108,9 +115,16 @@ class CourtDetailsBody extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(' Select Date and Time', style: Style.textStyle20Bold),
                     const Gap(10),
-                    CustomTableCalendar(),
+                    Text(' Select Date & Time', style: Style.textStyle18Bold),
+                    const Gap(10),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2B3A41),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: CustomTableCalendar(),
+                    ),
                     const Gap(20),
                     CustomeChoiceChipTime(),
                     const Gap(30),

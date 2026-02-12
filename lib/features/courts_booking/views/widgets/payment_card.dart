@@ -20,7 +20,7 @@ class _PaymentCardState extends State<PaymentCard> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: _isSelected ? Colors.black54 : Colors.grey[850],
+          color: _isSelected ? Colors.black54 : Color.fromARGB(255, 40, 54, 46),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: _isSelected ? Colors.green : Colors.transparent,

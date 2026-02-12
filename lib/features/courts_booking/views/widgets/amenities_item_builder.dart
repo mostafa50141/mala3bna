@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mala3bna/features/courts_booking/views/widgets/amenities_item.dart';
 
 class AmenitiesItemBuilder extends StatelessWidget {
   const AmenitiesItemBuilder({super.key});
   Map<String, IconData> get amenities => {
-    "Free Wi-Fi": Icons.wifi,
+    "Wi-Fi": Icons.wifi,
     "Parking": Icons.local_parking,
+    "Locker": Icons.lock,
+    "Cafe": Icons.local_cafe,
     "Restrooms": Icons.wc,
-    "Locker Rooms": Icons.lock,
-    "Cafeteria": Icons.local_cafe,
   };
 
   @override

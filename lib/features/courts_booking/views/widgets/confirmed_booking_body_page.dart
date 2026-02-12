@@ -19,7 +19,7 @@ class ConfirmedBookingBodyPage extends StatelessWidget {
           Gap(70),
           Center(
             child: Lottie.asset(
-              'assets/animations/confirm.json',
+              'assets/animations/Success.json',
               width: 150,
               height: 150,
               fit: BoxFit.contain,
