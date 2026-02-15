@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:mala3bna/core/role/user_role.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
-import 'package:mala3bna/shared/navigation/coach_main_navigation.dart';
-import 'package:mala3bna/shared/navigation/owner_main_navigation.dart';
-import 'package:mala3bna/shared/navigation/player_main_navigation.dart';
+import 'package:mala3bna/core/navigation/coach_main_navigation.dart';
+import 'package:mala3bna/core/navigation/owner_main_navigation.dart';
+import 'package:mala3bna/core/navigation/player_main_navigation.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({super.key});

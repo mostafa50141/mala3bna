@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/widgets/custom_bottom_nav.dart';
-import 'package:mala3bna/features/coach/coachDashboard/presentation/view/coach_dashboard_view.dart';
-import 'package:mala3bna/features/coach/messages/presentation/views/coach_messages_view.dart';
-import 'package:mala3bna/features/coach/profile/presentation/views/coach_profile_view.dart';
-import 'package:mala3bna/features/coach/schedule/presentation/views/coach_schedule_view.dart';
+import 'package:mala3bna/features/owner/booking/presentation/view/booking_request_view.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view/my_court_view.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/owner_dashboard_view.dart';
+import 'package:mala3bna/features/owner/profile/presentation/view/owner_profile_view.dart';
 
-class CoachMainNavigation extends StatefulWidget {
-  const CoachMainNavigation({super.key});
+class OwnerMainNavigation extends StatefulWidget {
+  const OwnerMainNavigation({super.key});
 
   @override
-  State<CoachMainNavigation> createState() => _CoachMainNavigationState();
+  State<OwnerMainNavigation> createState() => _OwnerMainNavigationState();
 }
 
-class _CoachMainNavigationState extends State<CoachMainNavigation> {
+class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
   int currentIndex = 0;
 
   final List<Widget> pages = const [
-    CoachDashboardView(),
-    CoachScheduleView(),
-    CoachMessagesView(),
-    CoachProfileView(),
+    OwnerDashboardView(),
+    BookingRequestView(),
+    MyCourtView(),
+    OwnerProfileView(),
   ];
 
   @override
@@ -29,6 +29,7 @@ class _CoachMainNavigationState extends State<CoachMainNavigation> {
       bottomNavigationBar: CustomBottomNav(
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
+        badges: [0, 3, 0, 0],
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard_outlined),
@@ -38,12 +39,12 @@ class _CoachMainNavigationState extends State<CoachMainNavigation> {
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             activeIcon: Icon(Icons.calendar_month),
-            label: 'Schedule',
+            label: 'Booking',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message_outlined),
-            activeIcon: Icon(Icons.message),
-            label: 'Messages',
+            icon: Icon(Icons.stadium_outlined),
+            activeIcon: Icon(Icons.stadium),
+            label: 'Courts',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

@@ -29,6 +29,7 @@ class _PlayerMainNavigationState extends State<PlayerMainNavigation> {
       bottomNavigationBar: CustomBottomNav(
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
+        badges: [0, 2, 5, 0],
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -36,8 +37,8 @@ class _PlayerMainNavigationState extends State<PlayerMainNavigation> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.sports_score),
-            activeIcon: Icon(Icons.sports_score_outlined),
+            icon: Icon(Icons.sports_score_outlined),
+            activeIcon: Icon(Icons.sports_score),
             label: 'Courts',
           ),
           BottomNavigationBarItem(

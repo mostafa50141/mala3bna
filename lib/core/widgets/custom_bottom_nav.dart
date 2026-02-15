@@ -1,16 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:badges/badges.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 class CustomBottomNav extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
   final List<BottomNavigationBarItem> items;
+  final List<int>? badges; // Optional badge count per item
 
   const CustomBottomNav({
     super.key,
     required this.currentIndex,
     required this.onTap,
     required this.items,
+    this.badges,
   });
 
   @override
@@ -30,7 +33,30 @@ class CustomBottomNav extends StatelessWidget {
         showSelectedLabels: true,
         showUnselectedLabels: false,
         elevation: 8,
-        items: items,
+        items: List.generate(items.length, (index) {
+          final item = items[index];
+          final badgeCount = badges != null && index < badges!.length
+              ? badges![index]
+              : 0;
+
+          return BottomNavigationBarItem(
+            label: item.label,
+            icon: badgeCount > 0
+                ? Badge(
+                    badgeContent: Text(
+                      badgeCount.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                    badgeStyle: BadgeStyle(
+                      badgeColor: Colors.red,
+                      padding: const EdgeInsets.all(5),
+                    ),
+                    child: item.icon,
+                  )
+                : item.icon,
+            activeIcon: item.activeIcon,
+          );
+        }),
       ),
     );
   }

@@ -5,6 +5,6 @@ class MyCourtView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Text("My Courts View"));
+    return const Scaffold(body: Center(child: Text("My Courts View")));
   }
 }

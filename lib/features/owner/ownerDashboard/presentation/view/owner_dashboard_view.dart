@@ -5,6 +5,6 @@ class OwnerDashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("OwnerDashboardView"));
+    return Scaffold(body: Center(child: Text("OwnerDashboardView")));
   }
 }
