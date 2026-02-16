@@ -4,11 +4,11 @@ import 'package:lottie/lottie.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/core/widgets/custom_btn.dart';
+import 'package:mala3bna/core/widgets/custome_circular_avatar.dart';
 import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
 import 'package:mala3bna/features/player/home/presentation/views/home_view.dart';
-import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custome_circular_avatar.dart';
 
 class WelcomeScreenBody extends StatelessWidget {
   const WelcomeScreenBody({super.key});
