@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/generated/l10n.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/dashboard_app_bar.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/owner_dashboard_body.dart';
 
 class OwnerDashboardView extends StatelessWidget {
   const OwnerDashboardView({super.key});
@@ -7,8 +8,15 @@ class OwnerDashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).title)),
-      body: Center(child: Text("OwnerDashboardView")),
+      body: SafeArea(
+        child: Column(
+          children: const [
+            DashboardAppBar(),
+            SizedBox(height: 2),
+            Expanded(child: OwnerDashboardBody()),
+          ],
+        ),
+      ),
     );
   }
 }

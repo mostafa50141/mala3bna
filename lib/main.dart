@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      locale: Locale('ar'),
+      locale: Locale('eg'),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         S.delegate,
