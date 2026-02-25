@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/add_court_view.dart';
 
 // ignore: unused_element
 class AddCourtButton extends StatelessWidget {
@@ -19,7 +21,14 @@ class AddCourtButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          navigator?.push(
+            GetPageRoute(
+              page: () => const AddCourtView(),
+              transition: Transition.rightToLeft,
+            ),
+          );
+        },
         icon: const Icon(Icons.add, size: 20),
         label: const Text("Add New Court", style: Style.textStyle16Bold),
       ),

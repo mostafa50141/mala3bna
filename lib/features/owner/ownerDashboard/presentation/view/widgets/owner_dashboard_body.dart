@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/add_court_button.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/stats_grid.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/owner_weekly_revenue_chart.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/weekly_revenue_chart.dart';
 
 class OwnerDashboardBody extends StatelessWidget {
   const OwnerDashboardBody({super.key});

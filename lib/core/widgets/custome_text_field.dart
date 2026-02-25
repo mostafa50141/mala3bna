@@ -11,6 +11,8 @@ class CustomTextfield extends StatelessWidget {
     this.height,
     this.fillcolor,
     this.suffixIcon,
+    this.controller,
+    this.keyboardType,
   });
   final Function(String)? onChanged;
   final String? hintText;
@@ -20,6 +22,8 @@ class CustomTextfield extends StatelessWidget {
   final double? height;
   final Color? fillcolor;
   final Widget? suffixIcon;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,6 +32,8 @@ class CustomTextfield extends StatelessWidget {
         width: width,
         height: height,
         child: TextFormField(
+          keyboardType: keyboardType,
+          controller: controller,
           validator: validator,
           onChanged: onChanged,
           obscureText: obscureText,
