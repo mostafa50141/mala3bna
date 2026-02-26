@@ -26,6 +26,14 @@ class AcademicsCategory extends StatelessWidget {
       height: 110,
       width: double.infinity,
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
         color: AppColors.colorBtnAndCard,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.grey, width: 0.5),
