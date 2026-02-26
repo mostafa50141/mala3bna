@@ -35,7 +35,7 @@ class _AddCourtViewState extends State<AddCourtView> {
         title: Center(child: const Text("Add Your Court")),
         backgroundColor: AppColors.backgroundColor,
         scrolledUnderElevation: 0,
-        titleTextStyle: Style.textStyle26.copyWith(fontWeight: FontWeight.bold),
+        titleTextStyle: Style.textStyle18Bold,
       ),
       body: SafeArea(
         child: Form(
