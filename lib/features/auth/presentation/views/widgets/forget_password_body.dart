@@ -3,10 +3,10 @@ import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
-import 'package:mala3bna/shared/widgets/custom_btn.dart';
-import 'package:mala3bna/shared/widgets/custome_circular_avatar.dart';
-import 'package:mala3bna/shared/widgets/custome_gradiant.dart';
-import 'package:mala3bna/shared/widgets/custome_text_field.dart';
+import 'package:mala3bna/core/widgets/custom_btn.dart';
+import 'package:mala3bna/core/widgets/custome_circular_avatar.dart';
+import 'package:mala3bna/core/widgets/custome_gradiant.dart';
+import 'package:mala3bna/core/widgets/custome_text_field.dart';
 
 class ForgetPasswordBody extends StatelessWidget {
   const ForgetPasswordBody({super.key});

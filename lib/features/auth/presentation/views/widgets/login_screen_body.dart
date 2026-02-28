@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/forget_password_body.dart';
 import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
-import 'package:mala3bna/features/home/presentation/views/home_view.dart';
-import 'package:mala3bna/shared/widgets/custom_btn.dart';
-import 'package:mala3bna/shared/widgets/custome_circular_avatar.dart';
-import 'package:mala3bna/shared/widgets/custome_gradiant.dart';
-import 'package:mala3bna/shared/widgets/custome_text_field.dart';
+import 'package:mala3bna/core/widgets/custom_btn.dart';
+import 'package:mala3bna/core/widgets/custome_circular_avatar.dart';
+import 'package:mala3bna/core/widgets/custome_gradiant.dart';
+import 'package:mala3bna/core/widgets/custome_text_field.dart';
 
 class LoginScreenBody extends StatelessWidget {
   const LoginScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -94,7 +96,15 @@ class LoginScreenBody extends StatelessWidget {
                     weightText: FontWeight.bold,
                     sizeText: 18,
                     onTap: () {
-                      Get.to(const HomeView());
+                      if (authController.userRole.value == null) {
+                        Get.snackbar(
+                          "Error",
+                          "No account found. Please Sign Up first.",
+                        );
+                        return;
+                      }
+
+                      Get.offAll(() => const AppRoot());
                     },
                   ),
                 ),

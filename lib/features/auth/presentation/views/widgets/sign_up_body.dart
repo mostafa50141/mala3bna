@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
+import 'package:mala3bna/core/role/app_root.dart';
+import 'package:mala3bna/core/role/user_role.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/custome_Choice_Chip.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/custome_toggle_tab.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/navigate_to_term.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
-import 'package:mala3bna/features/home/presentation/views/home_view.dart';
-import 'package:mala3bna/shared/widgets/custom_btn.dart';
-import 'package:mala3bna/shared/widgets/custome_gradiant.dart';
-import 'package:mala3bna/shared/widgets/custome_text_field.dart';
-class SignUpBody extends StatelessWidget {
+import 'package:mala3bna/core/widgets/custom_btn.dart';
+import 'package:mala3bna/core/widgets/custome_gradiant.dart';
+import 'package:mala3bna/core/widgets/custome_text_field.dart';
+
+class SignUpBody extends StatefulWidget {
   const SignUpBody({super.key});
 
   @override
+  State<SignUpBody> createState() => _SignUpBodyState();
+}
+
+class _SignUpBodyState extends State<SignUpBody> {
+  UserRole selectedRole = UserRole.player;
+
+  @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       body: SafeArea(
         child: GradientBackground(
@@ -73,7 +84,13 @@ class SignUpBody extends StatelessWidget {
                   const Gap(10),
                   const Text("I am a ....", style: Style.textStyle16Bold),
                   const Gap(5),
-                  const CustomeChoiceChip(),
+                  CustomeChoiceChip(
+                    onRoleSelected: (role) {
+                      setState(() {
+                        selectedRole = role;
+                      });
+                    },
+                  ),
                   const Gap(30),
                   CustomBtn(
                     text: ' Sign Up ',
@@ -83,7 +100,9 @@ class SignUpBody extends StatelessWidget {
                     weightText: FontWeight.bold,
                     sizeText: 18,
                     onTap: () {
-                      Get.to(const HomeView());
+                      authController.setRole(selectedRole);
+
+                      Get.offAll(() => const AppRoot());
                     },
                   ),
                   const Gap(30),

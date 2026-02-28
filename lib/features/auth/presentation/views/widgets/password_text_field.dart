@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/shared/widgets/custome_text_field.dart';
+import 'package:mala3bna/core/widgets/custome_text_field.dart';
 
 class PasswordTextField extends StatefulWidget {
   const PasswordTextField({super.key});
