@@ -3,7 +3,7 @@ import 'package:mala3bna/core/widgets/custom_bottom_nav.dart';
 import 'package:mala3bna/features/owner/booking/presentation/view/booking_request_view.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/my_court_view.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/owner_dashboard_view.dart';
-import 'package:mala3bna/features/owner/profile/presentation/view/owner_profile_view.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/owner_settings_view.dart';
 
 class OwnerMainNavigation extends StatefulWidget {
   const OwnerMainNavigation({super.key});
@@ -19,7 +19,7 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
     OwnerDashboardView(),
     BookingRequestView(),
     MyCourtView(),
-    OwnerProfileView(),
+    OwnerSettingsView(),
   ];
 
   @override
@@ -47,8 +47,8 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
             label: 'Courts',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
+            icon: Icon(Icons.settings_outlined),
+            activeIcon: Icon(Icons.settings),
             label: 'Profile',
           ),
         ],
