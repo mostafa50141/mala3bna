@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_navigation/src/routes/default_route.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/language_bottom_sheet.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/setting_tile.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/settings_switch_tile.dart';
@@ -38,7 +42,18 @@ class SettingsContent extends StatelessWidget {
             );
           },
         ),
-        SettingsTile(icon: Icons.person_outline, title: "Change Personal Info"),
+        SettingsTile(
+          icon: Icons.person_outline,
+          title: "Change Personal Info",
+          onTap: () {
+            navigator?.push(
+              GetPageRoute(
+                page: () => EditProfileView(),
+                transition: Transition.rightToLeft,
+              ),
+            );
+          },
+        ),
         SettingsTile(icon: Icons.lock_outline, title: "Change Password"),
         SettingsTile(icon: Icons.help_outline, title: "Need Help?"),
         SettingsTile(

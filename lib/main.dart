@@ -11,9 +11,7 @@ import 'package:mala3bna/generated/l10n.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-
   Get.put(AuthController());
-
   runApp(const MyApp());
 }
 

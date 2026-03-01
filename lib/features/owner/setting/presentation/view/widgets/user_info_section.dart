@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_navigation/src/routes/default_route.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/info_chip.dart';
 
 class UserInfoSection extends StatelessWidget {
@@ -58,7 +62,14 @@ class UserInfoSection extends StatelessWidget {
         SizedBox(
           height: 38,
           child: OutlinedButton.icon(
-            onPressed: onEditPressed,
+            onPressed: () {
+              navigator?.push(
+                GetPageRoute(
+                  page: () => EditProfileView(),
+                  transition: Transition.rightToLeft,
+                ),
+              );
+            },
             icon: const Icon(Icons.edit_note_outlined, size: 20),
             label: const Text("Edit Profile"),
             style: OutlinedButton.styleFrom(
