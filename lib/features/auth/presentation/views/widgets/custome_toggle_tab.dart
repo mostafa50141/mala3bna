@@ -37,7 +37,7 @@ class _CustomeToggleTabState extends State<CustomeToggleTab> {
               ),
 
               alignment: Alignment.center,
-              child: const Text('Sign Up', style: Style.textStyle16Bold),
+              child: Text('Sign Up', style: Style.textStyle16Bold),
             ),
           ),
           GestureDetector(
@@ -54,7 +54,7 @@ class _CustomeToggleTabState extends State<CustomeToggleTab> {
               ),
 
               alignment: Alignment.center,
-              child: const Text('Log In', style: Style.textStyle16Bold),
+              child: Text('Log In', style: Style.textStyle16Bold),
             ),
           ),
         ],

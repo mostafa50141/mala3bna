@@ -126,7 +126,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
                             color: AppColors.primaryColor,
                           ),
                           const SizedBox(height: 4),
-                          const Text(
+                           Text(
                             "Tap to upload images",
                             style: Style.textStyle16Bold,
                           ),

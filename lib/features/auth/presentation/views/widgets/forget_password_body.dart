@@ -24,7 +24,7 @@ class ForgetPasswordBody extends StatelessWidget {
               ),
               const Gap(60),
 
-              const Text("Reset Password", style: Style.textStyle26),
+               Text("Reset Password", style: Style.textStyle26),
               const SizedBox(height: 7),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28),

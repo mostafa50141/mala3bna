@@ -44,7 +44,7 @@ class WelcomeScreenBody extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                         Text(
                           'Your Court Awaits',
                           style: Style.textStyle30Bold,
                         ),

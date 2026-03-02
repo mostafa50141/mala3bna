@@ -42,7 +42,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                   const Gap(10),
                   CustomeToggleTab(),
                   const Gap(30),
-                  const Text("Email Address", style: Style.textStyle16Bold),
+                   Text("Email Address", style: Style.textStyle16Bold),
                   CustomTextfield(
                     hintText: " Enter Your Email",
                     obscureText: false,
@@ -50,7 +50,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     fillcolor: Color(0xFF2C3617).withOpacity(0.3),
                   ),
                   const Gap(10),
-                  const Text("Password", style: Style.textStyle16Bold),
+                   Text("Password", style: Style.textStyle16Bold),
                   PasswordTextField(),
                   // CustomTextfield(
                   //   hintText: "Password",
@@ -66,7 +66,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                   //   ),
                   // ),
                   const Gap(10),
-                  const Text("Full name ", style: Style.textStyle16Bold),
+                   Text("Full name ", style: Style.textStyle16Bold),
                   CustomTextfield(
                     hintText: " Enter Your Full name",
                     obscureText: false,
@@ -74,7 +74,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     fillcolor: Color(0xFF2C3617).withOpacity(0.3),
                   ),
                   const Gap(10),
-                  const Text("phone ", style: Style.textStyle16Bold),
+                   Text("phone ", style: Style.textStyle16Bold),
                   CustomTextfield(
                     hintText: "Phone",
                     obscureText: false,
@@ -82,7 +82,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     fillcolor: Color(0xFF2C3617).withOpacity(0.3),
                   ),
                   const Gap(10),
-                  const Text("I am a ....", style: Style.textStyle16Bold),
+                   Text("I am a ....", style: Style.textStyle16Bold),
                   const Gap(5),
                   CustomeChoiceChip(
                     onRoleSelected: (role) {

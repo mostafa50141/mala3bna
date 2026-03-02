@@ -34,7 +34,7 @@ class LoginScreenBody extends StatelessWidget {
                   backgroundImage: AssetImage(AssetsData.logo),
                 ),
                 const Gap(40),
-                const Center(
+                Center(
                   child: Text("Welcome Back!", style: Style.textStyle30Bold),
                 ),
                 Center(
@@ -46,8 +46,8 @@ class LoginScreenBody extends StatelessWidget {
                   ),
                 ),
                 const Gap(80),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 28),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
                   child: Text("Email Address", style: Style.textStyle16Bold),
                 ),
                 Padding(
@@ -60,8 +60,8 @@ class LoginScreenBody extends StatelessWidget {
                   ),
                 ),
                 const Gap(20),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 28),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
                   child: Text("Password", style: Style.textStyle16Bold),
                 ),
                 Padding(
