@@ -44,7 +44,6 @@ class CourtDetailsBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Gap(10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Row(
@@ -52,7 +51,7 @@ class CourtDetailsBody extends StatelessWidget {
                         Expanded(
                           child: CustomContainer(
                             height: 40,
-                            text1: "Sports Type: ",
+                            text1: "Sport Type:",
                             text2: "Padel",
                           ),
                         ),

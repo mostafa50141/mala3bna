@@ -22,18 +22,29 @@ class CustomContainer extends StatelessWidget {
         color: Color(0xFF2B3A41),
         borderRadius: BorderRadius.circular(12),
       ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Gap(10),
-          Text(
-            text1,
-            style: Style.textStyle16Bold.copyWith(
-              color: AppColors.primaryColor,
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                text1,
+                style: Style.textStyle16Bold.copyWith(
+                  color: AppColors.primaryColor,
+                ),
+              ),
             ),
           ),
-          Text(text2, style: Style.textStyle16Bold),
-          Gap(20),
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(text2, style: Style.textStyle16Bold),
+            ),
+          ),
+          const Gap(10),
         ],
       ),
     );
