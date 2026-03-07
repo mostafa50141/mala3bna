@@ -74,7 +74,9 @@ class LoginScreenBody extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        Get.to(const ForgetPasswordBody());
+                        Get.to(() => const ForgetPasswordBody());
+
+                        // Get.to(const ForgetPasswordBody());
                       },
                       child: Text(
                         'Forgot Password?',
@@ -123,7 +125,9 @@ class LoginScreenBody extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        Get.to(const SignUpScreen());
+                        Get.to(() => const SignUpScreen());
+
+                        // Get.to(const SignUpScreen());
                       },
                       child: Text(
                         'Sign Up',

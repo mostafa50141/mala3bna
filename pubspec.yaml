@@ -39,6 +39,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^2.2.3
   font_awesome_flutter: ^10.12.0
   gap: ^3.0.1
   get: ^4.7.2
