@@ -8,19 +8,27 @@ class CourtCardListView extends StatelessWidget {
   static const list = [
     MyBookingCourtCardModel(
       image: AssetsData.padelCourtBackGround,
-      title: "Padel Court",
+      title: "The Padel Point - Court 2",
       date: 'Mon 28Oct',
       time: '08:00 PM - 09:00 PM',
       paidStatus: true,
       sportsIconType: 'padel',
     ),
     MyBookingCourtCardModel(
-      image: AssetsData.padelCourtBackGround,
-      title: "Padel Court",
+      image: AssetsData.footballCourtBackGround,
+      title: "Smash Club - Football",
+      date: 'Mon 28Oct',
+      time: '08:00 PM - 09:00 PM',
+      paidStatus: false,
+      sportsIconType: 'football',
+    ),
+    MyBookingCourtCardModel(
+      image: AssetsData.footballCourtBackGround,
+      title: "Smash Club - Football",
       date: 'Mon 28Oct',
       time: '08:00 PM - 09:00 PM',
       paidStatus: true,
-      sportsIconType: 'padel',
+      sportsIconType: 'football',
     ),
   ];
 
@@ -29,7 +37,10 @@ class CourtCardListView extends StatelessWidget {
     return ListView.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
-        return CustomeCourtCard(myBookingCourtCardModel: list[index]);
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: CustomeCourtCard(myBookingCourtCardModel: list[index]),
+        );
       },
     );
   }

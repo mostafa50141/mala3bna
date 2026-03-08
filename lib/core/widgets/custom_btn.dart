@@ -6,6 +6,7 @@ class CustomBtn extends StatelessWidget {
   const CustomBtn({
     super.key,
     required this.text,
+    this.icon,
     this.onTap,
     required this.height,
     required this.width,
@@ -16,6 +17,7 @@ class CustomBtn extends StatelessWidget {
     this.sizeText,
     this.weightText,
   });
+  final IconData? icon;
   final String text;
   final Function()? onTap;
   final double height;
@@ -42,6 +44,7 @@ class CustomBtn extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Icon(icon, color: colorText ?? Colors.white, size: sizeText),
             customText(
               text: text,
               color: colorText,
