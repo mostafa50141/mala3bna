@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/my_booking_body.dart';
 
-class MyBookings extends StatelessWidget {
-  const MyBookings({super.key});
+class MyBookingsViews extends StatelessWidget {
+  const MyBookingsViews({super.key});
 
   @override
   Widget build(BuildContext context) {
