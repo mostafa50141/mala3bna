@@ -21,6 +21,8 @@ class SignUpBody extends StatefulWidget {
   State<SignUpBody> createState() => _SignUpBodyState();
 }
 
+GlobalKey<FormState> formkay = GlobalKey();
+
 class _SignUpBodyState extends State<SignUpBody> {
   UserRole selectedRole = UserRole.player;
 
@@ -34,84 +36,103 @@ class _SignUpBodyState extends State<SignUpBody> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 10),
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(30),
-                  Text("Create Your\n Account", style: Style.textStyle35Bold),
-                  const Gap(10),
-                  CustomeToggleTab(),
-                  const Gap(30),
-                  Text("Email Address", style: Style.textStyle16Bold),
-                  CustomTextfield(
-                    hintText: " Enter Your Email",
-                    obscureText: false,
-                    width: 350,
-                    fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-                  ),
-                  const Gap(10),
-                  Text("Password", style: Style.textStyle16Bold),
-                  PasswordTextField(),
-                  // CustomTextfield(
-                  //   hintText: "Password",
-                  //   obscureText: true,
-                  //   width: 350,
-                  //   fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-                  //   suffixIcon: IconButton(
-                  //     icon: Icon(Icons.visibility_off),
-                  //     color: Colors.white70,
-                  //     onPressed: () {
+              child: Form(
+                key: formkay,
 
-                  //     },
-                  //   ),
-                  // ),
-                  const Gap(10),
-                  Text("Full name ", style: Style.textStyle16Bold),
-                  CustomTextfield(
-                    hintText: " Enter Your Full name",
-                    obscureText: false,
-                    width: 350,
-                    fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-                  ),
-                  const Gap(10),
-                  Text("phone ", style: Style.textStyle16Bold),
-                  CustomTextfield(
-                    hintText: "Phone",
-                    obscureText: false,
-                    width: 350,
-                    fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-                  ),
-                  const Gap(10),
-                  Text("I am a ....", style: Style.textStyle16Bold),
-                  const Gap(5),
-                  CustomeChoiceChip(
-                    onRoleSelected: (role) {
-                      setState(() {
-                        selectedRole = role;
-                      });
-                    },
-                  ),
-                  const Gap(30),
-                  CustomBtn(
-                    text: ' Sign Up ',
-                    height: 50,
-                    width: 350,
-                    radius: 25,
-                    weightText: FontWeight.bold,
-                    sizeText: 18,
-                    onTap: () {
-                      authController.setRole(selectedRole);
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Gap(30),
+                    Text("Create Your\n Account", style: Style.textStyle35Bold),
+                    const Gap(10),
+                    CustomeToggleTab(),
+                    const Gap(30),
+                    Text("Email Address", style: Style.textStyle16Bold),
+                    CustomTextfield(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "⚠️ Please enter an email";
+                        } else if (!RegExp(
+                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                        ).hasMatch(value)) {
+                          return "⚠️ Please enter a valid email";
+                        }
+                        return null;
+                      },
+                      hintText: " Enter Your Email",
+                      obscureText: false,
+                      width: 350,
+                      fillcolor: Color(0xFF2C3617).withOpacity(0.3),
+                    ),
+                    const Gap(10),
+                    Text("Password", style: Style.textStyle16Bold),
+                    PasswordTextField(),
+                    const Gap(10),
+                    Text("Full name ", style: Style.textStyle16Bold),
+                    CustomTextfield(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "⚠️ Please enter your full name";
+                        }
+                        return null;
+                      },
+                      hintText: " Enter Your Full name",
+                      obscureText: false,
+                      width: 350,
+                      fillcolor: Color(0xFF2C3617).withOpacity(0.3),
+                    ),
+                    const Gap(10),
+                    Text("phone ", style: Style.textStyle16Bold),
+                    CustomTextfield(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "⚠️ Please enter a phone number";
+                        } else if (!RegExp(
+                          r'^\+?[0-9]{7,15}$',
+                        ).hasMatch(value)) {
+                          return "⚠️ Please enter a valid phone number";
+                        }
+                        return null;
+                      },
+                      hintText: "Phone",
+                      obscureText: false,
+                      width: 350,
+                      fillcolor: Color(0xFF2C3617).withOpacity(0.3),
+                    ),
+                    const Gap(10),
+                    Text("I am a ....", style: Style.textStyle16Bold),
+                    const Gap(5),
+                    CustomeChoiceChip(
+                      onRoleSelected: (role) {
+                        setState(() {
+                          selectedRole = role;
+                        });
+                      },
+                    ),
+                    const Gap(30),
+                    CustomBtn(
+                      text: ' Sign Up ',
+                      height: 50,
+                      width: 350,
+                      radius: 25,
+                      weightText: FontWeight.bold,
+                      sizeText: 18,
+                      onTap: () {
+                        if (formkay.currentState!.validate()) {
+                          authController.setRole(selectedRole);
 
-                      Get.offAll(() => const AppRoot());
-                    },
-                  ),
-                  const Gap(30),
-                  const CustomeContinueWith(),
-                  const Gap(10),
-                  const NavigateToTerms(),
+                          Get.offAll(() => const AppRoot());
+                        }
+                      },
+                    ),
+                    const Gap(30),
+                    const CustomeContinueWith(),
+                    const Gap(10),
+                    const NavigateToTerms(),
 
-                  Gap(60),
-                ],
+                    Gap(60),
+                  ],
+                ),
               ),
             ),
           ),

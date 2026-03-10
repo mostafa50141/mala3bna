@@ -14,6 +14,14 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return CustomTextfield(
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "⚠️ Please enter a password";
+        } else if (value.length < 6) {
+          return "⚠️ Password must be at least 6 characters";
+        }
+        return null;
+      },
       hintText: "Password",
       obscureText: isObscure,
       width: 350,
