@@ -5,6 +5,7 @@ import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/role/user_role.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
+import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/custome_Choice_Chip.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/custome_toggle_tab.dart';
@@ -21,10 +22,9 @@ class SignUpBody extends StatefulWidget {
   State<SignUpBody> createState() => _SignUpBodyState();
 }
 
-GlobalKey<FormState> formkay = GlobalKey();
-
 class _SignUpBodyState extends State<SignUpBody> {
   UserRole selectedRole = UserRole.player;
+  GlobalKey<FormState> formkay = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +38,17 @@ class _SignUpBodyState extends State<SignUpBody> {
             child: SingleChildScrollView(
               child: Form(
                 key: formkay,
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Gap(30),
                     Text("Create Your\n Account", style: Style.textStyle35Bold),
                     const Gap(10),
-                    CustomeToggleTab(),
+                    CustomeToggleTab(
+                      onLoginTap: () {
+                        Get.to(const LoginScreen());
+                      },
+                    ),
                     const Gap(30),
                     Text("Email Address", style: Style.textStyle16Bold),
                     CustomTextfield(

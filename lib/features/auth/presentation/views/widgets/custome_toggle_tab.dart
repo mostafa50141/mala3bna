@@ -3,14 +3,16 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 
 class CustomeToggleTab extends StatefulWidget {
-  const CustomeToggleTab({super.key});
+  const CustomeToggleTab({super.key, this.onSignUpTap, this.onLoginTap});
+  final VoidCallback? onSignUpTap;
+  final VoidCallback? onLoginTap;
 
   @override
   State<CustomeToggleTab> createState() => _CustomeToggleTabState();
 }
 
 class _CustomeToggleTabState extends State<CustomeToggleTab> {
-  bool isSignUpSelected = false;
+  bool isSignUpSelected = true;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,6 +29,7 @@ class _CustomeToggleTabState extends State<CustomeToggleTab> {
             onTap: () {
               setState(() {
                 isSignUpSelected = true;
+                widget.onSignUpTap?.call();
               });
             },
             child: Container(
@@ -44,6 +47,7 @@ class _CustomeToggleTabState extends State<CustomeToggleTab> {
             onTap: () {
               setState(() {
                 isSignUpSelected = false;
+                widget.onLoginTap?.call();
               });
             },
             child: Container(
