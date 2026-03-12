@@ -16,12 +16,12 @@ class LanguageBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-           Text("Select Language", style: Style.textStyle18Bold),
+          Text("Select Language", style: Style.textStyle18Bold),
           const SizedBox(height: 10),
           const Divider(color: Colors.white24),
           const SizedBox(height: 10),
           ListTile(
-            title:  Text("English", style: Style.textStyle16Bold),
+            title: Text("English", style: Style.textStyle16Bold),
             onTap: () {
               // change language
               Navigator.pop(context);
@@ -29,7 +29,7 @@ class LanguageBottomSheet extends StatelessWidget {
           ),
 
           ListTile(
-            title:  Text("العربية", style: Style.textStyle16Bold),
+            title: Text("العربية", style: Style.textStyle16Bold),
             onTap: () {
               // change language
               Navigator.pop(context);

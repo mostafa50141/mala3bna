@@ -89,7 +89,6 @@ class LoginScreenBody extends StatelessWidget {
                       child: TextButton(
                         onPressed: () {
                           Get.to(() => const ForgetPasswordBody());
-              
                         },
                         child: Text(
                           'Forgot Password?',
@@ -101,7 +100,7 @@ class LoginScreenBody extends StatelessWidget {
                     ),
                   ),
                   const Gap(48),
-              
+
                   Center(
                     child: CustomBtn(
                       text: ' Log In ',
@@ -121,14 +120,14 @@ class LoginScreenBody extends StatelessWidget {
                           );
                           return;
                         }
-              
+
                         Get.offAll(() => const AppRoot());
                       },
                     ),
                   ),
                   const Gap(40),
                   const CustomeContinueWith(),
-              
+
                   const Gap(25),
                   Row(
                     children: [
@@ -142,7 +141,7 @@ class LoginScreenBody extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           Get.to(() => const SignUpScreen());
-              
+
                           // Get.to(const SignUpScreen());
                         },
                         child: Text(

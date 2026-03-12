@@ -19,31 +19,34 @@ class ServerFailure extends Failure {
       case DioExceptionType.badResponse:
         {
           return ServerFailure.fromResponse(
-              dioexception.response?.statusCode ?? 0, dioexception.response?.data);
+            dioexception.response?.statusCode ?? 0,
+            dioexception.response?.data,
+          );
         }
       case DioExceptionType.cancel:
         return ServerFailure("Request to ApiServer was cancelled");
       case DioExceptionType.connectionError:
-        return ServerFailure("Connection to ApiServer failed due to internet connection");
+        return ServerFailure(
+          "Connection to ApiServer failed due to internet connection",
+        );
       case DioExceptionType.unknown:
         return ServerFailure("Unexpected error occurred");
       default:
         return ServerFailure("Something went wrong");
     }
-
   }
 
-   factory ServerFailure.fromResponse(int? statuscode, dynamic response) {
+  factory ServerFailure.fromResponse(int? statuscode, dynamic response) {
     if (statuscode == 400) {
       return ServerFailure(response["message"] ?? "Invalid request");
     } else if (statuscode == 401) {
-      return ServerFailure(response["message"] ?? "Wrong email or password");  
+      return ServerFailure(response["message"] ?? "Wrong email or password");
     } else if (statuscode == 403) {
-      return ServerFailure(response["message"] ?? "Account not authorized");  
+      return ServerFailure(response["message"] ?? "Account not authorized");
     } else if (statuscode == 404) {
-      return ServerFailure(response["message"] ?? "Account not found");       
+      return ServerFailure(response["message"] ?? "Account not found");
     } else if (statuscode == 409) {
-      return ServerFailure(response["message"] ?? "Email already registered"); // ✅ signup
+      return ServerFailure(response["message"] ?? "Email already registered");
     } else if (statuscode == 500) {
       return ServerFailure("Internal Server error, Please try later!");
     } else {
@@ -51,4 +54,3 @@ class ServerFailure extends Failure {
     }
   }
 }
-

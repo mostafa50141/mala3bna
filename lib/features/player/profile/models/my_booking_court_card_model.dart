@@ -1,4 +1,4 @@
-class MyBookingCourtCardModel  {
+class MyBookingCourtCardModel {
   final String image;
   final String title;
   final String date;
@@ -6,7 +6,7 @@ class MyBookingCourtCardModel  {
   final bool paidStatus;
   final String sportsIconType;
 
- const MyBookingCourtCardModel({
+  const MyBookingCourtCardModel({
     required this.image,
     required this.title,
     required this.date,

@@ -57,7 +57,7 @@ class CourtBookingSummryBody extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       Text("Total Price", style: Style.textStyle16Bold),
+                      Text("Total Price", style: Style.textStyle16Bold),
                       Text(
                         "200 EGP",
                         style: Style.textStyle20Bold.copyWith(

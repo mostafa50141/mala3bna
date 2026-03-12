@@ -44,10 +44,7 @@ class WelcomeScreenBody extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                         Text(
-                          'Your Court Awaits',
-                          style: Style.textStyle30Bold,
-                        ),
+                        Text('Your Court Awaits', style: Style.textStyle30Bold),
                         const SizedBox(height: 5),
                         Text(
                           'Book courts, find players, and connect\n with coaches across Egypt.',

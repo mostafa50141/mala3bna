@@ -41,7 +41,9 @@ class CourtCardImage extends StatelessWidget {
                     ),
                     child: Text(
                       "paid",
-                      style: Style.textStyle12Bold.copyWith(color: Colors.black),
+                      style: Style.textStyle12Bold.copyWith(
+                        color: Colors.black,
+                      ),
                     ),
                   )
                 : Container(
@@ -52,7 +54,9 @@ class CourtCardImage extends StatelessWidget {
                     ),
                     child: Text(
                       "Pending",
-                      style: Style.textStyle12Bold.copyWith(color: Colors.black),
+                      style: Style.textStyle12Bold.copyWith(
+                        color: Colors.black,
+                      ),
                     ),
                   ),
           ],

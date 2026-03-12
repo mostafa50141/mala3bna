@@ -30,7 +30,7 @@ class AddCourtButton extends StatelessWidget {
           );
         },
         icon: const Icon(Icons.add, size: 20),
-        label:  Text("Add New Court", style: Style.textStyle16Bold),
+        label: Text("Add New Court", style: Style.textStyle16Bold),
       ),
     );
   }
