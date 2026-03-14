@@ -1,26 +1,43 @@
 import 'package:bloc/bloc.dart';
+import 'package:mala3bna/features/auth/data/Repos/auth_repo_imp.dart';
+import 'package:mala3bna/features/auth/data/models/usermodel.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
-  Future<void> reg({required String email, required String password}) async {
+  AuthCubit(this.authRepoImp) : super(AuthInitial());
+  final AuthRepoImp authRepoImp;
+
+  Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
-    try {
-      // UserCredential userCredential = await FirebaseAuth.instance
-      //     .createUserWithEmailAndPassword(email: email, password: password);
-      emit(AuthLoading());
-      emit(AuthSuccess());
-      // } on FirebaseAuthException catch (e) {
-      //   if (e.code == 'weak-password') {
-      //     emit(AuthFailure("weak password "));
-      //   } else if (e.code == 'email-already-in-use') {
-      //     emit(AuthFailure("the account is already exist! try to login"));
-      //   }
-      // }
-    } catch (e) {
-      emit(AuthFailure(e.toString()));
-    }
+    var result = await authRepoImp.login(email: email, password: password);
+    result.fold(
+      (failure) =>
+          emit(AuthFailure(failure.errmessage ?? "Something went wrong")),
+      (user) => emit(AuthSuccess(user: user)),
+    );
+  }
+
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String name,
+    required String phone,
+    required String role,
+  }) async {
+    emit(AuthLoading());
+    var result = await authRepoImp.signUp(
+      email: email,
+      password: password,
+      name: name,
+      phone: phone,
+      role: role,
+    );
+    result.fold(
+      (failure) =>
+          emit(AuthFailure(failure.errmessage ?? "Something went wrong")),
+      (user) => emit(AuthSuccess(user: user)),
+    );
   }
 }
