@@ -1,17 +1,17 @@
 import 'package:bloc/bloc.dart';
-import 'package:mala3bna/features/auth/data/Repos/auth_repo_imp.dart';
+import 'package:mala3bna/features/auth/data/Repos/auth_repo.dart';
 import 'package:mala3bna/features/auth/data/models/usermodel.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this.authRepoImp) : super(AuthInitial());
-  final AuthRepoImp authRepoImp;
+  AuthCubit(this.authRepo) : super(AuthInitial());
+  final AuthRepo authRepo;
 
   Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
-    var result = await authRepoImp.login(email: email, password: password);
+    var result = await authRepo.login(email: email, password: password);
     result.fold(
       (failure) =>
           emit(AuthFailure(failure.errmessage ?? "Something went wrong")),
@@ -27,7 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String role,
   }) async {
     emit(AuthLoading());
-    var result = await authRepoImp.signUp(
+    var result = await authRepo.signUp(
       email: email,
       password: password,
       name: name,

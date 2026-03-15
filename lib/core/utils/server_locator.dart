@@ -5,7 +5,7 @@ import 'package:mala3bna/features/auth/data/Repos/auth_repo_imp.dart';
 
 final getIt = GetIt.instance;
 
-void setup() {
+void setupServerLocator() {
   getIt.registerSingleton<ApiService>(ApiService(dio: Dio()));
   getIt.registerSingleton<AuthRepoImp>(
     AuthRepoImp(apiService: getIt.get<ApiService>()),
