@@ -69,7 +69,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     ),
                     const Gap(10),
                     Text("Password", style: Style.textStyle16Bold),
-                    PasswordTextField(),
+                    PasswordTextField(controller: password),
                     const Gap(10),
                     Text("Full name ", style: Style.textStyle16Bold),
                     CustomTextfield(

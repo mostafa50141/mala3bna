@@ -16,15 +16,35 @@ import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 import 'package:mala3bna/features/auth/presentation/views_model/cubit/auth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-class LoginScreenBody extends StatelessWidget {
+
+class LoginScreenBody extends StatefulWidget {
   const LoginScreenBody({super.key});
 
   @override
+  State<LoginScreenBody> createState() => _LoginScreenBodyState();
+}
+
+class _LoginScreenBodyState extends State<LoginScreenBody> {
+  final GlobalKey<FormState> formkay = GlobalKey();
+  late TextEditingController email;
+  late TextEditingController password;
+  final authController = Get.find<AuthController>();
+  @override
+  void initState() {
+    super.initState();
+    email = TextEditingController();
+    password = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formkay = GlobalKey();
-
-    final authController = Get.find<AuthController>();
-
     return Scaffold(
       body: SafeArea(
         child: BlocConsumer<AuthCubit, AuthState>(
@@ -38,9 +58,7 @@ class LoginScreenBody extends StatelessWidget {
           },
           builder: (context, state) {
             if (state is AuthLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
             return SingleChildScrollView(
               child: GradientBackground(
@@ -79,6 +97,7 @@ class LoginScreenBody extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: CustomTextfield(
+                          controller: email,
                           hintText: "Email",
                           obscureText: false,
                           width: 350,
@@ -102,7 +121,7 @@ class LoginScreenBody extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: PasswordTextField(),
+                        child: PasswordTextField(controller: password),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 36),
@@ -132,10 +151,6 @@ class LoginScreenBody extends StatelessWidget {
                           weightText: FontWeight.bold,
                           sizeText: 18,
                           onTap: () {
-                            //   context.read<AuthCubit>().login(
-                            //   email: email,
-                            //   password: password,
-                            // );
                             if (!formkay.currentState!.validate()) {
                               return;
                             }
@@ -146,6 +161,10 @@ class LoginScreenBody extends StatelessWidget {
                               );
                               return;
                             }
+                            context.read<AuthCubit>().login(
+                              email: email.text.trim(),
+                              password: password.text.trim(),
+                            );
 
                             Get.offAll(() => const AppRoot());
                           },
@@ -167,8 +186,6 @@ class LoginScreenBody extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               Get.to(() => const SignUpScreen());
-
-                              // Get.to(const SignUpScreen());
                             },
                             child: Text(
                               'Sign Up',

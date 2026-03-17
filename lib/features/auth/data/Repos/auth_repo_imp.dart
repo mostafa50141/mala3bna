@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:mala3bna/core/errors/failure.dart';
 import 'package:mala3bna/core/utils/api_server.dart';
+import 'package:mala3bna/core/utils/local_storage_helper.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/auth/data/Repos/auth_repo.dart';
 import 'package:mala3bna/features/auth/data/models/usermodel.dart';
 
@@ -24,7 +26,13 @@ class AuthRepoImp implements AuthRepo {
       //to object and use it in the app the response that came from the api recived here and convert it to usermodel object
       // and return it to the app
       Usermodel user = Usermodel.fromJson(response);
-      return right(user);
+      if (user.token != null) {
+        // save the token in local storage using the helper class that i created
+        await getIt.get<LocalStorageHelper>().savetoken(user.token!);
+        return right(user);
+      } else {
+        return left(ServerFailure("Invalid token"));
+      }
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
