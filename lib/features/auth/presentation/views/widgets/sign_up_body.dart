@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:mala3bna/core/role/app_root.dart';
@@ -14,6 +15,7 @@ import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_
 import 'package:mala3bna/core/widgets/custom_btn.dart';
 import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
+import 'package:mala3bna/features/auth/presentation/views_model/cubit/auth_cubit.dart';
 
 class SignUpBody extends StatefulWidget {
   const SignUpBody({super.key});
@@ -23,8 +25,23 @@ class SignUpBody extends StatefulWidget {
 }
 
 class _SignUpBodyState extends State<SignUpBody> {
+  late TextEditingController email;
+  late TextEditingController password;
   UserRole selectedRole = UserRole.player;
   GlobalKey<FormState> formkay = GlobalKey();
+  @override
+  void initState() {
+    super.initState();
+    email = TextEditingController();
+    password = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +69,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     const Gap(30),
                     Text("Email Address", style: Style.textStyle16Bold),
                     CustomTextfield(
+                      controller: email,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "⚠️ Please enter an email";
@@ -113,26 +131,42 @@ class _SignUpBodyState extends State<SignUpBody> {
                       },
                     ),
                     const Gap(30),
-                    CustomBtn(
-                      text: ' Sign Up ',
-                      height: 50,
-                      width: 350,
-                      radius: 25,
-                      weightText: FontWeight.bold,
-                      sizeText: 18,
-                      onTap: () {
-                        if (formkay.currentState!.validate()) {
-                          authController.setRole(selectedRole);
-
+                    BlocConsumer<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        if (state is AuthFailure) {
+                          Get.snackbar("Error", state.errorMessage);
+                        }
+                        if (state is AuthSuccess) {
                           Get.offAll(() => const AppRoot());
                         }
+                      },
+                      builder: (context, state) {
+                        if (state is AuthLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return CustomBtn(
+                          text: ' Sign Up ',
+                          height: 50,
+                          width: 350,
+                          radius: 25,
+                          weightText: FontWeight.bold,
+                          sizeText: 18,
+                          onTap: () {
+                            if (formkay.currentState!.validate()) {
+                              authController.setRole(selectedRole);
+
+                              Get.offAll(() => const AppRoot());
+                            }
+                          },
+                        );
                       },
                     ),
                     const Gap(30),
                     const CustomeContinueWith(),
                     const Gap(10),
                     const NavigateToTerms(),
-
                     Gap(60),
                   ],
                 ),
