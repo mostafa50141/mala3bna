@@ -27,6 +27,9 @@ class SignUpBody extends StatefulWidget {
 class _SignUpBodyState extends State<SignUpBody> {
   late TextEditingController email;
   late TextEditingController password;
+  late TextEditingController name;
+  late TextEditingController phone;
+
   UserRole selectedRole = UserRole.player;
   GlobalKey<FormState> formkay = GlobalKey();
   @override
@@ -34,12 +37,16 @@ class _SignUpBodyState extends State<SignUpBody> {
     super.initState();
     email = TextEditingController();
     password = TextEditingController();
+    name = TextEditingController();
+    phone = TextEditingController();
   }
 
   @override
   void dispose() {
     email.dispose();
     password.dispose();
+    name.dispose();
+    phone.dispose();
     super.dispose();
   }
 
@@ -91,6 +98,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     const Gap(10),
                     Text("Full name ", style: Style.textStyle16Bold),
                     CustomTextfield(
+                        controller: name,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "⚠️ Please enter your full name";
@@ -105,6 +113,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     const Gap(10),
                     Text("phone ", style: Style.textStyle16Bold),
                     CustomTextfield(
+                      controller: phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "⚠️ Please enter a phone number";

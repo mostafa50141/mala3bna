@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
+import 'package:mala3bna/core/utils/local_storage_helper.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/splash/presentation/views/widgets/sliding_text.dart';
 import 'package:mala3bna/features/welcome_screen/presentation/views/welcome_screen.dart';
 
@@ -19,9 +22,8 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
   void initState() {
     super.initState();
     initSlidingAnimation();
-    navigateToHome();
+    _checkTokenAndNavigate();
   }
-
   @override
   void dispose() {
     animationController.dispose();
@@ -62,14 +64,21 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
     ).animate(animationController);
     animationController.forward();
   }
-
-  void navigateToHome() {
-    Future.delayed(const Duration(seconds: 3), () {
-      Get.to(
-        () => const WelcomeScreen(),
-        transition: Transition.fadeIn,
-        duration: const Duration(milliseconds: 500),
-      );
-    });
+  Future<void> _checkTokenAndNavigate() async {
+  await Future.delayed(const Duration(seconds: 3));
+  final token = await getIt.get<LocalStorageHelper>().gettoken();
+  if (token != null && token.isNotEmpty) {
+    Get.offAll(
+      () => const AppRoot(),
+      transition: Transition.fadeIn,
+      duration: const Duration(milliseconds: 500),
+    );
+  } else {
+    Get.offAll(
+      () => const WelcomeScreen(),
+      transition: Transition.fadeIn,
+      duration: const Duration(milliseconds: 500),
+    );
   }
+}
 }
