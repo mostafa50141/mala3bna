@@ -38,6 +38,7 @@ dependencies:
   fl_chart: ^1.1.1
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.1.1
   flutter_launcher_icons: ^0.14.4
   flutter_localizations:
     sdk: flutter
