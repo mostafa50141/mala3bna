@@ -62,7 +62,13 @@ class AuthRepoImp implements AuthRepo {
         },
       );
       Usermodel user = Usermodel.fromJson(response);
-      return right(user);
+      if (user.token != null) {
+        // save the token in local storage using the helper class that i created
+        await getIt.get<LocalStorageHelper>().savetoken(user.token!);
+        return right(user);
+      } else {
+        return left(ServerFailure("Invalid token"));
+      }
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioError(e));
