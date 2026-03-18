@@ -1,3 +1,4 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/role/user_role.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
@@ -99,7 +101,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                     const Gap(10),
                     Text("Full name ", style: Style.textStyle16Bold),
                     CustomTextfield(
-                        controller: name,
+                      controller: name,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "⚠️Please enter your full name";
@@ -144,17 +146,24 @@ class _SignUpBodyState extends State<SignUpBody> {
                     BlocConsumer<AuthCubit, AuthState>(
                       listener: (context, state) {
                         if (state is AuthFailure) {
-                          Get.snackbar("Error", state.errorMessage);
+                          showAnimatedSnackDialog(
+                            context,
+                            message: state.errorMessage,
+                            type: AnimatedSnackBarType.error,
+                          );
                         }
                         if (state is AuthSuccess) {
                           Get.offAll(() => const AppRoot());
+                          showAnimatedSnackDialog(
+                            context,
+                            message: "Account created successfully",
+                            type: AnimatedSnackBarType.success,
+                          );
                         }
                       },
                       builder: (context, state) {
                         if (state is AuthLoading) {
-                          return const Center(
-                            child: CustomeCircularLaoding()
-                          );
+                          return const Center(child: CustomeCircularLaoding());
                         }
                         return CustomBtn(
                           text: ' Sign Up ',

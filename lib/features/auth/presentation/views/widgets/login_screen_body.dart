@@ -1,3 +1,4 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/forget_password_body.dart';
 import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
@@ -50,9 +52,18 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              Get.snackbar("Error", state.errorMessage);
+              showAnimatedSnackDialog(
+                context,
+                message: state.errorMessage,
+                type: AnimatedSnackBarType.error,
+              );
             }
             if (state is AuthSuccess) {
+              showAnimatedSnackDialog(
+                context,
+                message: "Login successful",
+                type: AnimatedSnackBarType.success,
+              );
               Get.offAll(() => const AppRoot());
             }
           },
