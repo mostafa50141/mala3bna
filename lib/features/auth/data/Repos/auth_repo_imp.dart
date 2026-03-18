@@ -19,7 +19,7 @@ class AuthRepoImp implements AuthRepo {
   }) async {
     try {
       var response = await apiService.post(
-        endPoint: 'auth/login/',
+        endPoint: 'auth/login',
         body: {'email': email, 'password': password},
       );
       // here the model that i created to convert the json response
