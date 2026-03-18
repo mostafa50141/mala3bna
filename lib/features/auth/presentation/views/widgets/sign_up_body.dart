@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/role/user_role.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
@@ -79,7 +80,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                       controller: email,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "⚠️ Please enter an email";
+                          return "⚠️Please enter an email";
                         } else if (!RegExp(
                           r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                         ).hasMatch(value)) {
@@ -101,7 +102,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                         controller: name,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "⚠️ Please enter your full name";
+                          return "⚠️Please enter your full name";
                         }
                         return null;
                       },
@@ -152,7 +153,7 @@ class _SignUpBodyState extends State<SignUpBody> {
                       builder: (context, state) {
                         if (state is AuthLoading) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: CustomeCircularLaoding()
                           );
                         }
                         return CustomBtn(
