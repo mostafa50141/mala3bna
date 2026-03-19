@@ -95,7 +95,7 @@ class AuthRepoImp implements AuthRepo {
       token: "fake_token_123",
       userType: "player",
     );
-    // await getIt.get<LocalStorageHelper>().savetoken(fakeUser.token!);
+    await getIt.get<LocalStorageHelper>().savetoken(fakeUser.token!);
 
     return right(fakeUser);
   }
@@ -116,7 +116,7 @@ class AuthRepoImp implements AuthRepo {
       token: "fake_token_123",
       userType: role,
     );
-    // await getIt.get<LocalStorageHelper>().savetoken(fakeUser.token!);
+    await getIt.get<LocalStorageHelper>().savetoken(fakeUser.token!);
     return right(fakeUser);
   }
 }
