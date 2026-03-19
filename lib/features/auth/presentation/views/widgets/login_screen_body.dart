@@ -175,7 +175,6 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                       );
                     },
                   ),
-
                   const Gap(40),
                   const CustomeContinueWith(),
                   const Gap(25),

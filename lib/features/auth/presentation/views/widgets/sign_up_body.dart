@@ -175,8 +175,13 @@ class _SignUpBodyState extends State<SignUpBody> {
                           onTap: () {
                             if (formkay.currentState!.validate()) {
                               authController.setRole(selectedRole);
-
-                              Get.offAll(() => const AppRoot());
+                              context.read<AuthCubit>().signUp(
+                                email: email.text.trim(),
+                                password: password.text.trim(),
+                                name: name.text.trim(),
+                                phone: phone.text.trim(),
+                                role: selectedRole.name,
+                              );
                             }
                           },
                         );
