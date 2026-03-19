@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 
 class PasswordTextField extends StatefulWidget {
-  const PasswordTextField({super.key});
+  const PasswordTextField({super.key, required this.controller});
+
+  final TextEditingController controller;
 
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
@@ -14,6 +16,15 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return CustomTextfield(
+      controller: widget.controller,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "⚠️ Please enter a password";
+        } else if (value.length < 6) {
+          return "⚠️ Password must be at least 6 characters";
+        }
+        return null;
+      },
       hintText: "Password",
       obscureText: isObscure,
       width: 350,

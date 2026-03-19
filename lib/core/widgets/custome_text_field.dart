@@ -24,6 +24,7 @@ class CustomTextfield extends StatelessWidget {
   final Widget? suffixIcon;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+
   @override
   Widget build(BuildContext context) {
     return Padding(

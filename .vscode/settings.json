@@ -1,4 +1,30 @@
 {
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingQuotes": "always",
+    "editor.autoClosingDelete": "auto",
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "on",
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
+        "editor.rulers": [80, 120],
+        "editor.selectionHighlight": true,
+        "editor.suggestSelection": "first",
+        "editor.autoClosingBrackets": "always"
+    },
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false
+    },
+    "github.copilot.chat.enabled": true,
     "cSpell.words": [
         "Adel",
         "appbar",

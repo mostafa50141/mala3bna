@@ -25,7 +25,7 @@ class SettingAppBar extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Profile", style: Style.textStyle20Bold),
+            Text("Profile", style: Style.textStyle20Bold),
             const SizedBox(height: 1),
             Text(
               "Manage your Account",

@@ -20,7 +20,7 @@ class AmenitiesItemBuilder extends StatelessWidget {
         final amenity = amenities.keys.toList()[index];
         final icon = amenities[amenity]!;
         return Padding(
-          padding: const EdgeInsets.only(right: 12),
+          padding: const EdgeInsets.only(right: 20),
           child: AmenitiesItem(icon: icon, label: amenity),
         );
       },

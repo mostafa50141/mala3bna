@@ -26,11 +26,11 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// Title
-          const Text("Weekly Revenue", style: Style.textStyle14Bold),
+          Text("Weekly Revenue", style: Style.textStyle14Bold),
           const SizedBox(height: 8),
 
           /// Amount
-          const Text("EGP 4,500", style: Style.textStyle30Bold),
+          Text("EGP 4,500", style: Style.textStyle30Bold),
 
           const SizedBox(height: 4),
 

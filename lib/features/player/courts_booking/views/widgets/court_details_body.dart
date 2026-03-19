@@ -44,21 +44,24 @@ class CourtDetailsBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Gap(10),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Row(
                       children: [
-                        CustomContainer(
-                          height: 40,
-                          text1: "Sports Type: ",
-                          text2: "Padel",
+                        Expanded(
+                          child: CustomContainer(
+                            height: 40,
+                            text1: "Sport Type:",
+                            text2: "Padel",
+                          ),
                         ),
                         Gap(10),
-                        CustomContainer(
-                          height: 40,
-                          text1: "Rating: ",
-                          text2: "4.5 Stars",
+                        Expanded(
+                          child: CustomContainer(
+                            height: 40,
+                            text1: "Rating: ",
+                            text2: "4.5 Stars",
+                          ),
                         ),
                       ],
                     ),

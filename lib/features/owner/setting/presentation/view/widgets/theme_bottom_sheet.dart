@@ -16,12 +16,12 @@ class ThemeBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text("Select Theme", style: Style.textStyle18Bold),
+          Text("Select Theme", style: Style.textStyle18Bold),
           const SizedBox(height: 10),
           const Divider(color: Colors.white24),
           const SizedBox(height: 10),
           ListTile(
-            title: const Text("Light", style: Style.textStyle16Bold),
+            title: Text("Light", style: Style.textStyle16Bold),
             onTap: () {
               // change theme
               Navigator.pop(context);
@@ -29,7 +29,7 @@ class ThemeBottomSheet extends StatelessWidget {
           ),
 
           ListTile(
-            title: const Text("Dark", style: Style.textStyle16Bold),
+            title: Text("Dark", style: Style.textStyle16Bold),
             onTap: () {
               // change theme
               Navigator.pop(context);

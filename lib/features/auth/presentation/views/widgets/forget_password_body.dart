@@ -13,70 +13,88 @@ class ForgetPasswordBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formkay = GlobalKey();
     return Scaffold(
       body: SafeArea(
         child: GradientBackground(
-          child: Column(
-            children: [
-              const Gap(200),
-              const CustomeCirculerAvtar(
-                backgroundImage: AssetImage(AssetsData.logo),
-              ),
-              const Gap(60),
+          child: Form(
+            key: formkay,
+            child: Column(
+              children: [
+                const Gap(200),
+                const CustomeCirculerAvtar(
+                  backgroundImage: AssetImage(AssetsData.logo),
+                ),
+                const Gap(60),
 
-              const Text("Reset Password", style: Style.textStyle26),
-              const SizedBox(height: 7),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Text(
-                  "Enter your email to receive reset instructions.",
-                  style: Style.textStyle16.copyWith(color: Colors.white70),
-                  textAlign: TextAlign.center,
+                Text("Reset Password", style: Style.textStyle26),
+                const SizedBox(height: 7),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Text(
+                    "Enter your email to receive reset instructions.",
+                    style: Style.textStyle16.copyWith(color: Colors.white70),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-              const Gap(60),
-              CustomTextfield(
-                hintText: "Email",
-                obscureText: false,
-                width: 350,
-                fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-              ),
-              const Gap(20),
-              Center(
-                child: CustomBtn(
-                  text: ' Send a Reset Link',
-                  height: 50,
+                const Gap(60),
+                CustomTextfield(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "⚠️ Please enter an email";
+                    } else if (!RegExp(
+                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    ).hasMatch(value)) {
+                      return "⚠️ Please enter a valid email";
+                    }
+                    return null;
+                  },
+                  hintText: "Email",
+                  obscureText: false,
                   width: 350,
-                  radius: 25,
-                  sizeText: 18,
-                  onTap: () {},
+                  fillcolor: Color(0xFF2C3617).withOpacity(0.3),
                 ),
-              ),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Remember your password? ",
-                      style: Style.textStyle16.copyWith(
-                        color: AppColors.fieldBackground,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Login',
-                        style: Style.textStyle16Bold.copyWith(
-                          color: AppColors.primaryColor,
+                const Gap(20),
+                Center(
+                  child: CustomBtn(
+                    text: ' Send a Reset Link',
+                    height: 50,
+                    width: 350,
+                    radius: 25,
+                    sizeText: 18,
+                    onTap: () {
+                      if (formkay.currentState!.validate()) {
+                        // Handle reset password logic
+                      }
+                    },
+                  ),
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Remember your password? ",
+                        style: Style.textStyle16.copyWith(
+                          color: AppColors.fieldBackground,
                         ),
                       ),
-                    ),
-                  ],
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Login',
+                          style: Style.textStyle16Bold.copyWith(
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
