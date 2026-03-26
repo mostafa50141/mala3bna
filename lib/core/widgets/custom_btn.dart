@@ -15,7 +15,9 @@ class CustomBtn extends StatelessWidget {
     this.colorText,
     this.sizeText,
     this.weightText,
+    this.isLoading = false,
   });
+
   final String text;
   final Function()? onTap;
   final double height;
@@ -26,29 +28,37 @@ class CustomBtn extends StatelessWidget {
   final Color? colorText;
   final double? sizeText;
   final FontWeight? weightText;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: color ?? AppColors.primaryColor,
-          borderRadius: BorderRadius.circular(radius),
-          border: border,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            customText(
-              text: text,
-              color: colorText,
-              size: sizeText,
-              weight: weightText,
-            ),
-          ],
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: isLoading ? null : onTap,
+        borderRadius: BorderRadius.circular(radius),
+        child: Container(
+          height: height,
+          width: width,
+          decoration: BoxDecoration(
+            color: color ?? AppColors.primaryColor,
+            borderRadius: BorderRadius.circular(radius),
+            border: border,
+          ),
+          child: Center(
+            child: isLoading
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : customText(
+                    text: text,
+                    color: colorText ?? Colors.white,
+                    size: sizeText,
+                    weight: weightText,
+                  ),
+          ),
         ),
       ),
     );
