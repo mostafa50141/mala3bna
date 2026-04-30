@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/presentation/data/amenity_of_add_court.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/data/amenity_of_add_court.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/amenities_widget.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/form_widgets.dart';
 
@@ -73,18 +73,14 @@ class AmenitiesSection extends StatelessWidget {
             onPressed: () => Navigator.maybePop(context),
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white70,
-              side: BorderSide(
-                  color: Colors.white.withOpacity(0.15), width: 1),
+              side: BorderSide(color: Colors.white.withOpacity(0.15), width: 1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
             child: const Text(
               'Cancel',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           ),
         ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/model/owner_dashboard_model.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/dashboard_stat_card.dart';
 
 class StatsGrid extends StatelessWidget {
-  const StatsGrid({super.key});
+  final OwnerDashboardModel data;
+
+  const StatsGrid({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -13,25 +16,25 @@ class StatsGrid extends StatelessWidget {
       mainAxisSpacing: 16,
       crossAxisSpacing: 16,
       childAspectRatio: 1.2,
-      children: const [
+      children: [
         DashboardStatCard(
           title: "Today's Bookings",
-          value: "12",
+          value: "${data.todaysBookings}",
           icon: Icons.calendar_today,
         ),
         DashboardStatCard(
           title: "Earnings This Week",
-          value: "EGP 4,500",
+          value: "EGP ${data.weeklyEarnings.toStringAsFixed(0)}",
           icon: Icons.attach_money,
         ),
         DashboardStatCard(
           title: "Pending Requests",
-          value: "3",
+          value: "${data.pendingRequests}",
           icon: Icons.notifications_active,
         ),
         DashboardStatCard(
           title: "Total Courts",
-          value: "5",
+          value: "${data.totalCourts}",
           icon: Icons.sports_soccer,
         ),
       ],

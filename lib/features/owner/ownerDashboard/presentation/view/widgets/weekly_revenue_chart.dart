@@ -2,9 +2,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/model/owner_dashboard_model.dart';
 
 class OwnerWeeklyRevenueChart extends StatelessWidget {
-  const OwnerWeeklyRevenueChart({super.key});
+  final OwnerDashboardModel data;
+
+  const OwnerWeeklyRevenueChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,6 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 6),
@@ -30,7 +32,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
           const SizedBox(height: 8),
 
           /// Amount
-          const Text("EGP 4,500", style: Style.textStyle30Bold),
+          Text("EGP ${data.weeklyEarnings.toStringAsFixed(0)}", style: Style.textStyle30Bold),
 
           const SizedBox(height: 4),
 
@@ -41,8 +43,14 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
               style: const TextStyle(color: Colors.white54),
               children: [
                 TextSpan(
-                  text: "+15%",
-                  style: TextStyle(color: AppColors.primaryColor),
+                  text: data.weeklyGrowthPercentage >= 0
+                      ? "+${data.weeklyGrowthPercentage.toStringAsFixed(0)}%"
+                      : "${data.weeklyGrowthPercentage.toStringAsFixed(0)}%",
+                  style: TextStyle(
+                    color: data.weeklyGrowthPercentage >= 0
+                        ? AppColors.primaryColor
+                        : Colors.redAccent,
+                  ),
                 ),
               ],
             ),
@@ -58,6 +66,11 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
   }
 
   LineChartData _chartData() {
+    // Generate FlSpots from data.weeklyRevenueChart
+    List<FlSpot> spots = data.weeklyRevenueChart.map((point) {
+      return FlSpot(point.dayIndex.toDouble(), point.revenue);
+    }).toList();
+
     return LineChartData(
       backgroundColor: Colors.transparent,
       gridData: FlGridData(show: false),
@@ -104,15 +117,12 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
               end: Alignment.bottomCenter,
             ),
           ),
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(1, 5),
-            FlSpot(2, 2),
-            FlSpot(3, 4),
-            FlSpot(4, 1),
-            FlSpot(5, 6),
-            FlSpot(6, 3),
-          ],
+          spots: spots.isEmpty
+              ? const [
+                  FlSpot(0, 0), FlSpot(1, 0), FlSpot(2, 0),
+                  FlSpot(3, 0), FlSpot(4, 0), FlSpot(5, 0), FlSpot(6, 0)
+                ]
+              : spots,
         ),
       ],
     );

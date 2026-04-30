@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/presentation/data/amenity_of_add_court.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/data/amenity_of_add_court.dart';
 
 class AmenitiesWidget extends StatefulWidget {
   final List<Amenity>? amenities;
