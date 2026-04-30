@@ -6,7 +6,12 @@ import 'package:mala3bna/features/owner/booking/presentation/model/booking_reque
 class TopInfoAtBookingRequestCard extends StatelessWidget {
   final BookingRequest booking;
 
-  const TopInfoAtBookingRequestCard({super.key, required this.booking});
+  const TopInfoAtBookingRequestCard({
+    super.key,
+    required this.booking,
+    required Color statusColor,
+    required String statusLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
