@@ -62,14 +62,7 @@ class UserInfoSection extends StatelessWidget {
         SizedBox(
           height: 38,
           child: OutlinedButton.icon(
-            onPressed: () {
-              navigator?.push(
-                GetPageRoute(
-                  page: () => EditProfileView(),
-                  transition: Transition.rightToLeft,
-                ),
-              );
-            },
+            onPressed: onEditPressed,
             icon: const Icon(Icons.edit_note_outlined, size: 20),
             label: const Text("Edit Profile"),
             style: OutlinedButton.styleFrom(

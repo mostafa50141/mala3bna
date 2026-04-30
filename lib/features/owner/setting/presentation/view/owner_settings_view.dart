@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mala3bna/features/owner/setting/data/repo/owner_profile_repository.dart';
+import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/owner_setting_body.dart';
 
 class OwnerSettingsView extends StatelessWidget {
@@ -6,6 +9,9 @@ class OwnerSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: OwnerSettingsBody());
+    return BlocProvider(
+      create: (_) => OwnerProfileCubit(OwnerProfileRepository())..loadProfile(),
+      child: const Scaffold(body: OwnerSettingsBody()),
+    );
   }
 }

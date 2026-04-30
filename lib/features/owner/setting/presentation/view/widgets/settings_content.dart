@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/routes/default_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/language_bottom_sheet.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/setting_tile.dart';
@@ -46,9 +48,13 @@ class SettingsContent extends StatelessWidget {
           icon: Icons.person_outline,
           title: "Change Personal Info",
           onTap: () {
+            final cubit = context.read<OwnerProfileCubit>();
             navigator?.push(
               GetPageRoute(
-                page: () => EditProfileView(),
+                page: () => BlocProvider.value(
+                  value: cubit,
+                  child: const EditProfileView(),
+                ),
                 transition: Transition.rightToLeft,
               ),
             );
