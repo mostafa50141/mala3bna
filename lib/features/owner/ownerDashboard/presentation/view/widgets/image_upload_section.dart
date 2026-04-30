@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/style.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
 class ImageUploadSection extends StatefulWidget {
@@ -48,118 +47,105 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 300,
-      child: Card(
-        elevation: 4,
-        shadowColor: AppColors.colorBtnAndCard,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 12),
-              Expanded(
-                child: MultiImagePickerView(
-                  controller: _imageController,
-                  padding: const EdgeInsets.all(4),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.colorBtnAndCard,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: AppColors.primaryColor.withOpacity(0.25),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: MultiImagePickerView(
+          controller: _imageController,
+          padding: const EdgeInsets.all(4),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+          ),
+          builder: (context, imageFile) {
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: ImageFileView(
+                      imageFile: imageFile,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  builder: (context, imageFile) {
-                    return Stack(
-                      children: [
-                        Positioned.fill(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: ImageFileView(
-                              imageFile: imageFile,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 6,
-                          right: 6,
-                          child: GestureDetector(
-                            onTap: () =>
-                                _imageController.removeImage(imageFile),
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: Colors.redAccent,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    blurRadius: 4,
-                                    offset: Offset(1, 2),
-                                  ),
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.close,
-                                size: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-
-                  initialWidget: GestureDetector(
-                    onTap: _imageController.pickImages,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 20),
-                          Icon(
-                            Icons.cloud_upload,
-                            size: 40,
-                            color: AppColors.primaryColor,
-                          ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            "Tap to upload images",
-                            style: Style.textStyle16Bold,
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            "PNG, JPG up to 5MB",
-                            style: Style.textStyle14.copyWith(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
+                ),
+                Positioned(
+                  top: 5,
+                  right: 5,
+                  child: GestureDetector(
+                    onTap: () => _imageController.removeImage(imageFile),
+                    child: Container(
+                      padding: const EdgeInsets.all(3),
+                      decoration: const BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 14,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  addMoreButton: IconButton(
-                    icon: Icon(
-                      Icons.add_circle,
+                ),
+              ],
+            );
+          },
+          initialWidget: GestureDetector(
+            onTap: _imageController.pickImages,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor.withOpacity(0.12),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.primaryColor.withOpacity(0.4),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.cloud_upload_outlined,
                       size: 32,
                       color: AppColors.primaryColor,
                     ),
-                    onPressed: _imageController.pickImages,
                   ),
-                ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Tap to upload images',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    'PNG, JPG up to 5MB',
+                    style: TextStyle(color: Colors.white38, fontSize: 12),
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
-              /*CustomBtn(
-                text: 'Save',
-                onTap: () {},
-                height: 50,
-                width: double.infinity,
-                radius: 25,
-              ),*/
-            ],
+            ),
+          ),
+          addMoreButton: IconButton(
+            icon: Icon(
+              Icons.add_circle_outline,
+              size: 30,
+              color: AppColors.primaryColor,
+            ),
+            onPressed: _imageController.pickImages,
           ),
         ),
       ),

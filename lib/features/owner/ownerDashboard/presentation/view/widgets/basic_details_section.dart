@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/core/widgets/custome_text_field.dart';
-import 'package:mala3bna/core/widgets/section_title.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/dropdown_btn_field.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/form_widgets.dart';
 
 class BasicDetailsSection extends StatelessWidget {
   final TextEditingController nameController;
@@ -12,12 +11,19 @@ class BasicDetailsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionTitle(title: "Basic Details"),
-        CustomTextfield(
-          hintText: "Enter your court's name",
-          controller: nameController,
+        const AddCourtSectionHeader(
+          icon: Icons.sports_soccer_outlined,
+          title: 'Basic Details',
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
+        AddCourtTextField(
+          controller: nameController,
+          hintText: "Enter your court's name",
+          prefixIcon: Icons.stadium_outlined,
+          validator: (v) =>
+              (v == null || v.isEmpty) ? 'Court name is required' : null,
+        ),
+        const SizedBox(height: 12),
         DropdownBtnField(),
       ],
     );
