@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view_model/court_view_model.dart';
 
 class AmenitiesSectionCourtProfile extends StatelessWidget {
@@ -14,29 +13,68 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Amenities", style: Style.textStyle16Bold),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 16,
-            runSpacing: 12,
-            children: vm.amenities.map((item) {
-              return Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(item["icon"], color: AppColors.primaryColor),
-                  const SizedBox(width: 6),
-                  Text(item["title"], style: Style.textStyle14Bold),
-                ],
-              );
-            }).toList(),
+          const Text(
+            'Amenities',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          const SizedBox(height: 14),
+          // 2-column grid
+          _buildGrid(),
         ],
       ),
     );
   }
 
+  Widget _buildGrid() {
+    final items = vm.amenities;
+    // Build rows of 2
+    final rows = <Widget>[];
+    for (int i = 0; i < items.length; i += 2) {
+      rows.add(
+        Row(
+          children: [
+            Expanded(child: _amenityTile(items[i])),
+            if (i + 1 < items.length) ...[
+              const SizedBox(width: 12),
+              Expanded(child: _amenityTile(items[i + 1])),
+            ] else
+              const Expanded(child: SizedBox()),
+          ],
+        ),
+      );
+      if (i + 2 < items.length) rows.add(const SizedBox(height: 12));
+    }
+    return Column(children: rows);
+  }
+
+  Widget _amenityTile(Map<String, dynamic> item) {
+    return Row(
+      children: [
+        Icon(
+          item['icon'] as IconData,
+          color: AppColors.primaryColor,
+          size: 20,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          item['title'] as String,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _card({required Widget child}) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.colorBtnAndCard,

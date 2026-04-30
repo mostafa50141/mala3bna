@@ -10,19 +10,25 @@ class ReviewsList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (reviews.isEmpty) {
       return const Center(
-        child: Text("No reviews yet", style: TextStyle(color: Colors.grey)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Text(
+            'No reviews yet',
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
       );
     }
 
-    return ListView.separated(
-      itemCount: reviews.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      separatorBuilder: (_, __) =>
-          const Divider(color: Colors.white10, height: 20),
-      itemBuilder: (context, index) {
-        return ReviewItem(review: reviews[index]);
-      },
+    return Column(
+      children: List.generate(reviews.length, (index) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: index < reviews.length - 1 ? 12 : 0,
+          ),
+          child: ReviewItem(review: reviews[index]),
+        );
+      }),
     );
   }
 }
