@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_navigation/src/routes/default_route.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
-import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/info_chip.dart';
 
 class UserInfoSection extends StatelessWidget {
