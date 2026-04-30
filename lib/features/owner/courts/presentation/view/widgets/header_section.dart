@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/view_model/court_view_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
 
 class HeaderSection extends StatelessWidget {
-  final CourtViewModel vm;
+  final CourtProfileModel vm;
 
   const HeaderSection({super.key, required this.vm});
 

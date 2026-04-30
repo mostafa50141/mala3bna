@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
 import 'stars_widget.dart';
 
 class ReviewItem extends StatelessWidget {
-  final Map<String, dynamic> review;
+  final CourtReview review;
 
   const ReviewItem({super.key, required this.review});
 
@@ -29,10 +30,10 @@ class ReviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = review['name'] as String? ?? '';
-    final rating = (review['rating'] as num?)?.toDouble() ?? 0.0;
-    final comment = review['comment'] as String? ?? '';
-    final time = review['time'] as String? ?? '';
+    final name = review.name;
+    final rating = review.rating;
+    final comment = review.comment;
+    final time = review.time;
 
     return Container(
       padding: const EdgeInsets.all(14),

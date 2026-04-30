@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
 import 'review_item.dart';
 
 class ReviewsList extends StatelessWidget {
-  final List<Map<String, dynamic>> reviews;
+  final List<CourtReview> reviews;
 
   const ReviewsList({super.key, required this.reviews});
 

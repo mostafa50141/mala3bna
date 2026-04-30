@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:provider/provider.dart';
-import '../view_model/court_view_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
 
 class RatingsSection extends StatelessWidget {
-  const RatingsSection({super.key});
+  final CourtProfileModel vm;
+
+  const RatingsSection({super.key, required this.vm});
 
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<CourtViewModel>();
-
     return _card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

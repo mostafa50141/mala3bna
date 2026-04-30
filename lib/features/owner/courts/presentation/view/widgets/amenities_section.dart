@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/view_model/court_view_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
 
 class AmenitiesSectionCourtProfile extends StatelessWidget {
-  final CourtViewModel vm;
+  final CourtProfileModel vm;
 
   const AmenitiesSectionCourtProfile({super.key, required this.vm});
 
@@ -51,17 +51,17 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
     return Column(children: rows);
   }
 
-  Widget _amenityTile(Map<String, dynamic> item) {
+  Widget _amenityTile(CourtAmenity item) {
     return Row(
       children: [
         Icon(
-          item['icon'] as IconData,
+          item.icon,
           color: AppColors.primaryColor,
           size: 20,
         ),
         const SizedBox(width: 8),
         Text(
-          item['title'] as String,
+          item.title,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 13,
