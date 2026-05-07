@@ -21,52 +21,48 @@ class UserInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Theme.of(context);
-    final size = MediaQuery.sizeOf(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        /// Username
         Text(
           '@$username',
-          style: Style.textStyle14Bold.copyWith(color: AppColors.primaryColor),
+          style: Style.textStyle14Bold
+              .copyWith(color: AppColors.primaryColor, letterSpacing: 0.3),
         ),
-
-        SizedBox(height: size.height * 0.006),
-
+        const SizedBox(height: 4),
         Text(
           fullName,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: Style.textStyle20Bold,
         ),
-
-        SizedBox(height: size.height * 0.01),
-
+        const SizedBox(height: 8),
         Wrap(
           spacing: 8,
-          runSpacing: 8,
+          runSpacing: 6,
           children: [
             InfoChip(icon: Icons.calendar_today_outlined, label: birthDate),
-            InfoChip(icon: Icons.male, label: gender),
+            InfoChip(icon: Icons.person_outline, label: gender),
           ],
         ),
-        SizedBox(height: size.height * 0.015),
-
+        const SizedBox(height: 12),
         SizedBox(
-          height: 38,
+          height: 36,
           child: OutlinedButton.icon(
             onPressed: onEditPressed,
-            icon: const Icon(Icons.edit_note_outlined, size: 20),
-            label: const Text("Edit Profile"),
+            icon: const Icon(Icons.edit_note_outlined, size: 18),
+            label: const Text('Edit Profile',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white70,
-              side: BorderSide(color: AppColors.primaryColor, width: .5),
+              foregroundColor: Colors.white,
+              side: BorderSide(
+                  color: AppColors.primaryColor.withValues(alpha: 0.7),
+                  width: 1),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
+                  borderRadius: BorderRadius.circular(10)),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 0),
             ),
           ),
         ),

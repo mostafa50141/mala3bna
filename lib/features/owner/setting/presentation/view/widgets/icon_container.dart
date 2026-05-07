@@ -9,26 +9,16 @@ class IconContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = isDanger ? Colors.redAccent : AppColors.primaryColor;
     return Container(
-      width: 42,
-      height: 42,
+      width: 40,
+      height: 40,
       decoration: BoxDecoration(
-        color: isDanger
-            ? Colors.red.withOpacity(0.15)
-            : const Color.fromARGB(148, 31, 59, 47),
-        borderRadius: BorderRadius.circular(12),
-        border: Border(
-          right: BorderSide(
-            color: isDanger ? Colors.redAccent : AppColors.primaryColor,
-            width: 1,
-          ),
-        ),
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(11),
+        border: Border.all(color: color.withValues(alpha: 0.35), width: 1),
       ),
-      child: Icon(
-        icon,
-        size: 22,
-        color: isDanger ? Colors.redAccent : AppColors.primaryColor,
-      ),
+      child: Icon(icon, size: 20, color: color),
     );
   }
 }

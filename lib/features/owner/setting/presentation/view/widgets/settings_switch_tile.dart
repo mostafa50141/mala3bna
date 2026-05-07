@@ -20,69 +20,63 @@ class SettingsSwitchTile extends StatefulWidget {
 }
 
 class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
-  bool isEnabled = true;
+  bool _isEnabled = true;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.04,
-          vertical: 16,
-        ),
+      child: Ink(
         decoration: BoxDecoration(
           color: AppColors.colorBtnAndCard,
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.12),
               blurRadius: 8,
-              offset: const Offset(0, 4),
+              offset: const Offset(0, 3),
             ),
           ],
-          gradient: LinearGradient(
-            colors: [
-              AppColors.colorBtnAndCard.withOpacity(0.8),
-              AppColors.colorBtnAndCard,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(18),
         ),
-        child: Row(
-          children: [
-            IconContainer(icon: widget.icon),
-            const SizedBox(width: 16),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.title, style: Style.textStyle16Bold),
-                  const SizedBox(height: 4),
-                  Text(
-                    isEnabled ? "Enabled" : "Disabled",
-                    style: Style.textStyle12Bold.copyWith(
-                      color: Colors.white38,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              IconContainer(icon: widget.icon),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.title, style: Style.textStyle14Bold),
+                    const SizedBox(height: 3),
+                    Text(
+                      _isEnabled ? 'Enabled' : 'Disabled',
+                      style: TextStyle(
+                        color: _isEnabled
+                            ? AppColors.primaryColor
+                            : Colors.grey.shade600,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-
-            Switch(
-              value: isEnabled,
-              activeColor: AppColors.primaryColor,
-              onChanged: (value) {
-                setState(() {
-                  isEnabled = value;
-                });
-              },
-            ),
-          ],
+              Switch(
+                value: _isEnabled,
+                activeColor: AppColors.primaryColor,
+                trackOutlineColor:
+                    WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return AppColors.primaryColor.withValues(alpha: 0.4);
+                  }
+                  return Colors.grey.shade700;
+                }),
+                onChanged: (value) => setState(() => _isEnabled = value),
+              ),
+            ],
+          ),
         ),
       ),
     );

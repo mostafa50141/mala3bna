@@ -9,7 +9,7 @@ import 'package:mala3bna/features/owner/courts/presentation/view/widgets/ameniti
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/header_section.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/pricing_section.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/rating_section.dart';
-import 'package:mala3bna/features/owner/courts/presentation/view/widgets/reviews_List.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view/widgets/reviews_list.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/tabs_section.dart';
 
 class CourtProfileBody extends StatefulWidget {
