@@ -8,14 +8,13 @@ class ReviewItem extends StatelessWidget {
 
   const ReviewItem({super.key, required this.review});
 
-  // Generate a consistent color from the reviewer's name
   Color _avatarColor(String name) {
-    final colors = [
-      const Color(0xFF2E9F81),
-      const Color(0xFF5B7FD4),
-      const Color(0xFFD4855B),
-      const Color(0xFF9B59B6),
-      const Color(0xFF27AE60),
+    const colors = [
+      Color(0xFF2E9F81),
+      Color(0xFF5B7FD4),
+      Color(0xFFD4855B),
+      Color(0xFF9B59B6),
+      Color(0xFF27AE60),
     ];
     return colors[name.codeUnitAt(0) % colors.length];
   }
@@ -30,20 +29,15 @@ class ReviewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = review.name;
-    final rating = review.rating;
-    final comment = review.comment;
-    final time = review.time;
-
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.colorBtnAndCard,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
-            blurRadius: 6,
+            color: Colors.black.withValues(alpha: 0.18),
+            blurRadius: 8,
             offset: const Offset(0, 3),
           ),
         ],
@@ -51,12 +45,11 @@ class ReviewItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Colored avatar with initials
           CircleAvatar(
-            radius: 20,
-            backgroundColor: _avatarColor(name),
+            radius: 22,
+            backgroundColor: _avatarColor(review.name),
             child: Text(
-              _initials(name),
+              _initials(review.name),
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -64,71 +57,69 @@ class ReviewItem extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(width: 12),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Name + time
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
+                    Expanded(
+                      child: Text(
+                        review.name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
-                    Text(
-                      time,
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 11,
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.06),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        review.time,
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 10),
                       ),
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 4),
-
-                // Stars
-                StarsWidget(rating: rating),
-
+                const SizedBox(height: 5),
+                StarsWidget(rating: review.rating),
                 const SizedBox(height: 8),
-
-                // Comment
                 Text(
-                  comment,
+                  review.comment,
                   style: const TextStyle(
                     color: Color(0xFFB0B0B0),
                     fontSize: 13,
-                    height: 1.45,
+                    height: 1.5,
                   ),
                 ),
-
-                // "Highly recommended!" badge for 5-star reviews
-                if (rating >= 5.0) ...[
-                  const SizedBox(height: 8),
+                if (review.rating >= 5.0) ...[
+                  const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
+                        horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryColor.withOpacity(0.15),
+                      color: AppColors.primaryColor.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: AppColors.primaryColor.withOpacity(0.4),
+                        color: AppColors.primaryColor.withValues(alpha: 0.4),
                       ),
                     ),
                     child: Text(
-                      '👍 Highly recommended!',
+                      '👍  Highly recommended!',
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontSize: 11,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
