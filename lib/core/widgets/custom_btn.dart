@@ -15,9 +15,9 @@ class CustomBtn extends StatelessWidget {
     this.colorText,
     this.sizeText,
     this.weightText,
-    this.isLoading = false,
+    this.isLoading = false, this.icon,
   });
-
+final IconData? icon;
   final String text;
   final Function()? onTap;
   final double height;
