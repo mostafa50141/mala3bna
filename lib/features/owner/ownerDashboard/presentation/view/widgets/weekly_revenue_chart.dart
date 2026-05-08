@@ -32,7 +32,10 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
           const SizedBox(height: 8),
 
           /// Amount
-          Text("EGP ${data.weeklyEarnings.toStringAsFixed(0)}", style: Style.textStyle30Bold),
+          Text(
+            "EGP ${data.weeklyEarnings.toStringAsFixed(0)}",
+            style: Style.textStyle30Bold,
+          ),
 
           const SizedBox(height: 4),
 
@@ -119,8 +122,13 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
           ),
           spots: spots.isEmpty
               ? const [
-                  FlSpot(0, 0), FlSpot(1, 0), FlSpot(2, 0),
-                  FlSpot(3, 0), FlSpot(4, 0), FlSpot(5, 0), FlSpot(6, 0)
+                  FlSpot(0, 0),
+                  FlSpot(1, 0),
+                  FlSpot(2, 0),
+                  FlSpot(3, 0),
+                  FlSpot(4, 0),
+                  FlSpot(5, 0),
+                  FlSpot(6, 0),
                 ]
               : spots,
         ),
