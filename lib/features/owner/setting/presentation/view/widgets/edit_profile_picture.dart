@@ -13,8 +13,15 @@ class EditProfilePicture extends StatelessWidget {
             height: 120,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.primaryColor, width: 1),
-              image: DecorationImage(
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primaryColor.withOpacity(0.2),
+                  blurRadius: 16,
+                  spreadRadius: 1,
+                ),
+              ],
+              border: Border.all(color: AppColors.primaryColor, width: 2.5),
+              image: const DecorationImage(
                 image: AssetImage("assets/images/app_logo.png"),
                 fit: BoxFit.cover,
               ),
@@ -26,13 +33,24 @@ class EditProfilePicture extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.backgroundColor.withOpacity(0.8),
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryColor,
+                    AppColors.primaryColor.withOpacity(0.85),
+                  ],
+                ),
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.primaryColor, width: 1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.camera_alt,
-                color: AppColors.primaryColor,
+                color: Colors.white,
                 size: 18,
               ),
             ),
