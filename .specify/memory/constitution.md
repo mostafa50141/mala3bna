@@ -1,50 +1,56 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 1.0.0 (initial)
+- Modified principles:
+  - Clean Architecture & Feature-First
+  - State Management (Cubit Only)
+  - Dependency Injection & Navigation
+  - Error Handling & Networking
+  - Storage & UI Guidelines
+- Added sections:
+  - Application Roles
+  - Technology Stack & Constants
+- Removed sections: N/A
+- Templates requiring updates (✅ updated / ⚠ pending): ✅ None pending.
+- Follow-up TODOs: Implement missing player profile screen, coach screens, and real API integration.
+-->
+# mala3bna Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Clean Architecture & Feature-First
+The app follows Clean Architecture (Data → Domain → Presentation) and uses a feature-first folder structure. Each feature contains its own data (models, repos) and presentation (views, views_model/cubit) layers. 
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. State Management (Cubit Only)
+Use `flutter_bloc` for state management, specifically Cubit. Never use full Bloc. States must be sealed classes containing Initial, Loading, Success, Failure. BlocProvider must be used at the screen level only. No `setState` except for purely local UI state.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Dependency Injection & Navigation
+Use `get_it` for dependency injection (register abstract types only). All repos must be registered in `setupServiceLocator()`. For navigation, use `get` (`Get.to`, `Get.offAll`, `Get.back` only) — no GoRouter.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Error Handling & Networking
+Use `dartz` (`Either<Failure, T>`) for error handling with specific Failure classes (e.g., `ServerFailure`). Use `dio` with an `ApiService` wrapper for HTTP calls. Inject auth tokens via Dio interceptor. Base URL: `https://bqsl6hrg-8000.uks1.devtunnels.ms/api/v1/`.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Storage & UI Guidelines
+Use `flutter_secure_storage` via `LocalStorageHelper` for JWT token storage, and `get_storage` for role persistence. Adhere to the app's predefined colors (primary teal: `Color.fromARGB(255, 46, 159, 129)`, dark green background: `Color.fromARGB(255, 15, 45, 49)`, dark card color: `Color(0xFF1A1D24)`). Use `getResponsiveFontSize()` for responsive font sizes. Never hardcode strings.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Application Roles
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- **player**: Books courts, views coaches, manages bookings.
+- **owner**: Manages courts, handles booking requests.
+- **coach**: Manages sessions, schedule, earnings.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Technology Stack & Constants
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**UI Packages**: `cached_network_image`, `lottie`, `fl_chart`, `carousel_slider`.
+**Constants & Utils**: Located in `lib/core/` (e.g., `app_colors.dart`, `utils/api_server.dart`, `utils/service_locator.dart`).
+**Current Status**: 
+- Auth: Done (login, signup, splash, welcome) - fake API, needs real API wiring.
+- Player: Home UI done, courts booking UI done, profile screen MISSING.
+- Owner: Dashboard done, booking requests done, settings done.
+- Coach: All screens are empty placeholders.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Amendments require documentation, approval, and compliance review. All PRs and code reviews must verify adherence to Clean Architecture, Cubit-only state management, and the feature-first structure.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-05-08 | **Last Amended**: 2026-05-08
