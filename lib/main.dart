@@ -13,9 +13,7 @@ void main() async {
   setupServiceLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-
   Get.put(AuthController());
-
   runApp(const MyApp());
 }
 

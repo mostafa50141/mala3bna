@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/widgets/custom_bottom_nav.dart';
 import 'package:mala3bna/features/owner/booking/presentation/view/booking_request_view.dart';
-import 'package:mala3bna/features/owner/courts/presentation/view/my_court_view.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view/court_profile_view.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/owner_dashboard_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/owner_settings_view.dart';
 
@@ -18,7 +18,7 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
   final List<Widget> pages = const [
     OwnerDashboardView(),
     BookingRequestView(),
-    MyCourtView(),
+    CourtProfileView(),
     OwnerSettingsView(),
   ];
 

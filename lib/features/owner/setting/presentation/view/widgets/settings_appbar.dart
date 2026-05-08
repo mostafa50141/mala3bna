@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/style.dart';
 
 class SettingAppBar extends StatelessWidget {
   const SettingAppBar({super.key});
@@ -9,49 +7,53 @@ class SettingAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          width: 40,
-          height: 40,
+          width: 42,
+          height: 42,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: AppColors.colorBtnAndCard,
-            border: Border.all(color: AppColors.primaryColor, width: .5),
+            color: AppColors.primaryColor.withValues(alpha: 0.12),
+            border: Border.all(
+                color: AppColors.primaryColor.withValues(alpha: 0.4), width: 1),
           ),
-          child: Icon(Icons.settings, color: AppColors.primaryColor, size: 20),
+          child: Icon(Icons.manage_accounts_outlined,
+              color: AppColors.primaryColor, size: 22),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 14),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Profile", style: Style.textStyle20Bold),
-            const SizedBox(height: 1),
-            Text(
-              "Manage your Account",
-              style: Style.textStyle14Bold.copyWith(color: Colors.grey),
+            const Text(
+              'Profile & Settings',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.2),
             ),
+            const SizedBox(height: 2),
+            Text('Manage your account',
+                style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
           ],
         ),
         const Spacer(),
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            //borderRadius: BorderRadius.circular(12),
-            color: Colors.redAccent.withOpacity(.1),
-            border: Border.all(
-              color: const Color.fromARGB(147, 242, 94, 84),
-              width: .5,
-            ),
-          ),
-          child: IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.logout,
-              color: const Color.fromARGB(147, 242, 94, 84),
-              size: 20,
+        Tooltip(
+          message: 'Log out',
+          child: InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(24),
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.redAccent.withValues(alpha: 0.10),
+                border: Border.all(
+                    color: Colors.redAccent.withValues(alpha: 0.45), width: 1),
+              ),
+              child: const Icon(Icons.logout_rounded,
+                  color: Colors.redAccent, size: 18),
             ),
           ),
         ),

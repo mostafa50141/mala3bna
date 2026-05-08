@@ -23,39 +23,57 @@ class ProfileHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Theme.of(context);
     final size = MediaQuery.sizeOf(context);
     final avatarRadius = size.width * 0.12;
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(size.width * 0.04),
+      padding: EdgeInsets.all(size.width * 0.045),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border(
+          left: BorderSide(color: AppColors.primaryColor, width: 3),
+        ),
+        gradient: LinearGradient(
+          colors: [
+            AppColors.primaryColor.withValues(alpha: 0.12),
+            AppColors.colorBtnAndCard,
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
+            color: Colors.black.withValues(alpha: 0.28),
+            blurRadius: 12,
             offset: const Offset(0, 5),
           ),
         ],
-        gradient: LinearGradient(
-          colors: [
-            AppColors.colorBtnAndCard.withOpacity(0.8),
-            AppColors.colorBtnAndCard,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        color: AppColors.colorBtnAndCard,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          /// Profile Image
-          ProfileAvatar(imageUrl: imageUrl, radius: avatarRadius),
-          SizedBox(width: size.width * 0.05),
-
+          // Avatar with online indicator
+          Stack(
+            children: [
+              ProfileAvatar(imageUrl: imageUrl, radius: avatarRadius),
+              Positioned(
+                bottom: 2,
+                right: 2,
+                child: Container(
+                  width: 14,
+                  height: 14,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color: AppColors.colorBtnAndCard, width: 2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(width: size.width * 0.045),
           Expanded(
             child: UserInfoSection(
               username: username,

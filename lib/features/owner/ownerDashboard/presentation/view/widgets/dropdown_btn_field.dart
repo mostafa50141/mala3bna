@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/style.dart';
 
 class DropdownBtnField extends StatelessWidget {
   DropdownBtnField({super.key});
-  final sportTypes = ['Football', 'Basketball', 'Tennis', 'padel'];
+  final sportTypes = ['Football', 'Basketball', 'Tennis', 'Padel'];
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         filled: true,
+        fillColor: AppColors.colorBtnAndCard,
         hintText: 'Select a Sport Type',
-        hintStyle: Style.textStyle16,
+        hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
+        prefixIcon:
+            Icon(Icons.category_outlined, color: AppColors.primaryColor, size: 20),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(24),
-          borderSide: BorderSide(color: AppColors.primaryColor),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(24),
-          borderSide: BorderSide(color: AppColors.primaryColor),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              BorderSide(color: Colors.white.withOpacity(0.07), width: 1),
         ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 16,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: AppColors.primaryColor, width: 1.5),
         ),
-        suffixIcon: const Icon(Icons.arrow_drop_down, color: Colors.grey),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
       ),
-
-      dropdownColor: AppColors.primaryColor,
-      style: Style.textStyle16Bold,
+      dropdownColor: const Color(0xFF1E2530),
+      style: const TextStyle(color: Colors.white, fontSize: 14),
+      icon: Icon(Icons.keyboard_arrow_down_rounded,
+          color: Colors.white54, size: 22),
       items: sportTypes
           .map(
             (sport) => DropdownMenuItem(
@@ -47,7 +49,8 @@ class DropdownBtnField extends StatelessWidget {
       onChanged: (value) {
         debugPrint('Selected sport type: $value');
       },
-      validator: (value) => value == null ? 'Please select a sport type' : null,
+      validator: (value) =>
+          value == null ? 'Please select a sport type' : null,
     );
   }
 }
