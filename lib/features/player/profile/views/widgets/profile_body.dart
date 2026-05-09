@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/section_title.dart';
+import 'package:mala3bna/features/player/profile/views/my_bookings_views.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_menu_item.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_stats_row.dart';
 
@@ -17,19 +21,19 @@ class ProfileBody extends StatelessWidget {
           const Gap(20),
           Container(
             padding: const EdgeInsets.all(3),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF39E079),
+              color: AppColors.primaryColor.withOpacity(0.07),
             ),
             child: const CircleAvatar(
               radius: 40,
               backgroundColor: Colors.transparent,
-              child: Icon(Icons.person, size: 40, color: Colors.white),
+              backgroundImage: AssetImage('assets/images/pfp.jpg'),
             ),
           ),
           const Gap(12),
           Text(
-            'Mostafa Abdelaziz',
+            'Mostafa Ahmed',
             style: Style.textStyle20Bold.copyWith(color: Colors.white),
           ),
           const Gap(4),
@@ -48,13 +52,12 @@ class ProfileBody extends StatelessWidget {
           ProfileMenuItem(
             icon: Icons.calendar_today,
             label: 'My Bookings',
-            onTap: () {},
+            onTap: () {
+              // Navigate to bookings page
+              Get.to(() => const MyBookingsViews());
+            },
           ),
-          ProfileMenuItem(
-            icon: Icons.payment,
-            label: 'Payments',
-            onTap: () {},
-          ),
+          ProfileMenuItem(icon: Icons.payment, label: 'Payments', onTap: () {}),
           ProfileMenuItem(
             icon: Icons.settings_outlined,
             label: 'Settings',
