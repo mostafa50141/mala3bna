@@ -8,6 +8,7 @@ import 'package:mala3bna/core/widgets/section_title.dart';
 import 'package:mala3bna/features/player/profile/views/my_bookings_views.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_menu_item.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_stats_row.dart';
+import 'package:mala3bna/features/player/settings/views/settings_view.dart';
 import 'package:mala3bna/features/player/payments/views/payments_view.dart';
 
 class ProfileBody extends StatelessWidget {
@@ -68,7 +69,9 @@ class ProfileBody extends StatelessWidget {
           ProfileMenuItem(
             icon: Icons.settings_outlined,
             label: 'Settings',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const SettingsView());
+            },
           ),
           ProfileMenuItem(
             icon: Icons.help_outline,
