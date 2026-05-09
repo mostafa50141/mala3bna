@@ -111,20 +111,46 @@ lib/
 │   │               └── my_booking_body.dart
 │   ├── owner/
 │   │   ├── ownerDashboard/presentation/
+│   │   │   ├── cubit/ (owner_dashboard_cubit.dart, owner_dashboard_state.dart)
+│   │   │   ├── model/owner_dashboard_model.dart
 │   │   │   ├── data/amenity_of_add_court.dart
 │   │   │   └── view/
 │   │   │       ├── add_court_view.dart
 │   │   │       ├── owner_dashboard_view.dart
 │   │   │       └── widgets/ (13 widget files)
-│   │   ├── booking/presentation/
-│   │   │   ├── model/booking_request_model.dart
-│   │   │   └── view/
-│   │   │       ├── booking_request_view.dart
-│   │   │       └── widgets/ (5 widget files)
-│   │   ├── courts/presentation/view/my_court_view.dart (placeholder)
-│   │   └── setting/presentation/view/
-│   │       ├── owner_settings_view.dart
-│   │       └── widgets/ (12 widget files)
+│   │   ├── ownerDashboard/data/owner_dashboard_repository.dart
+│   │   ├── booking/
+│   │   │   ├── data/booking_repository.dart
+│   │   │   └── presentation/
+│   │   │       ├── cubit/ (booking_cubit.dart, booking_state.dart)
+│   │   │       ├── model/booking_request_model.dart
+│   │   │       └── view/
+│   │   │           ├── booking_request_view.dart
+│   │   │           └── widgets/ (5 widget files)
+│   │   ├── courts/
+│   │   │   ├── data/
+│   │   │   │   ├── data_source/court_remote_data_source.dart
+│   │   │   │   ├── models/court_model.dart
+│   │   │   │   └── repo/ (court_profile_repository.dart, court_repo_impl.dart)
+│   │   │   ├── domain/
+│   │   │   │   ├── entities/court_entity.dart
+│   │   │   │   └── repo/court_repo.dart
+│   │   │   └── presentation/
+│   │   │       ├── cubit/ (court_profile_cubit.dart, court_profile_state.dart)
+│   │   │       ├── model/court_profile_model.dart
+│   │   │       └── view/
+│   │   │           ├── court_profile_view.dart
+│   │   │           └── widgets/ (12 widget files)
+│   │   └── setting/
+│   │       ├── data/repo/owner_profile_repository.dart
+│   │       ├── domain/entities/user_entity.dart
+│   │       └── presentation/
+│   │           ├── cubit/ (owner_profile_cubit.dart, owner_profile_state.dart)
+│   │           ├── model/owner_profile_model.dart
+│   │           └── view/
+│   │               ├── owner_settings_view.dart
+│   │               ├── edit_profile_view.dart
+│   │               └── widgets/ (16 widget files)
 │   └── coach/
 │       ├── coachDashboard/presentation/view/coach_dashboard_view.dart (placeholder)
 │       ├── schedule/presentation/views/coach_schedule_view.dart (placeholder)
@@ -163,6 +189,7 @@ lib/
 | lottie | ^3.3.2 | Lottie animations |
 | meta | ^1.16.0 | @immutable annotations |
 | multi_image_picker_view | ^3.0.0 | Multi-image picker |
+| provider | ^6.1.5+1 | State management (used in some UI layers) |
 | qr_flutter | ^4.1.0 | QR code generation |
 | smooth_page_indicator | ^2.0.1 | Page indicators |
 | table_calendar | ^3.2.0 | Calendar widget |
@@ -378,8 +405,8 @@ Additional hardcoded colors found in widgets:
 | OwnerDashboardView | ✅ Done | AppBar + stats grid + revenue chart + add court |
 | AddCourtView | ✅ Done | Multi-step form with amenities, images, pricing |
 | BookingRequestView | ✅ Done | Filter chips + booking cards |
-| MyCourtView | ❌ Placeholder | Just shows "My Courts View" text |
-| OwnerSettingsView | ✅ Done | Full settings with profile header, toggles, language/theme sheets |
+| CourtProfileView | ✅ Done | Court profile with tabs; bookings tab placeholder |
+| OwnerSettingsView | ✅ Done | Full settings + edit profile flow |
 
 ### Coach
 | Screen | Status | Notes |
