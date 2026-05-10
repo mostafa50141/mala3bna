@@ -11,6 +11,7 @@ import 'package:mala3bna/features/player/profile/views/widgets/profile_stats_row
 import 'package:mala3bna/features/player/settings/views/settings_view.dart';
 import 'package:mala3bna/features/player/payments/views/payments_view.dart';
 import 'package:mala3bna/features/player/terms/views/terms_view.dart';
+import 'package:mala3bna/features/player/help/views/help_view.dart';
 
 class ProfileBody extends StatelessWidget {
   const ProfileBody({super.key});
@@ -77,7 +78,9 @@ class ProfileBody extends StatelessWidget {
           ProfileMenuItem(
             icon: Icons.help_outline,
             label: 'Help',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const HelpView());
+            },
           ),
           ProfileMenuItem(
             icon: Icons.description_outlined,
