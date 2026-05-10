@@ -10,6 +10,7 @@ import 'package:mala3bna/features/player/profile/views/widgets/profile_menu_item
 import 'package:mala3bna/features/player/profile/views/widgets/profile_stats_row.dart';
 import 'package:mala3bna/features/player/settings/views/settings_view.dart';
 import 'package:mala3bna/features/player/payments/views/payments_view.dart';
+import 'package:mala3bna/features/player/terms/views/terms_view.dart';
 
 class ProfileBody extends StatelessWidget {
   const ProfileBody({super.key});
@@ -81,7 +82,9 @@ class ProfileBody extends StatelessWidget {
           ProfileMenuItem(
             icon: Icons.description_outlined,
             label: 'Terms & Conditions',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const TermsView());
+            },
           ),
           ProfileMenuItem(
             icon: Icons.logout,
