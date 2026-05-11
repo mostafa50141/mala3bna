@@ -1,4 +1,4 @@
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
 
 abstract class CourtProfileState {}
 

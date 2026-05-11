@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view/edit_court_screen.dart';
 
 class ActionButtons extends StatefulWidget {
-  const ActionButtons({super.key});
+  final String? courtId;
+  const ActionButtons({super.key, this.courtId});
 
   @override
   State<ActionButtons> createState() => _ActionButtonsState();
@@ -18,7 +22,15 @@ class _ActionButtonsState extends State<ActionButtons> {
         // ── Edit Court ──────────────────────────────────────────────
         Expanded(
           child: ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              final id = widget.courtId ?? 'court_1';
+
+              Get.to(
+                () => EditCourtScreen(courtId: id),
+                transition: Transition.rightToLeft,
+                duration: const Duration(milliseconds: 300),
+              );
+            },
             icon: const Icon(Icons.edit_outlined, size: 16),
             label: const Text(
               'Edit Court',
@@ -36,7 +48,6 @@ class _ActionButtonsState extends State<ActionButtons> {
             ),
           ),
         ),
-
         const SizedBox(width: 12),
 
         // ── Disable / Enable Court (toggle) ─────────────────────────
@@ -56,8 +67,7 @@ class _ActionButtonsState extends State<ActionButtons> {
     return OutlinedButton.icon(
       key: const ValueKey('disable'),
       onPressed: () => setState(() => _isCourtDisabled = true),
-      icon: Icon(Icons.block_outlined,
-          size: 16, color: Colors.grey.shade400),
+      icon: Icon(Icons.block_outlined, size: 16, color: Colors.grey.shade400),
       label: Text(
         'Disable Court',
         style: TextStyle(
@@ -70,9 +80,7 @@ class _ActionButtonsState extends State<ActionButtons> {
         foregroundColor: Colors.grey.shade400,
         side: BorderSide(color: Colors.grey.shade600, width: 1),
         padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -81,8 +89,11 @@ class _ActionButtonsState extends State<ActionButtons> {
     return OutlinedButton.icon(
       key: const ValueKey('enable'),
       onPressed: () => setState(() => _isCourtDisabled = false),
-      icon: const Icon(Icons.play_circle_outline,
-          size: 16, color: Colors.redAccent),
+      icon: const Icon(
+        Icons.play_circle_outline,
+        size: 16,
+        color: Colors.redAccent,
+      ),
       label: const Text(
         'Enable Court',
         style: TextStyle(
@@ -95,9 +106,7 @@ class _ActionButtonsState extends State<ActionButtons> {
         foregroundColor: Colors.redAccent,
         side: const BorderSide(color: Colors.redAccent, width: 1),
         padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

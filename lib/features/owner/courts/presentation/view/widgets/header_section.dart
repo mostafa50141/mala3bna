@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
 
 class HeaderSection extends StatefulWidget {
   final CourtProfileModel vm;
@@ -87,8 +87,10 @@ class _HeaderSectionState extends State<HeaderSection> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     _GlassIconButton(
@@ -134,14 +136,19 @@ class _HeaderSectionState extends State<HeaderSection> {
                       const SizedBox(height: 5),
                       Row(
                         children: [
-                          const Icon(Icons.location_on_outlined,
-                              color: Colors.white70, size: 13),
+                          const Icon(
+                            Icons.location_on_outlined,
+                            color: Colors.white70,
+                            size: 13,
+                          ),
                           const SizedBox(width: 3),
                           Flexible(
                             child: Text(
                               widget.vm.location,
                               style: const TextStyle(
-                                  color: Colors.white70, fontSize: 13),
+                                color: Colors.white70,
+                                fontSize: 13,
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -153,8 +160,10 @@ class _HeaderSectionState extends State<HeaderSection> {
                 const SizedBox(width: 12),
                 // Rating badge
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(20),
@@ -169,8 +178,11 @@ class _HeaderSectionState extends State<HeaderSection> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.star_rounded,
-                          color: Colors.white, size: 14),
+                      const Icon(
+                        Icons.star_rounded,
+                        color: Colors.white,
+                        size: 14,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         widget.vm.rating.toStringAsFixed(1),
@@ -275,8 +287,7 @@ class _GlassIconButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.2)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
             ),
             alignment: Alignment.center,
             child: Icon(icon, color: Colors.white, size: 16),
@@ -293,15 +304,20 @@ class _OptionTile extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _OptionTile(
-      {required this.icon, required this.label, required this.onTap});
+  const _OptionTile({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(icon, color: Colors.white70),
-      title: Text(label,
-          style: const TextStyle(color: Colors.white, fontSize: 14)),
+      title: Text(
+        label,
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+      ),
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
     );

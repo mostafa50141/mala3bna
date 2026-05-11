@@ -118,7 +118,12 @@ class _EditProfileBodyState extends State<EditProfileBody> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, bottomInset + 16),
+          padding: EdgeInsets.fromLTRB(
+            horizontalPadding,
+            0,
+            horizontalPadding,
+            bottomInset + 16,
+          ),
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -156,8 +161,9 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                           hint: 'Phone Number',
                           icon: Icons.phone_outlined,
                           keyboardType: TextInputType.phone,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Please enter phone number' : null,
+                          validator: (value) => value!.isEmpty
+                              ? 'Please enter phone number'
+                              : null,
                         ),
                         const _FieldGap(),
                         Row(
@@ -182,10 +188,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  _SaveButton(
-                    isLoading: isUpdating,
-                    onPressed: _saveProfile,
-                  ),
+                  _SaveButton(isLoading: isUpdating, onPressed: _saveProfile),
                   const SizedBox(height: 32),
                 ],
               ),
@@ -250,10 +253,7 @@ class _SectionHeader extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _FormFieldsCard extends StatelessWidget {
-  const _FormFieldsCard({
-    required this.child,
-    this.padding = 20,
-  });
+  const _FormFieldsCard({required this.child, this.padding = 20});
 
   final Widget child;
   final double padding;
@@ -264,9 +264,7 @@ class _FormFieldsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.colorBtnAndCard.withOpacity(0.5),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.05),
-        ),
+        border: Border.all(color: Colors.white.withOpacity(0.05)),
       ),
       padding: EdgeInsets.all(padding),
       child: child,
@@ -310,10 +308,7 @@ class _FormField extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _GenderSelector extends StatelessWidget {
-  const _GenderSelector({
-    required this.value,
-    required this.onChanged,
-  });
+  const _GenderSelector({required this.value, required this.onChanged});
 
   final String value;
   final ValueChanged<String> onChanged;
@@ -321,7 +316,7 @@ class _GenderSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         color: AppColors.colorBtnAndCard,
         borderRadius: BorderRadius.circular(12),
@@ -329,29 +324,21 @@ class _GenderSelector extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.male_outlined, color: AppColors.primaryColor, size: 20),
-          const SizedBox(width: 12),
           Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: _GenderToggleButton(
-                    label: 'Male',
-                    icon: Icons.male,
-                    isSelected: value == 'Male',
-                    onTap: () => onChanged('Male'),
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: _GenderToggleButton(
-                    label: 'Female',
-                    icon: Icons.female,
-                    isSelected: value == 'Female',
-                    onTap: () => onChanged('Female'),
-                  ),
-                ),
-              ],
+            child: _GenderToggleButton(
+              label: 'Male',
+              icon: Icons.male,
+              isSelected: value == 'Male',
+              onTap: () => onChanged('Male'),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: _GenderToggleButton(
+              label: 'Female',
+              icon: Icons.female,
+              isSelected: value == 'Female',
+              onTap: () => onChanged('Female'),
             ),
           ),
         ],
@@ -365,10 +352,7 @@ class _GenderSelector extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SaveButton extends StatelessWidget {
-  const _SaveButton({
-    required this.isLoading,
-    required this.onPressed,
-  });
+  const _SaveButton({required this.isLoading, required this.onPressed});
 
   final bool isLoading;
   final VoidCallback onPressed;
@@ -455,24 +439,29 @@ class _GenderToggleButton extends StatelessWidget {
             width: 1,
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 15,
-              color: isSelected ? AppColors.primaryColor : Colors.white38,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? AppColors.primaryColor : Colors.white54,
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                icon,
+                size: 15,
+                color: isSelected ? AppColors.primaryColor : Colors.white38,
               ),
-            ),
-          ],
+              const SizedBox(width: 4),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: isSelected ? AppColors.primaryColor : Colors.white54,
+                  fontSize: 13,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

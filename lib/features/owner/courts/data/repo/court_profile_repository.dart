@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
 
 class CourtProfileRepository {
   Future<CourtProfileModel> fetchCourtProfile() async {
@@ -12,13 +12,7 @@ class CourtProfileRepository {
       image: "https://images.unsplash.com/photo-1546519638-68e109498ffc",
       rating: 4.8,
       totalReviews: 125,
-      ratingDistribution: {
-        5: 0.85,
-        4: 0.10,
-        3: 0.03,
-        2: 0.02,
-        1: 0.00,
-      },
+      ratingDistribution: {5: 0.85, 4: 0.10, 3: 0.03, 2: 0.02, 1: 0.00},
       amenities: [
         CourtAmenity(title: "Floodlights", icon: Icons.light),
         CourtAmenity(title: "Parking", icon: Icons.local_parking),

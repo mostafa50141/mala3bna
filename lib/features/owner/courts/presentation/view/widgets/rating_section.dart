@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/stars_widget.dart';
 
@@ -80,9 +80,11 @@ class _RatingBar extends StatelessWidget {
         children: [
           SizedBox(
             width: 10,
-            child: Text('$star',
-                style: const TextStyle(color: Colors.grey, fontSize: 11),
-                textAlign: TextAlign.center),
+            child: Text(
+              '$star',
+              style: const TextStyle(color: Colors.grey, fontSize: 11),
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(width: 4),
           Icon(Icons.star_rounded, color: AppColors.primaryColor, size: 12),
@@ -98,8 +100,7 @@ class _RatingBar extends StatelessWidget {
                   value: v,
                   minHeight: 6,
                   backgroundColor: Colors.white.withValues(alpha: 0.08),
-                  valueColor:
-                      AlwaysStoppedAnimation(AppColors.primaryColor),
+                  valueColor: AlwaysStoppedAnimation(AppColors.primaryColor),
                 ),
               ),
             ),

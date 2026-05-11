@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
 import 'stars_widget.dart';
 
 class ReviewItem extends StatelessWidget {
@@ -78,15 +78,19 @@ class ReviewItem extends StatelessWidget {
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withValues(alpha: 0.06),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         review.time,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 10),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                        ),
                       ),
                     ),
                   ],
@@ -106,7 +110,9 @@ class ReviewItem extends StatelessWidget {
                   const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(20),

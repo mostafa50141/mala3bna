@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_state.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/action_buttons.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/amenities_section.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/header_section.dart';
@@ -76,8 +76,7 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
                         const ActionButtons(),
                         const SizedBox(height: 20),
                         TabsSection(
-                          onTabChanged: (i) =>
-                              setState(() => _selectedTab = i),
+                          onTabChanged: (i) => setState(() => _selectedTab = i),
                         ),
                         const SizedBox(height: 20),
                         AnimatedSwitcher(
@@ -151,23 +150,26 @@ class _BookingsTab extends StatelessWidget {
                   width: 1.5,
                 ),
               ),
-              child: Icon(Icons.calendar_today_outlined,
-                  size: 36, color: AppColors.primaryColor),
+              child: Icon(
+                Icons.calendar_today_outlined,
+                size: 36,
+                color: AppColors.primaryColor,
+              ),
             ),
             const SizedBox(height: 20),
             const Text(
               'No bookings yet',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 8),
             const Text(
               'Upcoming reservations will appear here.',
               textAlign: TextAlign.center,
-              style:
-                  TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
+              style: TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
             ),
           ],
         ),
@@ -222,15 +224,25 @@ class _CourtProfileSkeletonState extends State<_CourtProfileSkeleton>
                 padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
                 child: Column(
                   children: [
-                    Row(children: [
-                      Expanded(
+                    Row(
+                      children: [
+                        Expanded(
                           child: _SkeletonBox(
-                              height: 48, opacity: opacity, radius: 12)),
-                      const SizedBox(width: 12),
-                      Expanded(
+                            height: 48,
+                            opacity: opacity,
+                            radius: 12,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
                           child: _SkeletonBox(
-                              height: 48, opacity: opacity, radius: 12)),
-                    ]),
+                            height: 48,
+                            opacity: opacity,
+                            radius: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 20),
                     _SkeletonBox(height: 46, opacity: opacity, radius: 12),
                     const SizedBox(height: 20),
@@ -259,8 +271,11 @@ class _SkeletonBox extends StatelessWidget {
   final double opacity;
   final double radius;
 
-  const _SkeletonBox(
-      {required this.height, required this.opacity, required this.radius});
+  const _SkeletonBox({
+    required this.height,
+    required this.opacity,
+    required this.radius,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -301,16 +316,20 @@ class _ErrorState extends StatelessWidget {
                   width: 2,
                 ),
               ),
-              child: Icon(Icons.cloud_off_outlined,
-                  size: 44, color: AppColors.primaryColor),
+              child: Icon(
+                Icons.cloud_off_outlined,
+                size: 44,
+                color: AppColors.primaryColor,
+              ),
             ),
             const SizedBox(height: 24),
             const Text(
               'Oops! Something went wrong',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
@@ -318,7 +337,10 @@ class _ErrorState extends StatelessWidget {
               message,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  color: Colors.grey, fontSize: 13, height: 1.5),
+                color: Colors.grey,
+                fontSize: 13,
+                height: 1.5,
+              ),
             ),
             const SizedBox(height: 32),
             SizedBox(
@@ -326,16 +348,18 @@ class _ErrorState extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded, size: 18),
-                label: const Text('Try Again',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 15)),
+                label: const Text(
+                  'Try Again',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,
                   foregroundColor: Colors.white,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
               ),
             ),
