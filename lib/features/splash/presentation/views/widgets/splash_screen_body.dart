@@ -24,6 +24,7 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
     initSlidingAnimation();
     _checkTokenAndNavigate();
   }
+
   @override
   void dispose() {
     animationController.dispose();
@@ -64,21 +65,22 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
     ).animate(animationController);
     animationController.forward();
   }
+
   Future<void> _checkTokenAndNavigate() async {
-  await Future.delayed(const Duration(seconds: 3));
-  final token = await getIt.get<LocalStorageHelper>().gettoken();
-  if (token != null && token.isNotEmpty) {
-    Get.offAll(
-      () => const AppRoot(),
-      transition: Transition.fadeIn,
-      duration: const Duration(milliseconds: 500),
-    );
-  } else {
-    Get.offAll(
-      () => const WelcomeScreen(),
-      transition: Transition.fadeIn,
-      duration: const Duration(milliseconds: 500),
-    );
+    await Future.delayed(const Duration(seconds: 3));
+    final token = await getIt.get<LocalStorageHelper>().gettoken() ?? 5;
+    if (token != null && token != 5) {
+      Get.offAll(
+        () => const AppRoot(),
+        transition: Transition.fadeIn,
+        duration: const Duration(milliseconds: 500),
+      );
+    } else {
+      Get.offAll(
+        () => const WelcomeScreen(),
+        transition: Transition.fadeIn,
+        duration: const Duration(milliseconds: 500),
+      );
+    }
   }
-}
 }

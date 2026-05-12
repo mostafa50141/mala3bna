@@ -99,7 +99,7 @@ class HelpBody extends StatelessWidget {
                 const Gap(16),
                 Expanded(
                   child: Text(
-                    '+20 100 000 0000',
+                    '+20 106 336 7054',
                     style: Style.textStyle14.copyWith(color: Colors.white),
                   ),
                 ),

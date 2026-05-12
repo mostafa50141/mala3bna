@@ -3,8 +3,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/utils/local_storage_helper.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/section_title.dart';
+import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/player/profile/views/my_bookings_views.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_menu_item.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_stats_row.dart';
@@ -93,7 +96,12 @@ class ProfileBody extends StatelessWidget {
             icon: Icons.logout,
             label: 'Logout',
             isDanger: true,
-            onTap: () {},
+            onTap: () {
+              // Handle logout logic here using the getit service locator to clear the token and navigate to the login screen
+              // final token = await getIt.get<LocalStorageHelper>().gettoken();
+              getIt.get<LocalStorageHelper>().deletetoken();
+              Get.offAll(() => const LoginScreen());
+            },
           ),
         ],
       ),
