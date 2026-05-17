@@ -8,6 +8,7 @@ import 'package:mala3bna/features/owner/setting/presentation/view/change_passwor
 import 'package:mala3bna/features/owner/setting/presentation/view/delete_account_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/help_center_view.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/privacy_policy_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/terms_and_conditions_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/language_bottom_sheet.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/setting_tile.dart';
@@ -101,7 +102,18 @@ class SettingsContent extends StatelessWidget {
             );
           },
         ),
-        SettingsTile(icon: Icons.description_outlined, title: "Privacy Policy"),
+        SettingsTile(
+          icon: Icons.description_outlined,
+          title: "Privacy Policy",
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const PrivacyPolicyView(),
+              ),
+            );
+          },
+        ),
         SettingsTile(
           icon: Icons.verified_user_outlined,
           title: "Terms & Conditions",
