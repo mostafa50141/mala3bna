@@ -7,20 +7,41 @@ class DashedAddPhoto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 120,
-      height: 120,
+      width: 130,
+      height: 130,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: AppColors.colorBtnAndCard,
-        border: Border.all(color: Colors.white12, width: 1),
+        borderRadius: BorderRadius.circular(14),
+        color: Colors.white.withValues(alpha: 0.03),
+        border: Border.all(
+          color: AppColors.primaryColor.withValues(alpha: 0.35),
+          width: 1.5,
+        ),
       ),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: const [
-            Icon(Icons.add_a_photo_outlined, color: Colors.white54, size: 28),
-            SizedBox(height: 8),
-            Text('Add Photo', style: TextStyle(color: Colors.white54)),
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.primaryColor.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.add_a_photo_outlined,
+                color: AppColors.primaryColor,
+                size: 24,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Add Photo',
+              style: TextStyle(
+                color: AppColors.primaryColor.withValues(alpha: 0.8),
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ],
         ),
       ),

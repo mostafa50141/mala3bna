@@ -12,54 +12,103 @@ class BottomActionButtons extends StatelessWidget {
     required this.onSave,
     this.isSaving = false,
   });
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: OutlinedButton(
-            onPressed: onCancel,
-            style: OutlinedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              side: BorderSide(color: Colors.white24),
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+    return SafeArea(
+      top: false,
+      child: Row(
+        children: [
+          Expanded(
+            child: OutlinedButton(
+              onPressed: isSaving ? null : onCancel,
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.white.withValues(alpha: 0.05),
+                side: BorderSide(
+                  color: Colors.white.withValues(alpha: 0.15),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                ),
               ),
             ),
-            child: const Text('Cancel', style: TextStyle(color: Colors.white)),
           ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: ElevatedButton(
-            onPressed: isSaving ? null : onSave,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 2,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                gradient: LinearGradient(
+                  colors: isSaving
+                      ? [
+                          AppColors.primaryColor.withValues(alpha: 0.5),
+                          AppColors.primaryColor.withValues(alpha: 0.4),
+                        ]
+                      : [
+                          AppColors.primaryColor,
+                          AppColors.primaryColor.withValues(alpha: 0.85),
+                        ],
+                ),
+                boxShadow: isSaving
+                    ? []
+                    : [
+                        BoxShadow(
+                          color: AppColors.primaryColor.withValues(alpha: 0.35),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
               ),
-            ),
-            child: isSaving
-                ? const SizedBox(
-                    height: 18,
-                    width: 18,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Text(
-                    'Save Changes',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+              child: ElevatedButton(
+                onPressed: isSaving ? null : onSave,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  disabledBackgroundColor: Colors.transparent,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
                   ),
+                ),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: isSaving
+                      ? const SizedBox(
+                          key: ValueKey('saving'),
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          'Save Changes',
+                          key: ValueKey('save'),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                ),
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

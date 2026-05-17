@@ -16,29 +16,46 @@ class AmenityChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 250),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: selected ? AppColors.primaryColor : AppColors.colorBtnAndCard,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: selected ? AppColors.primaryColor : Colors.white12,
+    // GestureDetector wraps the entire chip so the whole area is tappable
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: selected
+              ? AppColors.primaryColor.withValues(alpha: 0.2)
+              : Colors.white.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: selected
+                ? AppColors.primaryColor
+                : Colors.white.withValues(alpha: 0.1),
+            width: selected ? 1.5 : 1,
+          ),
         ),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.check_circle_outline,
-              size: 18,
-              color: Colors.white70,
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: Icon(
+                selected ? Icons.check_circle : Icons.circle_outlined,
+                key: ValueKey(selected),
+                size: 18,
+                color: selected ? AppColors.primaryColor : Colors.white38,
+              ),
             ),
             const SizedBox(width: 8),
-            Text(amenity.title, style: const TextStyle(color: Colors.white)),
+            Text(
+              amenity.title,
+              style: TextStyle(
+                color: selected ? Colors.white : Colors.white70,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                fontSize: 13,
+              ),
+            ),
           ],
         ),
       ),
