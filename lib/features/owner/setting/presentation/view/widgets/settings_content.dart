@@ -5,6 +5,7 @@ import 'package:get/get_navigation/src/routes/default_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/change_password_view.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/delete_account_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/help_center_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/language_bottom_sheet.dart';
@@ -90,6 +91,14 @@ class SettingsContent extends StatelessWidget {
           icon: Icons.delete_outline,
           title: "Delete Account",
           isDanger: true,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const DeleteAccountView(),
+              ),
+            );
+          },
         ),
         SettingsTile(icon: Icons.description_outlined, title: "Privacy Policy"),
         SettingsTile(

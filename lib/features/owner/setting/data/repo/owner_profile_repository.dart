@@ -22,4 +22,14 @@ class OwnerProfileRepository {
     await Future.delayed(const Duration(seconds: 1));
     _mockData = updatedProfile;
   }
+
+  Future<void> deleteAccount({required String password}) async {
+    // Simulate network delay
+    await Future.delayed(const Duration(seconds: 2));
+    // Simulate wrong password error (replace with real API validation)
+    if (password.length < 4) {
+      throw Exception('Incorrect password. Please try again.');
+    }
+    // Account deletion succeeds — in production, call your auth API here
+  }
 }
