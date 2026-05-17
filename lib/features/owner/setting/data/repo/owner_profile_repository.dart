@@ -8,6 +8,8 @@ class OwnerProfileRepository {
     birthDate: "22 Apr 2004",
     gender: "Male",
     phone: "+20 123 456 7890",
+    email: "mostafa.a@neonathletics.com",
+    bio: "Midfielder at Cairo Sports Club. Passionate about tactical play and endurance training. Always looking for the next challenge.",
     imageUrl: "assets/images/app_logo.png",
   );
 

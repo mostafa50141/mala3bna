@@ -7,6 +7,7 @@ import 'package:mala3bna/features/owner/setting/presentation/model/owner_profile
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_picture.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_form_section.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_save_button.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_connected_accounts.dart';
 
 class EditProfileView extends StatefulWidget {
   const EditProfileView({super.key});
@@ -19,23 +20,25 @@ class _EditProfileViewState extends State<EditProfileView>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _birthDateController = TextEditingController();
-  final _genderController = TextEditingController();
+  final _bioController = TextEditingController();
 
+  String _username = '';
   bool _isInitialized = false;
   bool _hasChanges = false;
 
   late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;
 
+  // ─── Lifecycle ──────────────────────────────────────────────────────
+
   @override
   void initState() {
     super.initState();
     _fadeController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 450),
+      duration: const Duration(milliseconds: 500),
     );
     _fadeAnimation = CurvedAnimation(
       parent: _fadeController,
@@ -46,10 +49,9 @@ class _EditProfileViewState extends State<EditProfileView>
   @override
   void dispose() {
     _fullNameController.dispose();
-    _usernameController.dispose();
+    _emailController.dispose();
     _phoneController.dispose();
-    _birthDateController.dispose();
-    _genderController.dispose();
+    _bioController.dispose();
     _fadeController.dispose();
     super.dispose();
   }
@@ -59,10 +61,10 @@ class _EditProfileViewState extends State<EditProfileView>
   void _populateFields(OwnerProfileModel profile) {
     if (_isInitialized) return;
     _fullNameController.text = profile.fullName;
-    _usernameController.text = profile.username;
+    _emailController.text = profile.email;
     _phoneController.text = profile.phone;
-    _birthDateController.text = profile.birthDate;
-    _genderController.text = profile.gender;
+    _bioController.text = profile.bio;
+    _username = profile.username;
     _isInitialized = true;
     _fadeController.forward();
   }
@@ -120,10 +122,12 @@ class _EditProfileViewState extends State<EditProfileView>
     FocusScope.of(context).unfocus();
     final updated = OwnerProfileModel(
       fullName: _fullNameController.text.trim(),
-      username: _usernameController.text.trim(),
+      username: _username,
       phone: _phoneController.text.trim(),
-      birthDate: _birthDateController.text.trim(),
-      gender: _genderController.text.trim(),
+      email: _emailController.text.trim(),
+      bio: _bioController.text.trim(),
+      birthDate: '',
+      gender: '',
       imageUrl: 'assets/images/app_logo.png',
     );
     context.read<OwnerProfileCubit>().updateProfile(updated);
@@ -235,64 +239,36 @@ class _EditProfileViewState extends State<EditProfileView>
         ),
       ),
       centerTitle: true,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.notifications_none_rounded,
+            color: AppColors.primaryColor,
+            size: 22,
+          ),
+        ),
+        const SizedBox(width: 4),
+      ],
     );
   }
 
+  // ─── Body ───────────────────────────────────────────────────────────
+
   Widget _buildBody(BuildContext context, OwnerProfileState state) {
-    // Loading state
+    // Loading
     if (state is OwnerProfileLoading || state is OwnerProfileInitial) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    // Error with no profile
-    if (state is OwnerProfileError) {
       return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.redAccent.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.error_outline,
-                  color: Colors.redAccent,
-                  size: 48,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                state.message,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white70, fontSize: 15),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton.icon(
-                onPressed: () =>
-                    context.read<OwnerProfileCubit>().loadProfile(),
-                icon: const Icon(Icons.refresh, size: 18),
-                label: const Text('Retry'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: CircularProgressIndicator(color: AppColors.primaryColor),
       );
     }
 
-    // Extract profile from any loaded state
+    // Error
+    if (state is OwnerProfileError) {
+      return _buildError(context, state.message);
+    }
+
+    // Profile loaded
     final profile = _extractProfile(state);
     if (profile != null) _populateFields(profile);
     final isUpdating = state is OwnerProfileUpdating;
@@ -308,34 +284,106 @@ class _EditProfileViewState extends State<EditProfileView>
             child: Column(
               children: [
                 // Avatar
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 const EditProfilePicture(),
-                const SizedBox(height: 32),
+                const SizedBox(height: 16),
 
-                // Form section
+                // Name + Username
+                Text(
+                  _fullNameController.text.isNotEmpty
+                      ? _fullNameController.text
+                      : 'Your Name',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '@$_username',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.4),
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 28),
+
+                // Form fields
                 EditProfileFormSection(
                   fullNameController: _fullNameController,
-                  usernameController: _usernameController,
+                  emailController: _emailController,
                   phoneController: _phoneController,
-                  birthDateController: _birthDateController,
-                  genderValue: _genderController.text,
-                  onGenderChanged: (v) {
-                    _markDirty();
-                    setState(() => _genderController.text = v);
-                  },
+                  bioController: _bioController,
                   onFieldChanged: _markDirty,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 32),
 
                 // Save button
                 EditProfileSaveButton(
                   isLoading: isUpdating,
                   onPressed: _saveProfile,
                 ),
+                const SizedBox(height: 32),
+
+                // Divider
+                Divider(
+                  color: Colors.white.withValues(alpha: 0.06),
+                  height: 1,
+                ),
+                const SizedBox(height: 24),
+
+                // Connected Accounts
+                const EditProfileConnectedAccounts(),
                 const SizedBox(height: 24),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildError(BuildContext context, String message) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.redAccent.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.error_outline,
+                color: Colors.redAccent,
+                size: 48,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white70, fontSize: 15),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () =>
+                  context.read<OwnerProfileCubit>().loadProfile(),
+              icon: const Icon(Icons.refresh, size: 18),
+              label: const Text('Retry'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -262,9 +262,9 @@ class _FormFieldsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard.withOpacity(0.5),
+        color: AppColors.colorBtnAndCard.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       padding: EdgeInsets.all(padding),
       child: child,
@@ -320,7 +320,7 @@ class _GenderSelector extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.colorBtnAndCard,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.07)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.07)),
       ),
       child: Row(
         children: [
@@ -367,8 +367,8 @@ class _SaveButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryColor,
           foregroundColor: Colors.white,
-          disabledBackgroundColor: AppColors.primaryColor.withOpacity(0.4),
-          shadowColor: AppColors.primaryColor.withOpacity(0.3),
+          disabledBackgroundColor: AppColors.primaryColor.withValues(alpha: 0.4),
+          shadowColor: AppColors.primaryColor.withValues(alpha: 0.3),
           elevation: 4,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -429,13 +429,13 @@ class _GenderToggleButton extends StatelessWidget {
         height: 36,
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primaryColor.withOpacity(0.15)
+              ? AppColors.primaryColor.withValues(alpha: 0.15)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isSelected
-                ? AppColors.primaryColor.withOpacity(0.5)
-                : Colors.white.withOpacity(0.07),
+                ? AppColors.primaryColor.withValues(alpha: 0.5)
+                : Colors.white.withValues(alpha: 0.07),
             width: 1,
           ),
         ),

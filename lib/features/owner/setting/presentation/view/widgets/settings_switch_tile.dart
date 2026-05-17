@@ -65,7 +65,7 @@ class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
               ),
               Switch(
                 value: _isEnabled,
-                activeColor: AppColors.primaryColor,
+                activeThumbColor: AppColors.primaryColor,
                 trackOutlineColor:
                     WidgetStateProperty.resolveWith((states) {
                   if (states.contains(WidgetState.selected)) {
