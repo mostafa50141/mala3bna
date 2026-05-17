@@ -4,7 +4,9 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/routes/default_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/change_password_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/help_center_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/language_bottom_sheet.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/setting_tile.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/settings_switch_tile.dart';
@@ -60,8 +62,30 @@ class SettingsContent extends StatelessWidget {
             );
           },
         ),
-        SettingsTile(icon: Icons.lock_outline, title: "Change Password"),
-        SettingsTile(icon: Icons.help_outline, title: "Need Help?"),
+        SettingsTile(
+          icon: Icons.lock_outline,
+          title: "Change Password",
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const ChangePasswordView(),
+              ),
+            );
+          },
+        ),
+        SettingsTile(
+          icon: Icons.help_outline,
+          title: "Need Help?",
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const HelpCenterView(),
+              ),
+            );
+          },
+        ),
         SettingsTile(
           icon: Icons.delete_outline,
           title: "Delete Account",
