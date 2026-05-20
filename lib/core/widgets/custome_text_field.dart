@@ -11,8 +11,10 @@ class CustomTextfield extends StatelessWidget {
     this.height,
     this.fillcolor,
     this.suffixIcon,
+    this.prefixIcon,
     this.controller,
     this.keyboardType,
+    this.border,
   });
   final Function(String)? onChanged;
   final String? hintText;
@@ -22,8 +24,10 @@ class CustomTextfield extends StatelessWidget {
   final double? height;
   final Color? fillcolor;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final InputBorder? border;
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +53,22 @@ class CustomTextfield extends StatelessWidget {
             hintStyle: const TextStyle(color: Colors.white70),
             filled: true,
             suffixIcon: suffixIcon,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: const BorderSide(color: Color(0xFF52C77A)),
-              // borderSide: const BorderSide(color: Colors.white),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              // borderSide: const BorderSide(color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: const BorderSide(color: Color(0xFF52C77A)),
-              // borderSide: const BorderSide(color: Colors.white),
-            ),
+            prefixIcon: prefixIcon,
+            border:
+                border ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: const BorderSide(color: Color(0xFF52C77A)),
+                ),
+            enabledBorder:
+                border ??
+                OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
+            focusedBorder:
+                border ??
+                OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: const BorderSide(color: Color(0xFF52C77A)),
+                ),
           ),
         ),
       ),
