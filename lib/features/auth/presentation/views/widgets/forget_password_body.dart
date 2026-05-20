@@ -1,90 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custome_circular_avatar.dart';
 import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
+import 'package:mala3bna/features/auth/presentation/views/otp_verification_screen.dart';
 
-class ForgetPasswordBody extends StatelessWidget {
+class ForgetPasswordBody extends StatefulWidget {
   const ForgetPasswordBody({super.key});
 
   @override
+  State<ForgetPasswordBody> createState() => _ForgetPasswordBodyState();
+}
+
+class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late TextEditingController emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> formkay = GlobalKey();
     return Scaffold(
       body: SafeArea(
         child: GradientBackground(
-          child: Form(
-            key: formkay,
-            child: Column(
-              children: [
-                const Gap(200),
-                const CustomeCirculerAvtar(
-                  backgroundImage: AssetImage(AssetsData.logo),
-                ),
-                const Gap(60),
-
-                Text("Reset Password", style: Style.textStyle26),
-                const SizedBox(height: 7),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28),
-                  child: Text(
-                    "Enter your email to receive reset instructions.",
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Gap(10),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Get.back(),
+                    ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    height: 80,
+                    width: 80,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.lock_reset,
+                      size: 40,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Gap(24),
+                  Text(
+                    "Forgot Password?",
+                    style: Style.textStyle30Bold.copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(12),
+                  Text(
+                    "Enter your email to receive a reset code",
                     style: Style.textStyle16.copyWith(color: Colors.white70),
                     textAlign: TextAlign.center,
                   ),
-                ),
-                const Gap(60),
-                CustomTextfield(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "⚠️ Please enter an email";
-                    } else if (!RegExp(
-                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                    ).hasMatch(value)) {
-                      return "⚠️ Please enter a valid email";
-                    }
-                    return null;
-                  },
-                  hintText: "Email",
-                  obscureText: false,
-                  width: 350,
-                  fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-                ),
-                const Gap(20),
-                Center(
-                  child: CustomBtn(
-                    text: ' Send a Reset Link',
+                  const Gap(40),
+                  CustomTextfield(
+                    controller: emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "⚠️ Please enter an email";
+                      } else if (!RegExp(
+                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                      ).hasMatch(value)) {
+                        return "⚠️ Please enter a valid email";
+                      }
+                      return null;
+                    },
+                    hintText: "Email Address",
+                    obscureText: false,
+                    width: double.infinity,
+                    prefixIcon: const Icon(Icons.email, color: Colors.white70),
+                    fillcolor: const Color(0xFF2C3617).withOpacity(0.3),
+                  ),
+                  const Gap(24),
+                  CustomBtn(
+                    text: 'Send Reset Code →',
                     height: 50,
-                    width: 350,
+                    width: double.infinity,
                     radius: 25,
+                    weightText: FontWeight.bold,
                     sizeText: 18,
                     onTap: () {
-                      if (formkay.currentState!.validate()) {
-                        // Handle reset password logic
+                      if (formKey.currentState!.validate()) {
+                        Get.to(() => const OTPVerificationScreen());
                       }
                     },
                   ),
-                ),
-                Center(
-                  child: Row(
+                  const Gap(30),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Remember your password? ",
-                        style: Style.textStyle16.copyWith(
-                          color: AppColors.fieldBackground,
-                        ),
+                        "Remember your password?",
+                        style: Style.textStyle16.copyWith(color: Colors.grey),
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Get.back();
                         },
                         child: Text(
-                          'Login',
+                          'Back to Login',
                           style: Style.textStyle16Bold.copyWith(
                             color: AppColors.primaryColor,
                           ),
@@ -92,8 +131,9 @@ class ForgetPasswordBody extends StatelessWidget {
                       ),
                     ],
                   ),
-                ),
-              ],
+                  const Spacer(flex: 2),
+                ],
+              ),
             ),
           ),
         ),
