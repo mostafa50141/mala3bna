@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 
 class PasswordTextField extends StatefulWidget {
-  const PasswordTextField({super.key, required this.controller});
+  const PasswordTextField({super.key, required this.controller, this.hintText});
 
   final TextEditingController controller;
+  final String? hintText;
 
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
@@ -25,10 +26,10 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         }
         return null;
       },
-      hintText: "Password",
+      hintText: widget.hintText ?? "Password",
       obscureText: isObscure,
-      width: 350,
-      fillcolor: Color(0xFF2C3617).withOpacity(0.3),
+      width: double.infinity,
+      fillcolor: const Color(0xFF2C3617).withOpacity(0.3),
       suffixIcon: IconButton(
         icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility),
         color: Colors.white70,
