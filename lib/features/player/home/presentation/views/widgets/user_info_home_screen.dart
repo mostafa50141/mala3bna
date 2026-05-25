@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:get/get.dart';
+import 'package:mala3bna/features/player/settings/views/edit_profile_view.dart';
 
 class UserInfoInHomeScreen extends StatelessWidget {
   const UserInfoInHomeScreen({super.key});
@@ -13,9 +15,12 @@ class UserInfoInHomeScreen extends StatelessWidget {
       children: [
         Gap(8),
 
-        CircleAvatar(
-          radius: 22,
-          backgroundImage: AssetImage('assets/images/MyPhoto.jpg'),
+        GestureDetector(
+          onTap: () => Get.to(() => const EditProfileView()),
+          child: CircleAvatar(
+            radius: 22,
+            backgroundImage: AssetImage('assets/images/MyPhoto.jpg'),
+          ),
         ),
 
         Gap(15),

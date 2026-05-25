@@ -7,9 +7,11 @@ class GamesCategory extends StatefulWidget {
     super.key,
     required this.selectedIndex,
     required this.categories,
+    this.onCategorySelected,
   });
   final int selectedIndex;
   final List<String> categories;
+  final ValueChanged<int>? onCategorySelected;
 
   @override
   State<GamesCategory> createState() => _GamesCategoryState();
@@ -25,6 +27,14 @@ class _GamesCategoryState extends State<GamesCategory> {
   }
 
   @override
+  void didUpdateWidget(covariant GamesCategory oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedIndex != widget.selectedIndex) {
+      selectedIndex = widget.selectedIndex;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: List.generate(widget.categories.length, (index) {
@@ -34,6 +44,7 @@ class _GamesCategoryState extends State<GamesCategory> {
             setState(() {
               selectedIndex = index;
             });
+            widget.onCategorySelected?.call(index);
           },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

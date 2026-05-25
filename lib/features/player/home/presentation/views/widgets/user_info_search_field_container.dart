@@ -5,7 +5,8 @@ import 'package:mala3bna/features/player/home/presentation/views/widgets/search_
 import 'package:mala3bna/features/player/home/presentation/views/widgets/user_info_home_screen.dart';
 
 class UserInfoAndSearchFieldContainer extends StatelessWidget {
-  const UserInfoAndSearchFieldContainer({super.key});
+  const UserInfoAndSearchFieldContainer({super.key, this.onSearchChanged});
+  final Function(String)? onSearchChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class UserInfoAndSearchFieldContainer extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [UserInfoInHomeScreen(), Gap(25), SearchField()],
+          children: [UserInfoInHomeScreen(), Gap(25), SearchField(onChanged: onSearchChanged)],
         ),
       ),
     );

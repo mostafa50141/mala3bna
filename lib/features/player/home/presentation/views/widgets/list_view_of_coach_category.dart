@@ -3,7 +3,14 @@ import 'package:mala3bna/features/player/home/presentation/views/widgets/coach_c
 
 // ignore: must_be_immutable
 class ListViewOfCoachCategory extends StatelessWidget {
-  ListViewOfCoachCategory({super.key});
+  final int selectedSport;
+  final String searchQuery;
+
+  ListViewOfCoachCategory({
+    super.key,
+    required this.selectedSport,
+    required this.searchQuery,
+  });
 
   List<Map<String, dynamic>> coaches = [
     {
@@ -45,6 +52,33 @@ class ListViewOfCoachCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const sports = ['Football', 'Tennis', 'Swimming', 'Padel'];
+    final String selectedSportName =
+        (selectedSport >= 0 && selectedSport < sports.length)
+        ? sports[selectedSport]
+        : '';
+
+    final filteredCoaches = coaches.where((coach) {
+      final bool matchesSport = coach['sport'] == selectedSportName;
+      final bool matchesSearch = coach['coachName']
+          .toString()
+          .toLowerCase()
+          .contains(searchQuery.toLowerCase());
+      return matchesSport && matchesSearch;
+    }).toList();
+
+    if (filteredCoaches.isEmpty) {
+      return const SizedBox(
+        height: 200,
+        child: Center(
+          child: Text(
+            "No coaches found",
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      );
+    }
+
     return SizedBox(
       height: 200,
       child: ListView.builder(
@@ -52,9 +86,9 @@ class ListViewOfCoachCategory extends StatelessWidget {
         clipBehavior: Clip.none,
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
-        itemCount: coaches.length,
+        itemCount: filteredCoaches.length,
         itemBuilder: (context, index) {
-          final coach = coaches[index];
+          final coach = filteredCoaches[index];
           return CoachCategory(
             imageUrl: coach['imageUrl'],
             coachName: coach['coachName'],

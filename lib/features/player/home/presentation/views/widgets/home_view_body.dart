@@ -16,10 +16,16 @@ class HomeViewBody extends StatelessWidget {
     super.key,
     required this.selectedIndex,
     required this.categories,
+    required this.searchQuery,
+    this.onCategoryChanged,
+    this.onSearchChanged,
   });
 
   final int selectedIndex;
   final List<String> categories;
+  final String searchQuery;
+  final Function(int)? onCategoryChanged;
+  final Function(String)? onSearchChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +37,9 @@ class HomeViewBody extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             slivers: [
               SliverToBoxAdapter(
-                child: UserInfoAndSearchFieldContainer(),
+                child: UserInfoAndSearchFieldContainer(
+                  onSearchChanged: onSearchChanged,
+                ),
               ),
 
               const SliverToBoxAdapter(child: Gap(20)),
@@ -48,6 +56,7 @@ class HomeViewBody extends StatelessWidget {
                         child: GamesCategory(
                           selectedIndex: selectedIndex,
                           categories: categories,
+                          onCategorySelected: onCategoryChanged,
                         ),
                       ),
 
@@ -63,7 +72,10 @@ class HomeViewBody extends StatelessWidget {
                             duration: const Duration(milliseconds: 500),
                           );
                         },
-                        child: ListViewOfCourtsCategory(),
+                        child: ListViewOfCourtsCategory(
+                          selectedSport: selectedIndex,
+                          searchQuery: searchQuery,
+                        ),
                       ),
 
                       const Gap(25),
@@ -79,12 +91,18 @@ class HomeViewBody extends StatelessWidget {
                       const Gap(25),
 
                       SectionTitle(title: 'Featured Coaches'),
-                      ListViewOfCoachCategory(),
+                      ListViewOfCoachCategory(
+                        selectedSport: selectedIndex,
+                        searchQuery: searchQuery,
+                      ),
 
                       const Gap(25),
 
                       SectionTitle(title: 'Training Academies'),
-                      ListViewOfAcademicCategory(),
+                      ListViewOfAcademicCategory(
+                        selectedSport: selectedIndex,
+                        searchQuery: searchQuery,
+                      ),
 
                       const Gap(20),
                     ],

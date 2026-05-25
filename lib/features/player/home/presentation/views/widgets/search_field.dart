@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key});
+  const SearchField({super.key, this.onChanged});
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,7 @@ class SearchField extends StatelessWidget {
       shadowColor: Colors.black,
 
       child: TextField(
+        onChanged: onChanged,
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
         cursorHeight: 25,
         cursorColor: AppColors.primaryColor,

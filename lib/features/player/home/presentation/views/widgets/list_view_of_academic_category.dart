@@ -4,7 +4,14 @@ import 'package:mala3bna/features/player/home/presentation/views/widgets/academi
 
 // ignore: must_be_immutable
 class ListViewOfAcademicCategory extends StatelessWidget {
-  ListViewOfAcademicCategory({super.key});
+  final int selectedSport;
+  final String searchQuery;
+
+  ListViewOfAcademicCategory({
+    super.key,
+    required this.selectedSport,
+    required this.searchQuery,
+  });
 
   List<Map<String, dynamic>> academics = [
     {
@@ -46,13 +53,40 @@ class ListViewOfAcademicCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const sports = ['Football', 'Tennis', 'Swimming', 'Padel'];
+    final String selectedSportName =
+        (selectedSport >= 0 && selectedSport < sports.length)
+        ? sports[selectedSport]
+        : '';
+
+    final filteredAcademics = academics.where((academic) {
+      final bool matchesSport = academic['sport'] == selectedSportName;
+      final bool matchesSearch = academic['nameAcademy']
+          .toString()
+          .toLowerCase()
+          .contains(searchQuery.toLowerCase());
+      return matchesSport && matchesSearch;
+    }).toList();
+
+    if (filteredAcademics.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        child: Center(
+          child: Text(
+            "No academies found",
+            style: TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      );
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
-      itemCount: 5,
+      itemCount: filteredAcademics.length,
       itemBuilder: (context, index) {
-        final academic = academics[index];
+        final academic = filteredAcademics[index];
         return AcademicsCategory(
           imageUrl: academic['imageUrl'],
           nameAcademy: academic['nameAcademy'],
