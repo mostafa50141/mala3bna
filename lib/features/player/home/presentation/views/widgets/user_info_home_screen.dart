@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:mala3bna/core/widgets/custom_text.dart';
+import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/utils/style.dart';
 
 class UserInfoInHomeScreen extends StatelessWidget {
   const UserInfoInHomeScreen({super.key});
@@ -8,9 +9,9 @@ class UserInfoInHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Gap(10),
+        Gap(8),
 
         CircleAvatar(
           radius: 22,
@@ -21,24 +22,39 @@ class UserInfoInHomeScreen extends StatelessWidget {
 
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            customText(
-              text: 'Hi, Mostafa 👋🏻',
-              size: 18,
-              weight: FontWeight.bold,
+            Text(
+              'Hi, Mostafa 👋🏻',
+              style: Style.textStyle18Bold.copyWith(color: Colors.white),
             ),
 
-            customText(text: 'Hi, Mostafa', size: 14, color: Colors.grey),
+            Gap(4),
+
+            Row(
+              children: [
+                Icon(Icons.location_on, size: 14, color: AppColors.primaryColor),
+                Gap(4),
+                Text('Nasr City', style: Style.textStyle12.copyWith(color: Colors.grey)),
+              ],
+            ),
           ],
         ),
 
         Spacer(),
 
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.notifications_on_sharp),
-          iconSize: 25,
-          color: Colors.white,
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.primaryColor.withOpacity(0.2),
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.primaryColor),
+          ),
+          child: IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.notifications_on_sharp),
+            iconSize: 22,
+            color: Colors.white,
+          ),
         ),
       ],
     );

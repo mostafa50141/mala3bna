@@ -4,6 +4,8 @@ import 'package:mala3bna/core/utils/api_server.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/features/auth/data/Repos/auth_repo.dart';
 import 'package:mala3bna/features/auth/data/Repos/auth_repo_imp.dart';
+import 'package:mala3bna/features/auth/data/Repos/reset_password_repo.dart';
+import 'package:mala3bna/features/auth/data/Repos/reset_password_repo_impl.dart';
 
 final getIt = GetIt.instance;
 
@@ -14,6 +16,11 @@ void setupServiceLocator() {
   getIt.registerSingleton<AuthRepo>(
     AuthRepoImp(apiService: getIt.get<ApiService>()),
   );
+  // reset password repo
+  getIt.registerSingleton<ResetPasswordRepo>(
+    ResetPasswordRepoImpl(apiService: getIt.get<ApiService>()),
+  );
   // local storage helper
   getIt.registerSingleton<LocalStorageHelper>(LocalStorageHelper());
 }
+

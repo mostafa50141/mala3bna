@@ -28,6 +28,10 @@ abstract class Style {
     fontSize: getResponsiveFontSize(fontSize: 20),
     fontWeight: FontWeight.bold,
   );
+  static final textStyle18Bold = TextStyle(
+    fontSize: getResponsiveFontSize(fontSize: 18),
+    fontWeight: FontWeight.bold,
+  );
   static final textStyle16 = TextStyle(
     fontSize: getResponsiveFontSize(fontSize: 16),
     fontWeight: FontWeight.normal,
@@ -57,11 +61,6 @@ abstract class Style {
 
   static final textStyle18 = TextStyle(
     fontSize: getResponsiveFontSize(fontSize: 18),
-  );
-  static final textStyle18Bold = TextStyle(
-    fontSize: getResponsiveFontSize(fontSize: 18),
-
-    fontWeight: FontWeight.bold,
   );
 
   static double getResponsiveFontSize({required double fontSize}) {

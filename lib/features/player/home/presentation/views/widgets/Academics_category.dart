@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custom_text.dart';
+import 'package:mala3bna/core/utils/style.dart';
 
 class AcademicsCategory extends StatelessWidget {
   const AcademicsCategory({
@@ -26,80 +25,70 @@ class AcademicsCategory extends StatelessWidget {
       height: 110,
       width: double.infinity,
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
-          ),
-        ],
         color: AppColors.colorBtnAndCard,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey, width: 0.5),
       ),
-
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
             Container(
-              width: 70,
-              height: 70,
+              width: 80,
+              height: 80,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 2),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(16),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(20),
+                borderRadius: BorderRadius.circular(16),
                 child: Image.asset(imageUrl, fit: BoxFit.cover),
               ),
             ),
-
-            Gap(10),
-
+            Gap(12),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  customText(
-                    text: nameAcademy,
-                    weight: FontWeight.bold,
-                    size: 15,
-                    maxLines: 2,
-                    //overflow: TextOverflow.ellipsis,
+                  Text(
+                    nameAcademy,
+                    style: Style.textStyle14Bold.copyWith(color: Colors.white),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-
-                  Gap(5),
-
-                  customText(
-                    text: sport,
-                    color: Colors.grey.shade600,
-                    size: 12,
-                    weight: FontWeight.bold,
+                  Gap(4),
+                  Text(
+                    sport,
+                    style: Style.textStyle12.copyWith(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-
-                  Gap(5),
-
-                  customText(
-                    text: 'Age $age_1-$age_2',
-                    color: Colors.grey.shade600,
-                    size: 12,
-                    weight: FontWeight.bold,
+                  Gap(4),
+                  Text(
+                    'Ages: $age_1 - $age_2 years',
+                    style: Style.textStyle12.copyWith(color: Colors.grey),
                   ),
                 ],
               ),
             ),
-
-            Gap(15),
-
-            CustomBtn(
-              text: 'Join Now',
-              weightText: FontWeight.bold,
-              height: 40,
-              width: 100,
-              radius: 30,
+            Gap(10),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text(
+                'Join Now',
+                style: Style.textStyle12.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
@@ -107,3 +96,21 @@ class AcademicsCategory extends StatelessWidget {
     );
   }
 }
+
+    //           ),
+    //         ),
+
+    //         Gap(15),
+
+    //         CustomBtn(
+    //           text: 'Join Now',
+    //           weightText: FontWeight.bold,
+    //           height: 40,
+    //           width: 100,
+    //           radius: 30,
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+

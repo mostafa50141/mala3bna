@@ -8,4 +8,5 @@ class AppColors {
   static Color textFieldHint = Colors.white54;
   static Color leftGradient = Color.fromARGB(177, 11, 28, 16);
   static Color rightGradient = colorBtnAndCard;
+  static const Color warningColor = Color(0XFFEAB308);
 }

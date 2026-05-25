@@ -46,10 +46,11 @@ class ListViewOfCoachCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 170,
+      height: 200,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
+        clipBehavior: Clip.none,
+        physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         itemCount: coaches.length,
         itemBuilder: (context, index) {

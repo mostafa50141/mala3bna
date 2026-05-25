@@ -9,11 +9,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List category = ['Football', 'Tennis', 'Swimming', 'Padel'];
+  final List<String> categories = const ['Football', 'Tennis', 'Swimming', 'Padel'];
   int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return HomeViewBody(selectedIndex: selectedIndex, category: category);
+    return HomeViewBody(selectedIndex: selectedIndex, categories: categories);
   }
 }

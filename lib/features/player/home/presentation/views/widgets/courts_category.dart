@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/widgets/custom_text.dart';
+import 'package:mala3bna/core/utils/style.dart';
 
 class CourtsCategory extends StatelessWidget {
   const CourtsCategory({
@@ -9,11 +9,13 @@ class CourtsCategory extends StatelessWidget {
     required this.courtName,
     required this.price,
     required this.rating,
+    required this.distance,
     this.onTap,
   });
   final String courtName;
   final int price;
   final double rating;
+  final String distance;
   final void Function()? onTap;
 
   @override
@@ -21,76 +23,77 @@ class CourtsCategory extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(right: 10),
-        height: 180,
-        width: 200,
+        margin: EdgeInsets.only(right: 12),
+        width: 170,
+        height: 200,
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           color: AppColors.colorBtnAndCard,
           border: Border.all(color: Colors.grey, width: 0.5),
         ),
-
         child: ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(20),
-          child: Stack(
+          borderRadius: BorderRadius.circular(16),
+          child: Column(
             children: [
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 80,
+              Expanded(
+                flex: 6,
                 child: Image.asset(
                   'assets/images/Court.png',
+                  width: double.infinity,
                   fit: BoxFit.cover,
                 ),
               ),
-
-              Positioned(
-                left: 12,
-                right: 12,
-                bottom: 10,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+              Expanded(
+                flex: 4,
+                child: Container(
+                  color: AppColors.colorBtnAndCard,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        courtName,
+                        style: Style.textStyle14Bold.copyWith(color: Colors.white),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Row(
                         children: [
-                          customText(text: courtName, weight: FontWeight.bold),
-
-                          Gap(5),
-
-                          Row(
-                            children: [
-                              customText(text: '⭐ '),
-                              customText(text: rating.toString()),
-                            ],
+                          Icon(Icons.star, color: Colors.yellow, size: 14),
+                          Gap(4),
+                          Text(
+                            rating.toString(),
+                            style: Style.textStyle12.copyWith(color: Colors.grey),
                           ),
-
-                          Row(
-                            children: [
-                              Spacer(),
-                              customText(text: 'EGP ', weight: FontWeight.bold),
-                              customText(
-                                text: price.toString(),
-                                weight: FontWeight.bold,
-                              ),
-                              customText(text: '/hr', color: Colors.grey),
-                            ],
+                          Gap(4),
+                          Text(
+                            '•',
+                            style: Style.textStyle12.copyWith(color: Colors.grey),
+                          ),
+                          Gap(4),
+                          Text(
+                            distance,
+                            style: Style.textStyle12.copyWith(color: Colors.grey),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      Row(
+                        children: [
+                          Text(
+                            'EGP $price',
+                            style: Style.textStyle14Bold.copyWith(
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          Text(
+                            '/hr',
+                            style: Style.textStyle12.copyWith(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

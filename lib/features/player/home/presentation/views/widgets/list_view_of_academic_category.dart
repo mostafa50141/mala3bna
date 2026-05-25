@@ -1,6 +1,6 @@
 // ignore: must_be_immutable
 import 'package:flutter/material.dart';
-import 'package:mala3bna/features/player/home/presentation/views/widgets/Academics_category.dart';
+import 'package:mala3bna/features/player/home/presentation/views/widgets/academics_category.dart';
 
 // ignore: must_be_immutable
 class ListViewOfAcademicCategory extends StatelessWidget {
@@ -48,7 +48,7 @@ class ListViewOfAcademicCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: 5,
       itemBuilder: (context, index) {

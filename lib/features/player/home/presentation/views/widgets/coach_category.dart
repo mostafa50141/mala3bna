@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:mala3bna/core/widgets/custom_text.dart';
+import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/utils/style.dart';
 
 class CoachCategory extends StatelessWidget {
   const CoachCategory({
@@ -25,47 +26,64 @@ class CoachCategory extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 170,
-        constraints: BoxConstraints(minWidth: 100, maxWidth: 120),
+        margin: EdgeInsets.only(right: 12),
+        padding: EdgeInsets.all(8),
+        constraints: BoxConstraints(minWidth: 140, maxWidth: 160),
+        decoration: BoxDecoration(
+          color: AppColors.colorBtnAndCard,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey, width: 0.5),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 45.5,
+              radius: 40.5,
               backgroundColor: Colors.white,
               child: CircleAvatar(
-                radius: 45,
+                radius: 40,
                 backgroundImage: AssetImage(imageUrl),
               ),
             ),
-            const Gap(5),
-            customText(
-              text: coachName,
-              size: 16,
-              weight: FontWeight.bold,
+            const Gap(8),
+            Text(
+              coachName,
+              style: Style.textStyle14Bold.copyWith(color: Colors.white),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const Gap(5),
+            const Gap(4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                customText(text: '⭐ ', size: 12),
-                customText(
-                  text: rating.toString(),
-                  color: Colors.grey,
-                  size: 12,
+                Icon(Icons.star, color: Colors.yellow, size: 12),
+                Gap(4),
+                Text(
+                  rating.toString(),
+                  style: Style.textStyle12.copyWith(color: Colors.grey),
                 ),
-                customText(text: '• ', color: Colors.grey, size: 12),
-                customText(text: sport, color: Colors.grey, size: 12),
+                Gap(4),
+                Text('•', style: Style.textStyle12.copyWith(color: Colors.grey)),
+                Gap(4),
+                Text(
+                  sport,
+                  style: Style.textStyle12.copyWith(color: Colors.grey),
+                ),
               ],
             ),
-            const Gap(5),
+            const Gap(6),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                customText(text: 'EGP ', weight: FontWeight.bold),
-                customText(text: price.toString(), weight: FontWeight.bold),
-                customText(text: '/hr', color: Colors.grey),
+                Text(
+                  'EGP $price',
+                  style: Style.textStyle14Bold.copyWith(color: AppColors.primaryColor),
+                ),
+                Text(
+                  '/hr',
+                  style: Style.textStyle12.copyWith(color: Colors.grey),
+                ),
               ],
             ),
           ],

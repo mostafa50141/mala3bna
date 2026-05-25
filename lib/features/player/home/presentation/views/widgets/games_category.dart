@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/widgets/custom_text.dart';
+import 'package:mala3bna/core/utils/style.dart';
 
 class GamesCategory extends StatefulWidget {
   const GamesCategory({
     super.key,
     required this.selectedIndex,
-    required this.category,
+    required this.categories,
   });
   final int selectedIndex;
-  final List category;
+  final List<String> categories;
 
   @override
   State<GamesCategory> createState() => _GamesCategoryState();
@@ -27,7 +27,8 @@ class _GamesCategoryState extends State<GamesCategory> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: List.generate(widget.category.length, (index) {
+      children: List.generate(widget.categories.length, (index) {
+        bool isActive = selectedIndex == index;
         return GestureDetector(
           onTap: () {
             setState(() {
@@ -35,25 +36,33 @@ class _GamesCategoryState extends State<GamesCategory> {
             });
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            width: 100,
-            margin: EdgeInsets.only(right: 7),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            margin: EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: selectedIndex == index
+              borderRadius: BorderRadius.circular(25),
+              color: isActive
                   ? AppColors.primaryColor
                   : AppColors.colorBtnAndCard,
-              border: Border.all(
-                color: selectedIndex == index ? Color(0xff19462a) : Colors.grey,
-                width: 0.5,
-              ),
+              border: isActive
+                  ? null
+                  : Border.all(color: Colors.grey, width: 0.5),
+              boxShadow: isActive
+                  ? [
+                      BoxShadow(
+                        color: AppColors.primaryColor.withOpacity(0.4),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ]
+                  : null,
             ),
             child: Center(
-              child: customText(
-                text: widget.category[index],
-                weight: FontWeight.w500,
-                color: Colors.white,
-                size: 15,
+              child: Text(
+                widget.categories[index],
+                style: Style.textStyle14Bold.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
