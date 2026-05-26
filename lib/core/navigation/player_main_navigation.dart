@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/widgets/custom_bottom_nav.dart';
+import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 import 'package:mala3bna/features/player/courts_booking/views/court_details.dart';
 import 'package:mala3bna/features/player/home/presentation/views/home_view.dart';
-import 'package:mala3bna/features/player/messages/views/messages_view.dart';
+import 'package:mala3bna/features/player/maps/views/maps_view.dart';
 import 'package:mala3bna/features/player/profile/views/profile_view.dart';
 
 class PlayerMainNavigation extends StatefulWidget {
@@ -17,8 +18,19 @@ class _PlayerMainNavigationState extends State<PlayerMainNavigation> {
 
   final List<Widget> pages = const [
     HomeView(),
-    BookingsView(),
-    MessagesView(),
+    BookingsView(
+      courtModel: CourtModel(
+        id: 1,
+        name: 'Smash Padel Club',
+        sport: 'Padel',
+        location: 'Zamalek, Cairo',
+        rating: 4.9,
+        pricePerHour: 350,
+        distance: '2.5 km',
+        imageUrl: 'assets/images/Court.png',
+      ),
+    ),
+    MapsView(),
     ProfileView(),
   ];
 
@@ -42,9 +54,9 @@ class _PlayerMainNavigationState extends State<PlayerMainNavigation> {
             label: 'Courts',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
-            activeIcon: Icon(Icons.chat),
-            label: 'Messages',
+            icon: Icon(Icons.location_on_outlined),
+            activeIcon: Icon(Icons.location_on),
+            label: 'Maps',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

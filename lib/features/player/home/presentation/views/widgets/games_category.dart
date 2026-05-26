@@ -44,17 +44,11 @@ class _GamesCategoryState extends State<GamesCategory> {
             final String sport;
             final int nextIndex;
             if (selectedIndex == index) {
-              nextIndex = -1;
+              nextIndex = 0;
               sport = 'All';
             } else {
               nextIndex = index;
-              sport = index == 0
-                  ? 'Football'
-                  : index == 1
-                      ? 'Tennis'
-                      : index == 2
-                          ? 'Swimming'
-                          : 'Padel';
+              sport = widget.categories[index];
             }
             setState(() {
               selectedIndex = nextIndex;

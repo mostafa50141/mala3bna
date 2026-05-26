@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/player/home/data/models/court_model.dart';
+import 'package:mala3bna/features/player/courts_booking/views/court_details.dart';
 
 class CourtsCategory extends StatelessWidget {
-  const CourtsCategory({
-    super.key,
-    required this.court,
-    this.onTap,
-  });
+  const CourtsCategory({super.key, required this.court, this.onTap});
 
   final CourtModel court;
   final void Function()? onTap;
@@ -17,7 +15,15 @@ class CourtsCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap:
+          onTap ??
+          () {
+            Get.to(
+              () => BookingsView(courtModel: court),
+              transition: Transition.fadeIn,
+              duration: const Duration(milliseconds: 500),
+            );
+          },
       child: Container(
         margin: const EdgeInsets.only(right: 12),
         width: 170,
@@ -43,34 +49,49 @@ class CourtsCategory extends StatelessWidget {
                 flex: 4,
                 child: Container(
                   color: AppColors.colorBtnAndCard,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         court.name,
-                        style: Style.textStyle14Bold.copyWith(color: Colors.white),
+                        style: Style.textStyle14Bold.copyWith(
+                          color: Colors.white,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Row(
                         children: [
-                          const Icon(Icons.star, color: Colors.yellow, size: 14),
+                          const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                            size: 14,
+                          ),
                           const Gap(4),
                           Text(
                             court.rating.toString(),
-                            style: Style.textStyle12.copyWith(color: Colors.grey),
+                            style: Style.textStyle12.copyWith(
+                              color: Colors.grey,
+                            ),
                           ),
                           const Gap(4),
                           Text(
                             '•',
-                            style: Style.textStyle12.copyWith(color: Colors.grey),
+                            style: Style.textStyle12.copyWith(
+                              color: Colors.grey,
+                            ),
                           ),
                           const Gap(4),
                           Text(
                             court.distance,
-                            style: Style.textStyle12.copyWith(color: Colors.grey),
+                            style: Style.textStyle12.copyWith(
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),
@@ -84,7 +105,9 @@ class CourtsCategory extends StatelessWidget {
                           ),
                           Text(
                             '/hr',
-                            style: Style.textStyle12.copyWith(color: Colors.grey),
+                            style: Style.textStyle12.copyWith(
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),

@@ -53,14 +53,14 @@ class ListViewOfAcademicCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const sports = ['Football', 'Tennis', 'Swimming', 'Padel'];
+    const sports = ['All', 'Football', 'Tennis', 'Swimming', 'Padel'];
     final String selectedSportName =
         (selectedSport >= 0 && selectedSport < sports.length)
         ? sports[selectedSport]
-        : '';
+        : 'All';
 
     final filteredAcademics = academics.where((academic) {
-      final bool matchesSport = academic['sport'] == selectedSportName;
+      final bool matchesSport = selectedSportName == 'All' || academic['sport'] == selectedSportName;
       final bool matchesSearch = academic['nameAcademy']
           .toString()
           .toLowerCase()

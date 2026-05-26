@@ -3,23 +3,31 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CustomCarouselSlider extends StatefulWidget {
-  const CustomCarouselSlider({super.key});
+  final String imageUrl;
+  const CustomCarouselSlider({super.key, required this.imageUrl});
 
   @override
   State<CustomCarouselSlider> createState() => _CustomCarouselSliderState();
 }
 
 class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
-  final List<String> imgList = [
-    'assets/images/Court.png',
-    'assets/images/Court.png',
-    'assets/images/Court.png',
-    'assets/images/Court.png',
-    'assets/images/Court.png',
-  ];
+  late final List<String> imgList;
   final CarouselSliderController carouselController =
       CarouselSliderController();
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    imgList = [
+      widget.imageUrl,
+      widget.imageUrl,
+      widget.imageUrl,
+      widget.imageUrl,
+      widget.imageUrl,
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -32,10 +40,9 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
           },
           options: CarouselOptions(
             viewportFraction: 1.0,
-            height: 200.0,
+            height: 220.0, // Matches expandedHeight of SliverAppBar
             autoPlay: true,
-            // enlargeCenterPage: true,
-            autoPlayInterval: Duration(seconds: 3),
+            autoPlayInterval: const Duration(seconds: 3),
             onPageChanged: (index, reason) {
               setState(() => _currentIndex = index);
             },
@@ -62,11 +69,14 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
     );
   }
 
-  Widget buildimage(String imgList, int index) {
+  Widget buildimage(String imageUrl, int index) {
     return SizedBox(
-      // margin: EdgeInsets.symmetric(horizontal: 5),
       width: double.infinity,
-      child: Image.asset(imgList, fit: BoxFit.cover, width: double.infinity),
+      child: Image(
+        image: AssetImage(imageUrl),
+        fit: BoxFit.cover,
+        width: double.infinity,
+      ),
     );
   }
 }

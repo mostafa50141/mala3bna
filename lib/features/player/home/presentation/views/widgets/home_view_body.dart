@@ -24,22 +24,14 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody> {
   int selectedIndex = 0;
-  final List<String> categories = const ['Football', 'Tennis', 'Swimming', 'Padel'];
+  final List<String> categories = const ['All', 'Football', 'Tennis', 'Swimming', 'Padel'];
   String searchQuery = '';
 
   // sport filter
   void _onSportSelected(int index) {
     setState(() => selectedIndex = index);
-    final sport = index == 0
-        ? 'Football'
-        : index == 1
-            ? 'Tennis'
-            : index == 2
-                ? 'Swimming'
-                : index == 3
-                    ? 'Padel'
-                    : 'All';
-    context.read<CourtsCubit>().filterBySport(sport);
+    final sports = ['All', 'Football', 'Tennis', 'Swimming', 'Padel'];
+    context.read<CourtsCubit>().filterBySport(sports[index]);
   }
 
   // search
@@ -100,17 +92,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                               ),
                             );
                           } else if (state is CourtsSuccess) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.to(
-                                  () => const BookingsView(),
-                                  transition: Transition.fadeIn,
-                                  duration: const Duration(milliseconds: 500),
-                                );
-                              },
-                              child: ListViewOfCourtsCategory(
-                                courts: state.courts,
-                              ),
+                            return ListViewOfCourtsCategory(
+                              courts: state.courts,
                             );
                           } else if (state is CourtsFailure) {
                             return const SizedBox(

@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 import 'package:mala3bna/features/player/courts_booking/views/court_booking_summry.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/amenities_item_builder.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/chip_chioce_time.dart';
@@ -14,7 +15,12 @@ import 'package:mala3bna/features/player/courts_booking/views/widgets/table_cale
 import 'package:mala3bna/core/widgets/custom_btn.dart';
 
 class CourtDetailsBody extends StatelessWidget {
-  const CourtDetailsBody({super.key});
+  final CourtModel court;
+
+  const CourtDetailsBody({
+    super.key,
+    required this.court,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class CourtDetailsBody extends StatelessWidget {
               pinned: true,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              flexibleSpace: const CustomCarouselSlider(),
+              flexibleSpace: CustomCarouselSlider(imageUrl: court.imageUrl),
               expandedHeight: 220,
               title: const CustomAppBarCourt(title: "Court Details"),
             ),
@@ -38,12 +44,26 @@ class CourtDetailsBody extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      "Sky Padel - Court1",
+                      court.name,
                       style: Style.textStyle26.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.location_on, color: Colors.grey, size: 16),
+                        const Gap(4),
+                        Text(
+                          court.location,
+                          style: Style.textStyle14.copyWith(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Gap(8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Row(
@@ -52,15 +72,15 @@ class CourtDetailsBody extends StatelessWidget {
                           child: CustomContainer(
                             height: 40,
                             text1: "Sport Type:",
-                            text2: "Padel",
+                            text2: court.sport,
                           ),
                         ),
-                        Gap(10),
+                        const Gap(10),
                         Expanded(
                           child: CustomContainer(
                             height: 40,
                             text1: "Rating: ",
-                            text2: "4.5 Stars",
+                            text2: "${court.rating} Stars",
                           ),
                         ),
                       ],
@@ -92,21 +112,21 @@ class CourtDetailsBody extends StatelessWidget {
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Color(0xFF2B3A41),
+                    color: const Color(0xFF2B3A41),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     children: [
-                      Gap(20),
+                      const Gap(20),
                       Text('Price', style: Style.textStyle16Bold),
-                      Spacer(),
+                      const Spacer(),
                       Text(
-                        '150 EGP/ hr',
+                        '${court.pricePerHour} EGP/ hr',
                         style: Style.textStyle20.copyWith(
                           color: AppColors.primaryColor,
                         ),
                       ),
-                      Gap(20),
+                      const Gap(20),
                     ],
                   ),
                 ),
