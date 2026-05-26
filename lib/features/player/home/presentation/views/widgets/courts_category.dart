@@ -2,20 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 
 class CourtsCategory extends StatelessWidget {
   const CourtsCategory({
     super.key,
-    required this.courtName,
-    required this.price,
-    required this.rating,
-    required this.distance,
+    required this.court,
     this.onTap,
   });
-  final String courtName;
-  final int price;
-  final double rating;
-  final String distance;
+
+  final CourtModel court;
   final void Function()? onTap;
 
   @override
@@ -23,7 +19,7 @@ class CourtsCategory extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(right: 12),
+        margin: const EdgeInsets.only(right: 12),
         width: 170,
         height: 200,
         decoration: BoxDecoration(
@@ -37,8 +33,8 @@ class CourtsCategory extends StatelessWidget {
             children: [
               Expanded(
                 flex: 6,
-                child: Image.asset(
-                  'assets/images/Court.png',
+                child: Image(
+                  image: AssetImage(court.imageUrl),
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -53,27 +49,27 @@ class CourtsCategory extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        courtName,
+                        court.name,
                         style: Style.textStyle14Bold.copyWith(color: Colors.white),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       Row(
                         children: [
-                          Icon(Icons.star, color: Colors.yellow, size: 14),
-                          Gap(4),
+                          const Icon(Icons.star, color: Colors.yellow, size: 14),
+                          const Gap(4),
                           Text(
-                            rating.toString(),
+                            court.rating.toString(),
                             style: Style.textStyle12.copyWith(color: Colors.grey),
                           ),
-                          Gap(4),
+                          const Gap(4),
                           Text(
                             '•',
                             style: Style.textStyle12.copyWith(color: Colors.grey),
                           ),
-                          Gap(4),
+                          const Gap(4),
                           Text(
-                            distance,
+                            court.distance,
                             style: Style.textStyle12.copyWith(color: Colors.grey),
                           ),
                         ],
@@ -81,7 +77,7 @@ class CourtsCategory extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'EGP $price',
+                            'EGP ${court.pricePerHour}',
                             style: Style.textStyle14Bold.copyWith(
                               color: AppColors.primaryColor,
                             ),

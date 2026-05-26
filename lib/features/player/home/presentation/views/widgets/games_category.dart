@@ -7,11 +7,11 @@ class GamesCategory extends StatefulWidget {
     super.key,
     required this.selectedIndex,
     required this.categories,
-    this.onCategorySelected,
+    this.onSportSelected,
   });
   final int selectedIndex;
   final List<String> categories;
-  final ValueChanged<int>? onCategorySelected;
+  final Function(String)? onSportSelected;
 
   @override
   State<GamesCategory> createState() => _GamesCategoryState();
@@ -41,14 +41,29 @@ class _GamesCategoryState extends State<GamesCategory> {
         bool isActive = selectedIndex == index;
         return GestureDetector(
           onTap: () {
+            final String sport;
+            final int nextIndex;
+            if (selectedIndex == index) {
+              nextIndex = -1;
+              sport = 'All';
+            } else {
+              nextIndex = index;
+              sport = index == 0
+                  ? 'Football'
+                  : index == 1
+                      ? 'Tennis'
+                      : index == 2
+                          ? 'Swimming'
+                          : 'Padel';
+            }
             setState(() {
-              selectedIndex = index;
+              selectedIndex = nextIndex;
             });
-            widget.onCategorySelected?.call(index);
+            widget.onSportSelected?.call(sport);
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            margin: EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            margin: const EdgeInsets.only(right: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               color: isActive
@@ -62,7 +77,7 @@ class _GamesCategoryState extends State<GamesCategory> {
                       BoxShadow(
                         color: AppColors.primaryColor.withOpacity(0.4),
                         blurRadius: 8,
-                        offset: Offset(0, 4),
+                        offset: const Offset(0, 4),
                       ),
                     ]
                   : null,
