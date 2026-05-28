@@ -1,15 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mala3bna/core/utils/local_storage_helper.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/player/courts_booking/data/models/booking_model.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/navigation_button_card.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/qr_card.dart';
+import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 import 'package:mala3bna/features/player/home/presentation/views/home_view.dart';
 
-class ConfirmedBookingBodyPage extends StatelessWidget {
-  const ConfirmedBookingBodyPage({super.key});
+class ConfirmedBookingBodyPage extends StatefulWidget {
+  final CourtModel court;
+  final DateTime? selectedDate;
+  final String? selectedTime;
+
+  const ConfirmedBookingBodyPage({
+    super.key,
+    required this.court,
+    this.selectedDate,
+    this.selectedTime,
+  });
+
+  @override
+  State<ConfirmedBookingBodyPage> createState() =>
+      _ConfirmedBookingBodyPageState();
+}
+
+class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
+  bool _bookingSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (!_bookingSaved) {
+      _bookingSaved = true;
+      _saveBooking();
+    }
+  }
+
+  Future<void> _saveBooking() async {
+    final booking = BookingModel(
+      id: '${widget.court.id}-${DateTime.now().millisecondsSinceEpoch}',
+      courtName: widget.court.name,
+      courtLocation: widget.court.location,
+      courtImage: widget.court.imageUrl,
+      sport: widget.court.sport,
+      date: widget.selectedDate != null
+          ? DateFormat('EEE, d MMM').format(widget.selectedDate!)
+          : 'Unknown',
+      time: widget.selectedTime ?? 'Unknown',
+      price: widget.court.pricePerHour,
+      status: 'upcoming',
+    );
+    await getIt.get<LocalStorageHelper>().saveBooking(booking);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +92,12 @@ class ConfirmedBookingBodyPage extends StatelessWidget {
           Gap(85),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: const QrCard(),
+            child: QrCard(
+              courtName: widget.court.name,
+              location: widget.court.location,
+              selectedDate: widget.selectedDate,
+              selectedTime: widget.selectedTime,
+            ),
           ),
           Gap(20),
           Padding(
@@ -81,7 +133,7 @@ class ConfirmedBookingBodyPage extends StatelessWidget {
                   title: "Home",
                   icon: Icons.home,
                   onPressed: () {
-                    Get.to(const HomeView());
+                    Get.offAll(() => const HomeView());
                   },
                 ),
               ],

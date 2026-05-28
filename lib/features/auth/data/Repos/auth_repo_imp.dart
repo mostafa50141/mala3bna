@@ -29,6 +29,13 @@ class AuthRepoImp implements AuthRepo {
       if (user.token != null) {
         // save the token in local storage using the helper class that i created
         await getIt.get<LocalStorageHelper>().savetoken(user.token!);
+        // save user data in local storage using the helper class that i created
+        await getIt.get<LocalStorageHelper>().saveUserData(
+          name: user.fullName ?? '',
+          email: user.email ?? '',
+          phone: user.phoneNumber ?? '',
+          userType: user.userType ?? '',
+        );
         return right(user);
       } else {
         return left(ServerFailure("Invalid token"));
@@ -65,6 +72,12 @@ class AuthRepoImp implements AuthRepo {
       if (user.token != null) {
         // save the token in local storage using the helper class that i created
         await getIt.get<LocalStorageHelper>().savetoken(user.token!);
+        await getIt.get<LocalStorageHelper>().saveUserData(
+          name: name,
+          email: email,
+          phone: phone,
+          userType: role,
+        );
         return right(user);
       } else {
         return left(ServerFailure("Invalid token"));

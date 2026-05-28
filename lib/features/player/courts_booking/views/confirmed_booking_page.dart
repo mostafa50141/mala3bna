@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/confirmed_booking_body_page.dart';
+import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 
 class ConfirmedBookingPage extends StatelessWidget {
-  const ConfirmedBookingPage({super.key});
+  final CourtModel court;
+  final DateTime? selectedDate;
+  final String? selectedTime;
+
+  const ConfirmedBookingPage({
+    super.key,
+    required this.court,
+    this.selectedDate,
+    this.selectedTime,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SafeArea(child: ConfirmedBookingBodyPage()));
+    return Scaffold(
+      body: SafeArea(
+        child: ConfirmedBookingBodyPage(
+          court: court,
+          selectedDate: selectedDate,
+          selectedTime: selectedTime,
+        ),
+      ),
+    );
   }
 }

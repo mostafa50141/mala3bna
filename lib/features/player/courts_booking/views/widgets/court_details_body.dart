@@ -14,13 +14,21 @@ import 'package:mala3bna/features/player/courts_booking/views/widgets/custom_con
 import 'package:mala3bna/features/player/courts_booking/views/widgets/table_calendar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
 
-class CourtDetailsBody extends StatelessWidget {
+class CourtDetailsBody extends StatefulWidget {
   final CourtModel court;
 
   const CourtDetailsBody({
     super.key,
     required this.court,
   });
+
+  @override
+  State<CourtDetailsBody> createState() => _CourtDetailsBodyState();
+}
+
+class _CourtDetailsBodyState extends State<CourtDetailsBody> {
+  DateTime _selectedDay = DateTime.now();
+  String selectedOption = "4:00 PM";
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +41,7 @@ class CourtDetailsBody extends StatelessWidget {
               pinned: true,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              flexibleSpace: CustomCarouselSlider(imageUrl: court.imageUrl),
+              flexibleSpace: CustomCarouselSlider(imageUrl: widget.court.imageUrl),
               expandedHeight: 220,
               title: const CustomAppBarCourt(title: "Court Details"),
             ),
@@ -44,7 +52,7 @@ class CourtDetailsBody extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      court.name,
+                      widget.court.name,
                       style: Style.textStyle26.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -57,7 +65,7 @@ class CourtDetailsBody extends StatelessWidget {
                         const Icon(Icons.location_on, color: Colors.grey, size: 16),
                         const Gap(4),
                         Text(
-                          court.location,
+                          widget.court.location,
                           style: Style.textStyle14.copyWith(color: Colors.grey),
                         ),
                       ],
@@ -72,7 +80,7 @@ class CourtDetailsBody extends StatelessWidget {
                           child: CustomContainer(
                             height: 40,
                             text1: "Sport Type:",
-                            text2: court.sport,
+                            text2: widget.court.sport,
                           ),
                         ),
                         const Gap(10),
@@ -80,7 +88,7 @@ class CourtDetailsBody extends StatelessWidget {
                           child: CustomContainer(
                             height: 40,
                             text1: "Rating: ",
-                            text2: "${court.rating} Stars",
+                            text2: "${widget.court.rating} Stars",
                           ),
                         ),
                       ],
@@ -121,7 +129,7 @@ class CourtDetailsBody extends StatelessWidget {
                       Text('Price', style: Style.textStyle16Bold),
                       const Spacer(),
                       Text(
-                        '${court.pricePerHour} EGP/ hr',
+                        '${widget.court.pricePerHour} EGP/ hr',
                         style: Style.textStyle20.copyWith(
                           color: AppColors.primaryColor,
                         ),
@@ -146,10 +154,22 @@ class CourtDetailsBody extends StatelessWidget {
                         color: const Color(0xFF2B3A41),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: CustomTableCalendar(),
+                      child: CustomTableCalendar(
+                        onDateSelected: (date) {
+                          setState(() {
+                            _selectedDay = date;
+                          });
+                        },
+                      ),
                     ),
                     const Gap(20),
-                    CustomeChoiceChipTime(),
+                    CustomeChoiceChipTime(
+                      onTimeSelected: (time) {
+                        setState(() {
+                          selectedOption = time;
+                        });
+                      },
+                    ),
                     const Gap(30),
                     Center(
                       child: CustomBtn(
@@ -160,7 +180,11 @@ class CourtDetailsBody extends StatelessWidget {
                         weightText: FontWeight.bold,
                         sizeText: 18,
                         onTap: () {
-                          Get.to(() => const CourtBookingSummry());
+                          Get.to(() => CourtBookingSummry(
+                                court: widget.court,
+                                selectedDate: _selectedDay,
+                                selectedTime: selectedOption,
+                              ));
                         },
                       ),
                     ),

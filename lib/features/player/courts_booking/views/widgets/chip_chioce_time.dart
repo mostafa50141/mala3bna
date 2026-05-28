@@ -3,7 +3,8 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/time_slot.dart';
 
 class CustomeChoiceChipTime extends StatefulWidget {
-  const CustomeChoiceChipTime({super.key});
+  final Function(String)? onTimeSelected;
+  const CustomeChoiceChipTime({super.key, this.onTimeSelected});
 
   @override
   State<CustomeChoiceChipTime> createState() => _CustomeChoiceChipTimeState();
@@ -41,6 +42,9 @@ class _CustomeChoiceChipTimeState extends State<CustomeChoiceChipTime> {
                 selectedOption = option;
               }
             });
+            if (isSelected && widget.onTimeSelected != null) {
+              widget.onTimeSelected!(option);
+            }
           },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),

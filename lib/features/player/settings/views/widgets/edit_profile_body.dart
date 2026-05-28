@@ -1,10 +1,16 @@
 import 'dart:io';
 
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/utils/local_storage_helper.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
+import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 
 class EditProfileBody extends StatefulWidget {
@@ -15,14 +21,35 @@ class EditProfileBody extends StatefulWidget {
 }
 
 class _EditProfileBodyState extends State<EditProfileBody> {
-  final _fullNameController = TextEditingController(text: "Mostafa Ahmed");
-  final _emailController = TextEditingController(text: "mostafa@gmail.com");
-  final _phoneController = TextEditingController(text: "+20 100 000 0000");
-  final _birthDateController = TextEditingController(text: "22 Apr 2004");
+  bool _isLoading = true;
+  final _fullNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _birthDateController = TextEditingController(text: '22 Apr 2004');
 
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
-// this function to pick image from gallery and set it to _selectedImage
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final storage = getIt.get<LocalStorageHelper>();
+    final name = await storage.getUserName();
+    final email = await storage.getUserEmail();
+    final phone = await storage.getUserPhone();
+    setState(() {
+      _fullNameController.text = name;
+      _emailController.text = email;
+      _phoneController.text = phone;
+      _isLoading = false;
+    });
+  }
+
+  // this function to pick image from gallery and set it to _selectedImage
   Future<void> _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -53,6 +80,10 @@ class _EditProfileBodyState extends State<EditProfileBody> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CustomeCircularLaoding());
+    }
+
     final border = OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.circular(24),
@@ -178,10 +209,20 @@ class _EditProfileBodyState extends State<EditProfileBody> {
               color: AppColors.primaryColor,
               colorText: Colors.white,
               weightText: FontWeight.bold,
-              onTap: () {
-                // Save action code 
-                
-
+              onTap: () async {
+                final storage = getIt.get<LocalStorageHelper>();
+                await storage.saveUserData(
+                  name: _fullNameController.text.trim(),
+                  email: _emailController.text.trim(),
+                  phone: _phoneController.text.trim(),
+                  userType: await storage.getUserType(),
+                );
+                showAnimatedSnackDialog(
+                  context,
+                  message: "Profile updated successfully",
+                  type: AnimatedSnackBarType.success,
+                );
+                Get.back();
               },
             ),
           ],

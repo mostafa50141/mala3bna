@@ -7,7 +7,6 @@ import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/section_title.dart';
-import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/player/profile/views/my_bookings_views.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_menu_item.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_stats_row.dart';
@@ -15,9 +14,35 @@ import 'package:mala3bna/features/player/settings/views/settings_view.dart';
 import 'package:mala3bna/features/player/payments/views/payments_view.dart';
 import 'package:mala3bna/features/player/terms/views/terms_view.dart';
 import 'package:mala3bna/features/player/help/views/help_view.dart';
+import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
+import 'package:mala3bna/features/welcome_screen/presentation/views/welcome_screen.dart';
 
-class ProfileBody extends StatelessWidget {
+class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});
+
+  @override
+  State<ProfileBody> createState() => _ProfileBodyState();
+}
+
+class _ProfileBodyState extends State<ProfileBody> {
+  String _name = '';
+  String _email = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final storage = getIt.get<LocalStorageHelper>();
+    final name = await storage.getUserName();
+    final email = await storage.getUserEmail();
+    setState(() {
+      _name = name;
+      _email = email;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +65,12 @@ class ProfileBody extends StatelessWidget {
           ),
           const Gap(12),
           Text(
-            'Mostafa Ahmed',
+            _name.isNotEmpty ? _name : 'Loading...',
             style: Style.textStyle20Bold.copyWith(color: Colors.white),
           ),
           const Gap(4),
           Text(
-            'mostafa@gmail.com',
+            _email.isNotEmpty ? _email : 'Loading...',
             style: Style.textStyle14.copyWith(color: Colors.grey),
           ),
           const Gap(24),
@@ -75,7 +100,7 @@ class ProfileBody extends StatelessWidget {
             icon: Icons.settings_outlined,
             label: 'Settings',
             onTap: () {
-              Get.to(() => const SettingsView());
+              Get.to(() => const SettingsView())?.then((_) => _loadUserData());
             },
           ),
           ProfileMenuItem(
@@ -97,10 +122,47 @@ class ProfileBody extends StatelessWidget {
             label: 'Logout',
             isDanger: true,
             onTap: () {
-              // Handle logout logic here using the getit service locator to clear the token and navigate to the login screen
-              // final token = await getIt.get<LocalStorageHelper>().gettoken();
-              getIt.get<LocalStorageHelper>().deletetoken();
-              Get.offAll(() => const LoginScreen());
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  backgroundColor: AppColors.colorBtnAndCard,
+                  title: Text(
+                    'Logout',
+                    style: Style.textStyle18Bold.copyWith(color: Colors.white),
+                  ),
+                  content: Text(
+                    'Are you sure you want to logout?',
+                    style: Style.textStyle14.copyWith(color: Colors.grey),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Cancel',
+                        style: Style.textStyle14Bold.copyWith(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        final authController = Get.find<AuthController>();
+                        authController.logout();
+                        await getIt.get<LocalStorageHelper>().deletetoken();
+                        await getIt.get<LocalStorageHelper>().deleteUserData();
+                        Get.offAll(() => const WelcomeScreen());
+                      },
+                      child: Text(
+                        'Logout',
+                        style: Style.textStyle14Bold.copyWith(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             },
           ),
         ],

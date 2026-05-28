@@ -9,9 +9,20 @@ import 'package:mala3bna/features/player/courts_booking/views/widgets/booking_su
 import 'package:mala3bna/features/player/courts_booking/views/widgets/custom_app_bar_court.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/payment_card.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
+import 'package:intl/intl.dart';
+import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 
 class CourtBookingSummryBody extends StatelessWidget {
-  const CourtBookingSummryBody({super.key});
+  final CourtModel court;
+  final DateTime? selectedDate;
+  final String? selectedTime;
+
+  const CourtBookingSummryBody({
+    super.key,
+    required this.court,
+    this.selectedDate,
+    this.selectedTime,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +36,15 @@ class CourtBookingSummryBody extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: BookingSummaryCard(
-                imageUrl: 'assets/images/Court.png',
-                courtTitle: "Sky Padel - Court1",
-                location: " Zamalek , Cairo  ",
-                dateLabel: " Date",
-                timeLabel: " Time ",
-                rentalLabel: " Court Rental ",
-                dateValue: 'Mondey ,6Feb ',
-                timeValue: "08:00pm",
-                rentalValue: " 150 EGP ",
+                imageUrl: court.imageUrl,
+                courtTitle: court.name,
+                location: court.location,
+                dateLabel: "Date",
+                timeLabel: "Time",
+                rentalLabel: "Court Rental",
+                dateValue: selectedDate != null ? DateFormat('EEE, d MMM').format(selectedDate!) : 'Not selected',
+                timeValue: selectedTime ?? 'Not selected',
+                rentalValue: '${court.pricePerHour} EGP',
                 extraMoney: "Add Equipment",
                 extraMoneyvaue: 50,
               ),
@@ -59,7 +70,7 @@ class CourtBookingSummryBody extends StatelessWidget {
                     children: [
                       Text("Total Price", style: Style.textStyle16Bold),
                       Text(
-                        "200 EGP",
+                        '${court.pricePerHour + 50} EGP',
                         style: Style.textStyle20Bold.copyWith(
                           color: AppColors.primaryColor,
                         ),
@@ -76,7 +87,11 @@ class CourtBookingSummryBody extends StatelessWidget {
                       weightText: FontWeight.bold,
                       sizeText: 18,
                       onTap: () {
-                        Get.to(() => const ConfirmedBookingPage());
+                        Get.to(() => ConfirmedBookingPage(
+                              court: court,
+                              selectedDate: selectedDate,
+                              selectedTime: selectedTime,
+                            ));
                       },
                     ),
                   ),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CustomTableCalendar extends StatefulWidget {
-  const CustomTableCalendar({super.key});
+  final Function(DateTime)? onDateSelected;
+  const CustomTableCalendar({super.key, this.onDateSelected});
 
   @override
   State<CustomTableCalendar> createState() => _CustomTableCalendarState();
@@ -47,6 +48,9 @@ class _CustomTableCalendarState extends State<CustomTableCalendar> {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
             });
+            if (widget.onDateSelected != null) {
+              widget.onDateSelected!(selectedDay);
+            }
           },
         ),
       ],

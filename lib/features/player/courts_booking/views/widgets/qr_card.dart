@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCard extends StatelessWidget {
-  const QrCard({super.key});
+  final String courtName;
+  final String location;
+  final DateTime? selectedDate;
+  final String? selectedTime;
+
+  const QrCard({
+    super.key,
+    required this.courtName,
+    required this.location,
+    this.selectedDate,
+    this.selectedTime,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +50,9 @@ class QrCard extends StatelessWidget {
                     style: TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                   Text(
-                    'July 12, 2024 - 18:00',
+                    selectedDate != null
+                        ? '${DateFormat('MMM d, yyyy').format(selectedDate!)} - ${selectedTime ?? ''}'
+                        : 'Date not selected',
                     style: TextStyle(color: Colors.white),
                   ),
 
@@ -49,7 +63,7 @@ class QrCard extends StatelessWidget {
                     style: TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                   Text(
-                    'Zamalek SC,\nFootball Pitch A',
+                    '$courtName,\n$location',
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -71,7 +85,11 @@ class QrCard extends StatelessWidget {
                   height: 80,
                   color: Colors.white,
                   child: Center(
-                    child: QrImageView(data: '#EGY120724', size: 90),
+                    child: QrImageView(
+                      data:
+                          '$courtName-${DateTime.now().millisecondsSinceEpoch}',
+                      size: 90,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
