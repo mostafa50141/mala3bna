@@ -17,13 +17,13 @@ class CourtsRepoImpl implements CourtsRepo {
       await Future.delayed(const Duration(milliseconds: 800));
 
       final List<CourtModel> mockCourtsList = [
-        const CourtModel(id:1, name:'Smash Padel Club', sport:'Padel', location:'Zamalek, Cairo', rating:4.9, pricePerHour:350, distance:'2.5 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:2, name:'Ace Tennis Arena', sport:'Tennis', location:'Nasr City, Cairo', rating:4.5, pricePerHour:300, distance:'3.1 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:3, name:'Blue Wave Swimming', sport:'Swimming', location:'Maadi, Cairo', rating:4.7, pricePerHour:250, distance:'1.2 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:4, name:'Grand Padel Court', sport:'Padel', location:'Heliopolis, Cairo', rating:4.8, pricePerHour:400, distance:'4.0 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:5, name:'Elite Tennis Club', sport:'Tennis', location:'Dokki, Cairo', rating:4.6, pricePerHour:320, distance:'2.8 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:6, name:'Al Ahly Football', sport:'Football', location:'Nasr City, Cairo', rating:4.9, pricePerHour:200, distance:'1.5 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:7, name:'Zamalek Football', sport:'Football', location:'Zamalek, Cairo', rating:4.7, pricePerHour:180, distance:'3.5 km', imageUrl:'assets/images/Court.png'),
+        const CourtModel(id:1, name:'Smash Padel Club', sport:'Padel', location:'Zamalek, Cairo', rating:4.9, pricePerHour:350, distance:'2.5 km', imageUrl:'assets/images/Court.png', lat:30.0626, lng:31.2497),
+        const CourtModel(id:2, name:'Ace Tennis Arena', sport:'Tennis', location:'Nasr City, Cairo', rating:4.5, pricePerHour:300, distance:'3.1 km', imageUrl:'assets/images/Court.png', lat:30.0682, lng:31.3279),
+        const CourtModel(id:3, name:'Blue Wave Swimming', sport:'Swimming', location:'Maadi, Cairo', rating:4.7, pricePerHour:250, distance:'1.2 km', imageUrl:'assets/images/Court.png', lat:29.9626, lng:31.2497),
+        const CourtModel(id:4, name:'Grand Padel Court', sport:'Padel', location:'Heliopolis, Cairo', rating:4.8, pricePerHour:400, distance:'4.0 km', imageUrl:'assets/images/Court.png', lat:30.0875, lng:31.3411),
+        const CourtModel(id:5, name:'Elite Tennis Club', sport:'Tennis', location:'Dokki, Cairo', rating:4.6, pricePerHour:320, distance:'2.8 km', imageUrl:'assets/images/Court.png', lat:30.0392, lng:31.2133),
+        const CourtModel(id:6, name:'Al Ahly Football', sport:'Football', location:'Nasr City, Cairo', rating:4.9, pricePerHour:200, distance:'1.5 km', imageUrl:'assets/images/Court.png', lat:30.0682, lng:31.3279),
+        const CourtModel(id:7, name:'Zamalek Football', sport:'Football', location:'Zamalek, Cairo', rating:4.7, pricePerHour:180, distance:'3.5 km', imageUrl:'assets/images/Court.png', lat:30.0626, lng:31.2497),
       ];
 
       return right(mockCourtsList);
@@ -42,13 +42,13 @@ class CourtsRepoImpl implements CourtsRepo {
       await Future.delayed(const Duration(milliseconds: 500));
 
       final List<CourtModel> mockCourtsList = [
-        const CourtModel(id:1, name:'Smash Padel Club', sport:'Padel', location:'Zamalek, Cairo', rating:4.9, pricePerHour:350, distance:'2.5 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:2, name:'Ace Tennis Arena', sport:'Tennis', location:'Nasr City, Cairo', rating:4.5, pricePerHour:300, distance:'3.1 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:3, name:'Blue Wave Swimming', sport:'Swimming', location:'Maadi, Cairo', rating:4.7, pricePerHour:250, distance:'1.2 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:4, name:'Grand Padel Court', sport:'Padel', location:'Heliopolis, Cairo', rating:4.8, pricePerHour:400, distance:'4.0 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:5, name:'Elite Tennis Club', sport:'Tennis', location:'Dokki, Cairo', rating:4.6, pricePerHour:320, distance:'2.8 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:6, name:'Al Ahly Football', sport:'Football', location:'Nasr City, Cairo', rating:4.9, pricePerHour:200, distance:'1.5 km', imageUrl:'assets/images/Court.png'),
-        const CourtModel(id:7, name:'Zamalek Football', sport:'Football', location:'Zamalek, Cairo', rating:4.7, pricePerHour:180, distance:'3.5 km', imageUrl:'assets/images/Court.png'),
+        const CourtModel(id:1, name:'Smash Padel Club', sport:'Padel', location:'Zamalek, Cairo', rating:4.9, pricePerHour:350, distance:'2.5 km', imageUrl:'assets/images/Court.png', lat:30.0626, lng:31.2497),
+        const CourtModel(id:2, name:'Ace Tennis Arena', sport:'Tennis', location:'Nasr City, Cairo', rating:4.5, pricePerHour:300, distance:'3.1 km', imageUrl:'assets/images/Court.png', lat:30.0682, lng:31.3279),
+        const CourtModel(id:3, name:'Blue Wave Swimming', sport:'Swimming', location:'Maadi, Cairo', rating:4.7, pricePerHour:250, distance:'1.2 km', imageUrl:'assets/images/Court.png', lat:29.9626, lng:31.2497),
+        const CourtModel(id:4, name:'Grand Padel Court', sport:'Padel', location:'Heliopolis, Cairo', rating:4.8, pricePerHour:400, distance:'4.0 km', imageUrl:'assets/images/Court.png', lat:30.0875, lng:31.3411),
+        const CourtModel(id:5, name:'Elite Tennis Club', sport:'Tennis', location:'Dokki, Cairo', rating:4.6, pricePerHour:320, distance:'2.8 km', imageUrl:'assets/images/Court.png', lat:30.0392, lng:31.2133),
+        const CourtModel(id:6, name:'Al Ahly Football', sport:'Football', location:'Nasr City, Cairo', rating:4.9, pricePerHour:200, distance:'1.5 km', imageUrl:'assets/images/Court.png', lat:30.0682, lng:31.3279),
+        const CourtModel(id:7, name:'Zamalek Football', sport:'Football', location:'Zamalek, Cairo', rating:4.7, pricePerHour:180, distance:'3.5 km', imageUrl:'assets/images/Court.png', lat:30.0626, lng:31.2497),
       ];
 
       final court = mockCourtsList.firstWhere(

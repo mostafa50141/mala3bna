@@ -4,6 +4,8 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
@@ -28,6 +30,7 @@ class _EditProfileBodyState extends State<EditProfileBody> {
   final _birthDateController = TextEditingController(text: '22 Apr 2004');
 
   File? _selectedImage;
+  String? _savedImagePath;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -41,10 +44,12 @@ class _EditProfileBodyState extends State<EditProfileBody> {
     final name = await storage.getUserName();
     final email = await storage.getUserEmail();
     final phone = await storage.getUserPhone();
+    final imagePath = await storage.getProfileImagePath();
     setState(() {
       _fullNameController.text = name;
       _emailController.text = email;
       _phoneController.text = phone;
+      _savedImagePath = imagePath;
       _isLoading = false;
     });
   }
@@ -53,8 +58,20 @@ class _EditProfileBodyState extends State<EditProfileBody> {
   Future<void> _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
+
+
+      // Copy to permanent directory
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = 'profile_image.jpg';
+      final permanentPath = path.join(appDir.path, fileName);
+      final permanentFile = await File(image.path).copy(permanentPath);
+      
+      // Save path to storage
+      await getIt.get<LocalStorageHelper>().saveProfileImagePath(permanentFile.path);
+      
       setState(() {
-        _selectedImage = File(image.path);
+        _selectedImage = permanentFile;
+        _savedImagePath = permanentFile.path;
       });
     }
   }
@@ -106,8 +123,10 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                         backgroundColor: Colors.grey.shade800,
                         backgroundImage: _selectedImage != null
                             ? FileImage(_selectedImage!)
-                            : null,
-                        child: _selectedImage == null
+                            : _savedImagePath != null
+                                ? FileImage(File(_savedImagePath!))
+                                : null,
+                        child: (_selectedImage == null && _savedImagePath == null)
                             ? const Icon(
                                 Icons.person,
                                 size: 50,

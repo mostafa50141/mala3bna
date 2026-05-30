@@ -49,6 +49,18 @@ class LocalStorageHelper {
     await storage.delete(key: 'user_type');
   }
 
+  Future<void> saveProfileImagePath(String path) async {
+    await storage.write(key: 'profile_image_path', value: path);
+  }
+
+  Future<String?> getProfileImagePath() async {
+    return await storage.read(key: 'profile_image_path');
+  }
+
+  Future<void> deleteProfileImagePath() async {
+    await storage.delete(key: 'profile_image_path');
+  }
+
   Future<void> saveBooking(BookingModel booking) async {
     final existing = await getBookings();
     existing.add(booking);

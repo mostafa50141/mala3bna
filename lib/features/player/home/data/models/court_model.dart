@@ -7,6 +7,8 @@ class CourtModel {
   final int pricePerHour;
   final String distance;
   final String imageUrl;
+  final double lat;
+  final double lng;
 
   const CourtModel({
     required this.id,
@@ -17,6 +19,8 @@ class CourtModel {
     required this.pricePerHour,
     required this.distance,
     required this.imageUrl,
+    this.lat = 0.0,
+    this.lng = 0.0,
   });
 
   factory CourtModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +33,8 @@ class CourtModel {
       pricePerHour: json['pricePerHour'] as int,
       distance: json['distance'] as String,
       imageUrl: json['imageUrl'] as String,
+      lat: (json['lat'] as num?)?.toDouble() ?? 0.0,
+      lng: (json['lng'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
@@ -42,6 +48,8 @@ class CourtModel {
       'pricePerHour': pricePerHour,
       'distance': distance,
       'imageUrl': imageUrl,
+      'lat': lat,
+      'lng': lng,
     };
   }
 }

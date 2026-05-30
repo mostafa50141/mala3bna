@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
-import 'package:mala3bna/features/player/courts_booking/views/court_details.dart';
+import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/games_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_coach_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_courts_category.dart';
@@ -14,6 +13,7 @@ import 'package:mala3bna/core/widgets/section_title.dart';
 import 'package:mala3bna/features/player/home/presentation/view_model/courts_cubit/courts_cubit.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/core/widgets/custome_erorr_widget.dart';
+import 'package:mala3bna/features/player/home/presentation/views/widgets/courts_map_section.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -24,7 +24,13 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody> {
   int selectedIndex = 0;
-  final List<String> categories = const ['All', 'Football', 'Tennis', 'Swimming', 'Padel'];
+  final List<String> categories = const [
+    'All',
+    'Football',
+    'Tennis',
+    'Swimming',
+    'Padel',
+  ];
   String searchQuery = '';
 
   // sport filter
@@ -78,7 +84,29 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                         ),
                       ),
 
-                      const Gap(25),
+                      const Gap(16),
+
+                      SectionTitle(title: 'Courts Near You'),
+                      const Gap(8),
+                      BlocBuilder<CourtsCubit, CourtsState>(
+                        builder: (context, state) {
+                          if (state is CourtsSuccess) {
+                            return CourtsMapSection(courts: state.courts);
+                          }
+                          return Container(
+                            height: 220,
+                            decoration: BoxDecoration(
+                              color: AppColors.colorBtnAndCard,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: const Center(
+                              child: CustomeCircularLaoding(),
+                            ),
+                          );
+                        },
+                      ),
+
+                      const Gap(24),
 
                       SectionTitle(title: 'Nearby Courts'),
 
@@ -87,9 +115,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                           if (state is CourtsLoading) {
                             return const SizedBox(
                               height: 220,
-                              child: Center(
-                                child: CustomeCircularLaoding(),
-                              ),
+                              child: Center(child: CustomeCircularLaoding()),
                             );
                           } else if (state is CourtsSuccess) {
                             return ListViewOfCourtsCategory(
@@ -98,9 +124,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                           } else if (state is CourtsFailure) {
                             return const SizedBox(
                               height: 220,
-                              child: Center(
-                                child: CustomeErorrWidget(),
-                              ),
+                              child: Center(child: CustomeErorrWidget()),
                             );
                           }
                           return const SizedBox.shrink();

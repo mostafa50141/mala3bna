@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -27,6 +29,7 @@ class ProfileBody extends StatefulWidget {
 class _ProfileBodyState extends State<ProfileBody> {
   String _name = '';
   String _email = '';
+  String? _profileImagePath;
 
   @override
   void initState() {
@@ -38,9 +41,11 @@ class _ProfileBodyState extends State<ProfileBody> {
     final storage = getIt.get<LocalStorageHelper>();
     final name = await storage.getUserName();
     final email = await storage.getUserEmail();
+    final imagePath = await storage.getProfileImagePath();
     setState(() {
       _name = name;
       _email = email;
+      _profileImagePath = imagePath;
     });
   }
 
@@ -57,10 +62,15 @@ class _ProfileBodyState extends State<ProfileBody> {
               shape: BoxShape.circle,
               color: AppColors.primaryColor.withOpacity(0.07),
             ),
-            child: const CircleAvatar(
+            child: CircleAvatar(
               radius: 40,
-              backgroundColor: Colors.transparent,
-              backgroundImage: AssetImage('assets/images/pfp.jpg'),
+              backgroundColor: Colors.grey.shade800,
+              backgroundImage: _profileImagePath != null
+                  ? FileImage(File(_profileImagePath!))
+                  : null,
+              child: _profileImagePath == null
+                  ? const Icon(Icons.person, color: Colors.white, size: 40)
+                  : null,
             ),
           ),
           const Gap(12),
