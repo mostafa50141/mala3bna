@@ -12,6 +12,21 @@ class CourtMapMarker extends StatelessWidget {
     required this.onTap,
   });
 
+  IconData _getCourtIcon(String sport) {
+    switch (sport.toLowerCase()) {
+      case 'football':
+        return Icons.sports_soccer;
+      case 'swimming':
+        return Icons.pool;
+      case 'tennis':
+        return Icons.sports_tennis;
+      case 'padel':
+        return Icons.sports_tennis;
+      default:
+        return Icons.sports;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -27,7 +42,7 @@ class CourtMapMarker extends StatelessWidget {
             BoxShadow(color: Colors.black26, blurRadius: 4),
           ],
         ),
-        child: const Icon(Icons.sports_tennis, color: Colors.white, size: 20),
+        child: Icon(_getCourtIcon(court.sport), color: Colors.white, size: 20),
       ),
     );
   }

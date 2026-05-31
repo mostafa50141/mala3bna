@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/route_service.dart';
+import 'package:mala3bna/core/utils/location_service.dart';
 import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/court_map_marker.dart';
@@ -50,39 +50,17 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
         );
       }
 
-      // 2. Check location services
-      setState(() => _loadingMessage = 'Checking location services...');
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
+      // 2. Check location services & permissions via LocationService
+      setState(() => _loadingMessage = 'Getting your location...');
+      final locationService = getIt.get<LocationService>();
+      final locationResult = await locationService.getUserLocation();
+
+      if (!locationResult.isSuccess) {
         throw Exception(
-          'Location services are disabled. Please enable them in your device settings.',
+          locationResult.errorMessage ?? 'Could not get location',
         );
       }
-
-      // 3. Check and request location permission
-      setState(() => _loadingMessage = 'Requesting location permissions...');
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception(
-            'Location permission was denied. Please grant permission to see directions.',
-          );
-        }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        throw Exception(
-          'Location permissions are permanently denied. Please enable them in your settings.',
-        );
-      }
-
-      // 4. Obtain current user coordinates
-      setState(() => _loadingMessage = 'Acquiring your location...');
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 10),
-      );
-      final userLoc = LatLng(position.latitude, position.longitude);
+      final userLoc = locationResult.location!;
 
       // 5. Fetch route coordinates
       setState(() => _loadingMessage = 'Finding the best route...');

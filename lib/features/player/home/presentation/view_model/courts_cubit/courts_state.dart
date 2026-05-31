@@ -7,6 +7,8 @@ final class CourtsInitial extends CourtsState {}
 
 final class CourtsLoading extends CourtsState {}
 
+final class CourtsEmpty extends CourtsState {}
+
 final class CourtsSuccess extends CourtsState {
   final List<CourtModel> courts;
   CourtsSuccess({required this.courts});

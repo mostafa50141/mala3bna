@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 import 'package:mala3bna/features/player/home/data/repos/courts_repo.dart';
+import 'package:latlong2/latlong.dart';
 
 part 'courts_state.dart';
 
@@ -19,7 +20,8 @@ class CourtsCubit extends Cubit<CourtsState> {
     emit(CourtsLoading());
     var result = await courtsRepo.getCourts();
     result.fold(
-      (failure) => emit(CourtsFailure(failure.errmessage ?? "Something went wrong")),
+      (failure) =>
+          emit(CourtsFailure(failure.errmessage ?? "Something went wrong")),
       (courts) {
         allCourts = courts;
         filteredCourts = courts;
@@ -38,15 +40,27 @@ class CourtsCubit extends Cubit<CourtsState> {
     _applyFilters();
   }
 
+  void sortByDistance(double userLat, double userLng) {
+    final Distance distance = const Distance();
+    allCourts.sort((a, b) {
+      final distA = distance(LatLng(userLat, userLng), LatLng(a.lat, a.lng));
+      final distB = distance(LatLng(userLat, userLng), LatLng(b.lat, b.lng));
+      return distA.compareTo(distB);
+    });
+    _applyFilters();
+  }
+
   void _applyFilters() {
     var result = allCourts;
     if (selectedSport != 'All') {
       result = result.where((c) => c.sport == selectedSport).toList();
     }
     if (searchQuery.isNotEmpty) {
-      result = result.where((c) =>
-        c.name.toLowerCase().contains(searchQuery.toLowerCase())
-      ).toList();
+      result = result
+          .where(
+            (c) => c.name.toLowerCase().contains(searchQuery.toLowerCase()),
+          )
+          .toList();
     }
     filteredCourts = result;
     emit(CourtsSuccess(courts: filteredCourts));

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mala3bna/core/utils/api_server.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
+import 'package:mala3bna/core/utils/location_service.dart';
 import 'package:mala3bna/core/utils/route_service.dart';
 import 'package:mala3bna/features/auth/data/Repos/auth_repo.dart';
 import 'package:mala3bna/features/auth/data/Repos/auth_repo_imp.dart';
@@ -31,6 +32,8 @@ void setupServiceLocator() {
   getIt.registerSingleton<CourtsRepo>(
     CourtsRepoImpl(apiService: getIt.get<ApiService>()),
   );
+  // location service
+  getIt.registerSingleton<LocationService>(LocationService());
   // local storage helper
   getIt.registerSingleton<LocalStorageHelper>(LocalStorageHelper());
 }

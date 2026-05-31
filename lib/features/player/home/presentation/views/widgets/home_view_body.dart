@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:gap/gap.dart';
-import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/games_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_coach_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_courts_category.dart';
@@ -13,7 +13,8 @@ import 'package:mala3bna/core/widgets/section_title.dart';
 import 'package:mala3bna/features/player/home/presentation/view_model/courts_cubit/courts_cubit.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/core/widgets/custome_erorr_widget.dart';
-import 'package:mala3bna/features/player/home/presentation/views/widgets/courts_map_section.dart';
+import 'package:mala3bna/core/utils/location_service.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -32,6 +33,22 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     'Padel',
   ];
   String searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _sortCourtsByLocation();
+  }
+
+  Future<void> _sortCourtsByLocation() async {
+    final result = await getIt.get<LocationService>().getUserLocation();
+    if (result.isSuccess && mounted) {
+      context.read<CourtsCubit>().sortByDistance(
+        result.location!.latitude,
+        result.location!.longitude,
+      );
+    }
+  }
 
   // sport filter
   void _onSportSelected(int index) {
@@ -84,28 +101,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                         ),
                       ),
 
-                      const Gap(16),
-
-                      SectionTitle(title: 'Courts Near You'),
-                      const Gap(8),
-                      BlocBuilder<CourtsCubit, CourtsState>(
-                        builder: (context, state) {
-                          if (state is CourtsSuccess) {
-                            return CourtsMapSection(courts: state.courts);
-                          }
-                          return Container(
-                            height: 220,
-                            decoration: BoxDecoration(
-                              color: AppColors.colorBtnAndCard,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Center(
-                              child: CustomeCircularLaoding(),
-                            ),
-                          );
-                        },
-                      ),
-
                       const Gap(24),
 
                       SectionTitle(title: 'Nearby Courts'),
@@ -118,8 +113,55 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                               child: Center(child: CustomeCircularLaoding()),
                             );
                           } else if (state is CourtsSuccess) {
+                            if (state.courts.isEmpty) {
+                              return SizedBox(
+                                height: 220,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.sports_soccer,
+                                        color: Colors.grey,
+                                        size: 40,
+                                      ),
+                                      const Gap(8),
+                                      Text(
+                                        'No courts found',
+                                        style: Style.textStyle16.copyWith(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
                             return ListViewOfCourtsCategory(
                               courts: state.courts,
+                            );
+                          } else if (state is CourtsEmpty) {
+                            return SizedBox(
+                              height: 220,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.sports_soccer,
+                                      color: Colors.grey,
+                                      size: 40,
+                                    ),
+                                    const Gap(8),
+                                    Text(
+                                      'No courts found',
+                                      style: Style.textStyle16.copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             );
                           } else if (state is CourtsFailure) {
                             return const SizedBox(
