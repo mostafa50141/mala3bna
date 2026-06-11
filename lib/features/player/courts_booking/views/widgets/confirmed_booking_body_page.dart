@@ -10,10 +10,8 @@ import 'package:mala3bna/features/player/courts_booking/data/models/booking_mode
 import 'package:mala3bna/features/player/courts_booking/views/widgets/navigation_button_card.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/qr_card.dart';
 import 'package:mala3bna/features/player/home/data/models/court_model.dart';
-import 'package:mala3bna/features/player/home/presentation/views/home_view.dart';
+import 'package:mala3bna/core/navigation/player_main_navigation.dart';
 import 'package:mala3bna/features/player/courts_booking/views/directions_screen.dart';
-import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
-import 'package:animated_snack_bar/animated_snack_bar.dart';
 
 class ConfirmedBookingBodyPage extends StatefulWidget {
   final CourtModel court;
@@ -60,7 +58,6 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
     );
     await getIt.get<LocalStorageHelper>().saveBooking(booking);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -113,14 +110,11 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
                   title: "Directions",
                   icon: Icons.directions,
                   onPressed: () {
-                    Get.to(
-                      () => DirectionsScreen(
-                        court: widget.court,
-                      ),
-                    );
+                    Get.to(() => DirectionsScreen(court: widget.court));
                   },
                 ),
                 NavigationButtonCard(
+                  
                   title: "Contact Owner",
                   icon: Icons.phone,
                   onPressed: () {},
@@ -143,7 +137,7 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
                   title: "Home",
                   icon: Icons.home,
                   onPressed: () {
-                    Get.offAll(() => const HomeView());
+                    Get.offAll(() => const PlayerMainNavigation());
                   },
                 ),
               ],

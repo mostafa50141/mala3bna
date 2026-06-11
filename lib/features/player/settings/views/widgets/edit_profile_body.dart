@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
@@ -56,23 +55,43 @@ class _EditProfileBodyState extends State<EditProfileBody> {
 
   // this function to pick image from gallery and set it to _selectedImage
   Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+        maxWidth: 500,
+        maxHeight: 500,
+      );
 
+      if (image == null) return;
 
-      // Copy to permanent directory
+      // Get permanent directory
       final appDir = await getApplicationDocumentsDirectory();
-      final fileName = 'profile_image.jpg';
-      final permanentPath = path.join(appDir.path, fileName);
+      final fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final permanentPath = '${appDir.path}/$fileName';
+
+      // Copy file
       final permanentFile = await File(image.path).copy(permanentPath);
-      
+
+      // Verify file exists
+      if (!await permanentFile.exists()) {
+        debugPrint('File copy failed');
+        return;
+      }
+
       // Save path to storage
-      await getIt.get<LocalStorageHelper>().saveProfileImagePath(permanentFile.path);
-      
+      await getIt.get<LocalStorageHelper>().saveProfileImagePath(
+        permanentFile.path,
+      );
+
       setState(() {
         _selectedImage = permanentFile;
         _savedImagePath = permanentFile.path;
       });
+
+      debugPrint('Image saved to: ${permanentFile.path}');
+    } catch (e) {
+      debugPrint('Error picking image: $e');
     }
   }
 
@@ -122,11 +141,15 @@ class _EditProfileBodyState extends State<EditProfileBody> {
                         radius: 50,
                         backgroundColor: Colors.grey.shade800,
                         backgroundImage: _selectedImage != null
-                            ? FileImage(_selectedImage!)
-                            : _savedImagePath != null
-                                ? FileImage(File(_savedImagePath!))
-                                : null,
-                        child: (_selectedImage == null && _savedImagePath == null)
+                            ? FileImage(_selectedImage!) as ImageProvider
+                            : _savedImagePath != null &&
+                                  File(_savedImagePath!).existsSync()
+                            ? FileImage(File(_savedImagePath!)) as ImageProvider
+                            : null,
+                        child:
+                            (_selectedImage == null &&
+                                (_savedImagePath == null ||
+                                    !File(_savedImagePath!).existsSync()))
                             ? const Icon(
                                 Icons.person,
                                 size: 50,

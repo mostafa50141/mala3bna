@@ -25,6 +25,7 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
   bool _isLoading = true;
   String _loadingMessage = 'Checking permissions...';
   String? _errorMessage;
+  bool _routeFailed = false;
   LatLng? _userLocation;
   List<LatLng> _routePoints = [];
   final MapController _mapController = MapController();
@@ -72,7 +73,13 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
 
       result.fold(
         (failure) {
-          throw Exception(failure.errmessage ?? 'Failed to get route');
+          // Route failed but we still have user location - show map without route
+          setState(() {
+            _userLocation = userLoc;
+            _routePoints = []; // empty route
+            _routeFailed = true;
+            _isLoading = false;
+          });
         },
         (points) {
           setState(() {
@@ -107,15 +114,7 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
         LatLng(widget.court.lat, widget.court.lng),
       ]);
       _mapController.fitCamera(
-        CameraFit.bounds(
-          bounds: bounds,
-          padding: const EdgeInsets.only(
-            top: 80.0,
-            bottom: 160.0,
-            left: 50.0,
-            right: 50.0,
-          ),
-        ),
+        CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(80)),
       );
     } catch (e) {
       print('Error fitting camera bounds: $e');
@@ -330,6 +329,32 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
             ),
           ],
         ),
+
+        if (_routeFailed)
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 70,
+            left: 16,
+            right: 16,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.orange.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, color: Colors.white, size: 18),
+                  const Gap(8),
+                  Expanded(
+                    child: Text(
+                      'Route unavailable — showing court location only',
+                      style: Style.textStyle12.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
         // 2. Floating action buttons (e.g. Fit Camera, Recenter)
         Positioned(

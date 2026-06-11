@@ -3,9 +3,7 @@ import 'package:mala3bna/core/widgets/custom_bottom_nav.dart';
 import 'package:mala3bna/features/player/home/presentation/views/home_view.dart';
 import 'package:mala3bna/features/player/map/views/map_view.dart';
 import 'package:mala3bna/features/player/profile/views/profile_view.dart';
-// Note: You will need to implement MessagesView and place it in the correct location or uncomment/import
-// import 'package:mala3bna/features/player/messages/views/messages_view.dart';
-// for now, a Placeholder is provided if it does not exist yet.
+import 'package:mala3bna/features/player/profile/views/my_bookings_views.dart';
 
 class PlayerMainNavigation extends StatefulWidget {
   const PlayerMainNavigation({super.key});
@@ -20,9 +18,7 @@ class _PlayerMainNavigationState extends State<PlayerMainNavigation> {
   final List<Widget> pages = const [
     HomeView(),
     MapView(),
-    Center(
-      child: Text("Messages", style: TextStyle(color: Colors.white)),
-    ), // Placeholder for MessagesView()
+    MyBookingsViews(),
     ProfileView(),
   ];
 
@@ -33,7 +29,7 @@ class _PlayerMainNavigationState extends State<PlayerMainNavigation> {
       bottomNavigationBar: CustomBottomNav(
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
-        badges: [0, 0, 5, 0],
+        badges: [0, 0, 0, 0],
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -46,9 +42,9 @@ class _PlayerMainNavigationState extends State<PlayerMainNavigation> {
             label: 'Map',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_outlined),
-            activeIcon: Icon(Icons.chat),
-            label: 'Messages',
+            icon: Icon(Icons.calendar_today_outlined),
+            activeIcon: Icon(Icons.calendar_today),
+            label: 'Bookings',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
