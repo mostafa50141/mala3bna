@@ -15,6 +15,14 @@ class LocalStorageHelper {
     return await storage.read(key: 'token') ?? '';
   }
 
+  Future<void> saveRefreshToken(String token) async {
+    await storage.write(key: 'refresh_token', value: token);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return await storage.read(key: 'refresh_token');
+  }
+
   Future<void> deletetoken() async {
     await storage.delete(key: 'token');
     await deleteUserData();

@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 
 class ApiService {
-  // final String _baseUrl = "https://bqsl6hrg-8000.uks1.devtunnels.ms/api/v1/";
-  final String _baseUrl = "https://fakestoreapi.com/";
+  final String _baseUrl = "https://graduation8project.pythonanywhere.com/api/v1/";
+  // final String _baseUrl = "https://fakestoreapi.com/";
 
   final Dio dio;
 
   ApiService({required this.dio});
-  Future<Map<String, dynamic>> get({
+  Future<dynamic> get({
     required String endPoint,
     Options? options,
   }) async {
@@ -18,7 +18,7 @@ class ApiService {
     return response.data;
   }
 
-  Future<Map<String, dynamic>> post({
+  Future<dynamic> post({
     required String endPoint,
     required Map<String, dynamic> body,
     Options? options,

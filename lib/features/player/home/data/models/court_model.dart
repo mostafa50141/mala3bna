@@ -4,52 +4,63 @@ class CourtModel {
   final String sport;
   final String location;
   final double rating;
-  final int pricePerHour;
+  final double pricePerHour;
   final String distance;
   final String imageUrl;
   final double lat;
   final double lng;
+  final String? description;
+  final bool isActive;
+  final bool hasLights;
+  final bool hasShowers;
+  final bool hasCafe;
+  final bool hasEquipment;
+  final List<String> images;
 
   const CourtModel({
     required this.id,
     required this.name,
     required this.sport,
     required this.location,
-    required this.rating,
+    this.rating = 0.0,
     required this.pricePerHour,
-    required this.distance,
-    required this.imageUrl,
+    this.distance = '',
+    this.imageUrl = 'assets/images/Court.png',
     this.lat = 0.0,
     this.lng = 0.0,
+    this.description,
+    this.isActive = true,
+    this.hasLights = false,
+    this.hasShowers = false,
+    this.hasCafe = false,
+    this.hasEquipment = false,
+    this.images = const [],
   });
 
   factory CourtModel.fromJson(Map<String, dynamic> json) {
+    final images = (json['images'] as List<dynamic>? ?? [])
+        .map((img) => img['image'] as String? ?? '')
+        .where((url) => url.isNotEmpty)
+        .toList();
+
     return CourtModel(
       id: json['id'] as int,
-      name: json['name'] as String,
-      sport: json['sport'] as String,
-      location: json['location'] as String,
-      rating: (json['rating'] as num).toDouble(),
-      pricePerHour: json['pricePerHour'] as int,
-      distance: json['distance'] as String,
-      imageUrl: json['imageUrl'] as String,
-      lat: (json['lat'] as num?)?.toDouble() ?? 0.0,
-      lng: (json['lng'] as num?)?.toDouble() ?? 0.0,
+      name: json['name'] as String? ?? '',
+      sport: json['field_type'] as String? ?? 'Football',
+      location: json['address'] as String? ?? '',
+      pricePerHour: double.tryParse(
+            json['price_per_hour']?.toString() ?? '0',
+          ) ?? 0.0,
+      lat: double.tryParse(json['latitude']?.toString() ?? '0') ?? 0.0,
+      lng: double.tryParse(json['longitude']?.toString() ?? '0') ?? 0.0,
+      description: json['description'] as String?,
+      isActive: json['is_active'] as bool? ?? true,
+      hasLights: json['has_lights'] as bool? ?? false,
+      hasShowers: json['has_showers'] as bool? ?? false,
+      hasCafe: json['has_cafe'] as bool? ?? false,
+      hasEquipment: json['has_equipment'] as bool? ?? false,
+      imageUrl: images.isNotEmpty ? images.first : 'assets/images/Court.png',
+      images: images,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'sport': sport,
-      'location': location,
-      'rating': rating,
-      'pricePerHour': pricePerHour,
-      'distance': distance,
-      'imageUrl': imageUrl,
-      'lat': lat,
-      'lng': lng,
-    };
   }
 }

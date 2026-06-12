@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 class BookingModel {
   final String id;
@@ -8,7 +7,7 @@ class BookingModel {
   final String sport;
   final String date;
   final String time;
-  final int price;
+  final double price;
   final String status; // 'upcoming', 'past', 'cancelled'
 
   const BookingModel({

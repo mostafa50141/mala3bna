@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CustomCarouselSlider extends StatefulWidget {
   final String imageUrl;
-  const CustomCarouselSlider({super.key, required this.imageUrl});
+  final List<String> images;
+
+  const CustomCarouselSlider({
+    super.key,
+    required this.imageUrl,
+    this.images = const [],
+  });
 
   @override
   State<CustomCarouselSlider> createState() => _CustomCarouselSliderState();
@@ -19,13 +26,17 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
   @override
   void initState() {
     super.initState();
-    imgList = [
-      widget.imageUrl,
-      widget.imageUrl,
-      widget.imageUrl,
-      widget.imageUrl,
-      widget.imageUrl,
-    ];
+    if (widget.images.isNotEmpty) {
+      imgList = widget.images;
+    } else {
+      imgList = [
+        widget.imageUrl,
+        widget.imageUrl,
+        widget.imageUrl,
+        widget.imageUrl,
+        widget.imageUrl,
+      ];
+    }
   }
 
   @override
@@ -72,11 +83,22 @@ class _CustomCarouselSliderState extends State<CustomCarouselSlider> {
   Widget buildimage(String imageUrl, int index) {
     return SizedBox(
       width: double.infinity,
-      child: Image(
-        image: AssetImage(imageUrl),
-        fit: BoxFit.cover,
-        width: double.infinity,
-      ),
+      child: imageUrl.startsWith('http')
+          ? CachedNetworkImage(
+              imageUrl: imageUrl,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              errorWidget: (context, url, error) => Image.asset(
+                'assets/images/Court.png',
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+            )
+          : Image(
+              image: AssetImage(imageUrl),
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
     );
   }
 }

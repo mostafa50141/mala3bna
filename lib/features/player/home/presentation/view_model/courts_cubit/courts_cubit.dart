@@ -53,14 +53,14 @@ class CourtsCubit extends Cubit<CourtsState> {
   void _applyFilters() {
     var result = allCourts;
     if (selectedSport != 'All') {
-      result = result.where((c) => c.sport == selectedSport).toList();
+      result = result.where((c) =>
+        c.sport.toLowerCase() == selectedSport.toLowerCase()
+      ).toList();
     }
     if (searchQuery.isNotEmpty) {
-      result = result
-          .where(
-            (c) => c.name.toLowerCase().contains(searchQuery.toLowerCase()),
-          )
-          .toList();
+      result = result.where((c) =>
+        c.name.toLowerCase().contains(searchQuery.toLowerCase())
+      ).toList();
     }
     filteredCourts = result;
     emit(CourtsSuccess(courts: filteredCourts));

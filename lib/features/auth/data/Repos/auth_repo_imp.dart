@@ -19,26 +19,24 @@ class AuthRepoImp implements AuthRepo {
   }) async {
     try {
       var response = await apiService.post(
-        endPoint: 'auth/login',
+        endPoint: 'auth/login/',
         body: {'email': email, 'password': password},
       );
-      // here the model that i created to convert the json response
-      //to object and use it in the app the response that came from the api recived here and convert it to usermodel object
-      // and return it to the app
       Usermodel user = Usermodel.fromJson(response);
       if (user.token != null) {
-        // save the token in local storage using the helper class that i created
         await getIt.get<LocalStorageHelper>().savetoken(user.token!);
-        // save user data in local storage using the helper class that i created
+        if (user.refreshToken != null) {
+          await getIt.get<LocalStorageHelper>().saveRefreshToken(user.refreshToken!);
+        }
         await getIt.get<LocalStorageHelper>().saveUserData(
           name: user.fullName ?? '',
           email: user.email ?? '',
           phone: user.phoneNumber ?? '',
-          userType: user.userType ?? '',
+          userType: user.userType ?? 'player',
         );
         return right(user);
       } else {
-        return left(ServerFailure("Invalid token"));
+        return left(ServerFailure("Invalid response from server"));
       }
     } catch (e) {
       if (e is DioException) {
@@ -47,7 +45,6 @@ class AuthRepoImp implements AuthRepo {
       return left(ServerFailure(e.toString()));
     }
   }
-  // same as sign up  but with different end point and body
 
   @override
   Future<Either<Failure, Usermodel>> signUp({
@@ -61,26 +58,29 @@ class AuthRepoImp implements AuthRepo {
       var response = await apiService.post(
         endPoint: 'auth/signup/',
         body: {
+          'full_name': name,
+          'username': email.split('@')[0],
           'email': email,
           'password': password,
-          'name': name,
-          'phone': phone,
-          'role': role,
+          'phone_number': phone,
+          'user_type': role,
         },
       );
       Usermodel user = Usermodel.fromJson(response);
       if (user.token != null) {
-        // save the token in local storage using the helper class that i created
         await getIt.get<LocalStorageHelper>().savetoken(user.token!);
+        if (user.refreshToken != null) {
+          await getIt.get<LocalStorageHelper>().saveRefreshToken(user.refreshToken!);
+        }
         await getIt.get<LocalStorageHelper>().saveUserData(
-          name: name,
-          email: email,
-          phone: phone,
-          userType: role,
+          name: user.fullName ?? name,
+          email: user.email ?? email,
+          phone: user.phoneNumber ?? phone,
+          userType: user.userType ?? role,
         );
         return right(user);
       } else {
-        return left(ServerFailure("Invalid token"));
+        return left(ServerFailure("Invalid response from server"));
       }
     } catch (e) {
       if (e is DioException) {

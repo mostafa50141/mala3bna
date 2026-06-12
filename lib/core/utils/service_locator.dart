@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mala3bna/core/network/dio_interceptor.dart';
 import 'package:mala3bna/core/utils/api_server.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/location_service.dart';
@@ -14,8 +15,15 @@ import 'package:mala3bna/features/player/home/data/repos/courts_repo_impl.dart';
 final getIt = GetIt.instance;
 
 void setupServiceLocator() {
+  // local storage helper
+  getIt.registerSingleton<LocalStorageHelper>(LocalStorageHelper());
+
+  // dio with interceptor
+  final dio = Dio();
+  dio.interceptors.add(AuthInterceptor());
+
   //api service
-  getIt.registerSingleton<ApiService>(ApiService(dio: Dio()));
+  getIt.registerSingleton<ApiService>(ApiService(dio: dio));
   // route service
   getIt.registerSingleton<RouteService>(
     RouteService(apiService: getIt.get<ApiService>()),
@@ -34,6 +42,4 @@ void setupServiceLocator() {
   );
   // location service
   getIt.registerSingleton<LocationService>(LocationService());
-  // local storage helper
-  getIt.registerSingleton<LocalStorageHelper>(LocalStorageHelper());
 }

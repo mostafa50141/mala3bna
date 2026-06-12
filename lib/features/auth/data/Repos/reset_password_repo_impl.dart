@@ -6,6 +6,7 @@ import 'package:mala3bna/features/auth/data/Repos/reset_password_repo.dart';
 
 class ResetPasswordRepoImpl implements ResetPasswordRepo {
   final ApiService apiService;
+  String? _storedOtp;
 
   ResetPasswordRepoImpl({required this.apiService});
 
@@ -13,7 +14,7 @@ class ResetPasswordRepoImpl implements ResetPasswordRepo {
   Future<Either<Failure, void>> sendEmail({required String email}) async {
     try {
       await apiService.post(
-        endPoint: 'auth/forgot-password',
+        endPoint: 'auth/request-otp/',
         body: {'email': email},
       );
       return right(null);
@@ -30,18 +31,8 @@ class ResetPasswordRepoImpl implements ResetPasswordRepo {
     required String email,
     required String otp,
   }) async {
-    try {
-      await apiService.post(
-        endPoint: 'auth/verify-otp',
-        body: {'email': email, 'otp': otp},
-      );
-      return right(null);
-    } catch (e) {
-      if (e is DioException) {
-        return left(ServerFailure.fromDioError(e));
-      }
-      return left(ServerFailure(e.toString()));
-    }
+    _storedOtp = otp;
+    return right(null);
   }
 
   @override
@@ -52,10 +43,10 @@ class ResetPasswordRepoImpl implements ResetPasswordRepo {
   }) async {
     try {
       await apiService.post(
-        endPoint: 'auth/reset-password',
+        endPoint: 'auth/reset-password-otp/',
         body: {
           'email': email,
-          'otp': otp,
+          'otp': otp.isNotEmpty ? otp : (_storedOtp ?? ''),
           'new_password': newPassword,
         },
       );

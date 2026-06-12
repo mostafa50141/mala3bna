@@ -6,7 +6,7 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 import 'package:mala3bna/features/player/courts_booking/views/court_booking_summry.dart';
-import 'package:mala3bna/features/player/courts_booking/views/widgets/amenities_item_builder.dart';
+import 'package:mala3bna/features/player/courts_booking/views/widgets/amenities_item.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/chip_chioce_time.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/custom_app_bar_court.dart';
 import 'package:mala3bna/features/player/courts_booking/views/widgets/custom_carousel_slider.dart';
@@ -41,7 +41,7 @@ class _CourtDetailsBodyState extends State<CourtDetailsBody> {
               pinned: true,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              flexibleSpace: CustomCarouselSlider(imageUrl: widget.court.imageUrl),
+              flexibleSpace: CustomCarouselSlider(images: widget.court.images, imageUrl: widget.court.imageUrl),
               expandedHeight: 220,
               title: const CustomAppBarCourt(title: "Court Details"),
             ),
@@ -109,7 +109,32 @@ class _CourtDetailsBodyState extends State<CourtDetailsBody> {
                   height: 90,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 8),
-                    child: const AmenitiesItemBuilder(),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        if (widget.court.hasLights)
+                          const Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: AmenitiesItem(icon: Icons.lightbulb_outline, label: 'Lights'),
+                          ),
+                        if (widget.court.hasShowers)
+                          const Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: AmenitiesItem(icon: Icons.shower, label: 'Showers'),
+                          ),
+                        if (widget.court.hasCafe)
+                          const Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: AmenitiesItem(icon: Icons.local_cafe, label: 'Cafe'),
+                          ),
+                        if (widget.court.hasEquipment)
+                          const Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: AmenitiesItem(icon: Icons.sports, label: 'Equipment'),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
