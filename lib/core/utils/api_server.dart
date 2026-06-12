@@ -30,4 +30,9 @@ class ApiService {
     );
     return response.data;
   }
+
+  Future<dynamic> delete({required String endPoint}) async {
+    var response = await dio.delete('$_baseUrl$endPoint');
+    return response.data;
+  }
 }

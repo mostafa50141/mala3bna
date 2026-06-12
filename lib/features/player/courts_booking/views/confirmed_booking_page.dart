@@ -6,12 +6,13 @@ class ConfirmedBookingPage extends StatelessWidget {
   final CourtModel court;
   final DateTime? selectedDate;
   final String? selectedTime;
+  final int? bookingId;
 
   const ConfirmedBookingPage({
     super.key,
     required this.court,
     this.selectedDate,
-    this.selectedTime,
+    this.selectedTime, this.bookingId,
   });
 
   @override

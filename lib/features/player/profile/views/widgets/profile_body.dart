@@ -9,6 +9,12 @@ import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/section_title.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:mala3bna/features/player/profile/data/repos/user_profile_repo.dart';
+import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_cubit.dart';
+import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_state.dart';
+import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/features/player/profile/views/my_bookings_views.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_menu_item.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/profile_stats_row.dart';
@@ -51,37 +57,110 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+    return BlocProvider(
+      create: (context) => UserProfileCubit(getIt.get<UserProfileRepo>())..getProfile(),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           const Gap(20),
-          Container(
-            padding: const EdgeInsets.all(3),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.primaryColor.withOpacity(0.07),
-            ),
-            child: CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.grey.shade800,
-              backgroundImage: _profileImagePath != null
-                  ? FileImage(File(_profileImagePath!))
-                  : null,
-              child: _profileImagePath == null
-                  ? const Icon(Icons.person, color: Colors.white, size: 40)
-                  : null,
-            ),
-          ),
-          const Gap(12),
-          Text(
-            _name.isNotEmpty ? _name : 'Loading...',
-            style: Style.textStyle20Bold.copyWith(color: Colors.white),
-          ),
-          const Gap(4),
-          Text(
-            _email.isNotEmpty ? _email : 'Loading...',
-            style: Style.textStyle14.copyWith(color: Colors.grey),
+          BlocBuilder<UserProfileCubit, UserProfileState>(
+            builder: (context, state) {
+              String displayEmail = _email.isNotEmpty ? _email : 'Loading...';
+              String displayName = _name.isNotEmpty ? _name : 'Loading...';
+              Widget avatarChild;
+
+              if (state is UserProfileLoading) {
+                avatarChild = const CustomeCircularLaoding();
+              } else if (state is UserProfileLoaded) {
+                displayEmail = state.profile.email;
+                displayName = state.profile.fullName;
+                if (state.profile.profileImage != null) {
+                  return Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.primaryColor.withOpacity(0.07),
+                        ),
+                        child: CachedNetworkImage(
+                          imageUrl: state.profile.profileImage!,
+                          imageBuilder: (context, imageProvider) => CircleAvatar(
+                            radius: 40,
+                            backgroundImage: imageProvider,
+                          ),
+                          placeholder: (context, url) => const CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.transparent,
+                            child: CustomeCircularLaoding(),
+                          ),
+                          errorWidget: (context, url, error) => CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.grey.shade800,
+                            child: const Icon(Icons.person, color: Colors.white, size: 40),
+                          ),
+                        ),
+                      ),
+                      const Gap(12),
+                      Text(
+                        displayName,
+                        style: Style.textStyle20Bold.copyWith(color: Colors.white),
+                      ),
+                      const Gap(4),
+                      Text(
+                        displayEmail,
+                        style: Style.textStyle14.copyWith(color: Colors.grey),
+                      ),
+                    ],
+                  );
+                } else {
+                  avatarChild = const Icon(Icons.person, color: Colors.white, size: 40);
+                }
+              } else {
+                avatarChild = CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.grey.shade800,
+                  backgroundImage: _profileImagePath != null
+                      ? FileImage(File(_profileImagePath!))
+                      : null,
+                  child: _profileImagePath == null
+                      ? const Icon(Icons.person, color: Colors.white, size: 40)
+                      : null,
+                );
+              }
+
+              return Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primaryColor.withOpacity(0.07),
+                    ),
+                    child: state is UserProfileLoading ? CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.grey.shade800,
+                      child: avatarChild,
+                    ) : (avatarChild is CircleAvatar ? avatarChild : CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.grey.shade800,
+                      child: avatarChild,
+                    )),
+                  ),
+                  const Gap(12),
+                  Text(
+                    displayName,
+                    style: Style.textStyle20Bold.copyWith(color: Colors.white),
+                  ),
+                  const Gap(4),
+                  Text(
+                    displayEmail,
+                    style: Style.textStyle14.copyWith(color: Colors.grey),
+                  ),
+                ],
+              );
+            },
           ),
           const Gap(24),
           const ProfileStatsRow(),
@@ -177,6 +256,6 @@ class _ProfileBodyState extends State<ProfileBody> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

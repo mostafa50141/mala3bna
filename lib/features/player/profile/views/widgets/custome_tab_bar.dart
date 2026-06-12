@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/features/player/courts_booking/data/models/booking_model.dart';
 import 'package:mala3bna/features/player/profile/views/widgets/booking_list_view.dart';
+import 'package:mala3bna/features/player/courts_booking/data/repos/booking_repo.dart';
+import 'package:mala3bna/features/player/courts_booking/presentation/cubit/booking_cubit.dart';
 
 class CustomeTabBar extends StatefulWidget {
   const CustomeTabBar({super.key});
@@ -26,13 +27,26 @@ class _CustomeTabBarState extends State<CustomeTabBar> {
   }
 
   Future<void> _loadBookings() async {
-    final all = await getIt.get<LocalStorageHelper>().getBookings();
-    setState(() {
-      _upcomingBookings = all.where((b) => b.status == 'upcoming').toList();
-      _pastBookings = all.where((b) => b.status == 'past').toList();
-      _cancelledBookings = all.where((b) => b.status == 'cancelled').toList();
-      _isLoading = false;
-    });
+    final cubit = BookingCubit(getIt.get<BookingRepo>());
+    final result = await cubit.bookingRepo.getBookings();
+    result.fold(
+      (failure) => setState(() => _isLoading = false),
+      (bookings) {
+        setState(() {
+          _upcomingBookings = bookings
+              .where((b) => b.status == 'pending' || b.status == 'confirmed')
+              .toList();
+          _pastBookings = bookings
+              .where((b) => b.status == 'confirmed' &&
+                  DateTime.tryParse(b.date)?.isBefore(DateTime.now()) == true)
+              .toList();
+          _cancelledBookings = bookings
+              .where((b) => b.status == 'cancelled')
+              .toList();
+          _isLoading = false;
+        });
+      },
+    );
   }
 
   @override

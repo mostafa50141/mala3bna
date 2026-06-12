@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/player/courts_booking/data/models/booking_model.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
+import 'package:mala3bna/features/player/courts_booking/data/repos/booking_repo.dart';
+import 'package:mala3bna/features/player/courts_booking/presentation/cubit/booking_cubit.dart';
 
 class BookingCard extends StatelessWidget {
   final BookingModel booking;
@@ -111,12 +112,12 @@ class BookingCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (booking.status == 'upcoming')
+            if (booking.status == 'pending' || booking.status == 'confirmed')
               OutlinedButton(
                 onPressed: () async {
-                  await getIt.get<LocalStorageHelper>().cancelBooking(
-                    booking.id,
-                  );
+                  if (booking.id == null) return;
+                  final cubit = BookingCubit(getIt.get<BookingRepo>());
+                  await cubit.cancelBooking(bookingId: booking.id!);
                   onBookingCancelled();
                   if (context.mounted) {
                     showAnimatedSnackDialog(

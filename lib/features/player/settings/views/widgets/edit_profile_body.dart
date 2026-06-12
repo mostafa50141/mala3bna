@@ -13,6 +13,10 @@ import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mala3bna/features/player/profile/data/repos/user_profile_repo.dart';
+import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_cubit.dart';
+import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_state.dart';
 
 class EditProfileBody extends StatefulWidget {
   const EditProfileBody({super.key});
@@ -125,8 +129,31 @@ class _EditProfileBodyState extends State<EditProfileBody> {
       borderRadius: BorderRadius.circular(24),
     );
 
-    return SafeArea(
-      child: SingleChildScrollView(
+    return BlocProvider(
+      create: (context) => UserProfileCubit(getIt.get<UserProfileRepo>())..getProfile(),
+      child: BlocListener<UserProfileCubit, UserProfileState>(
+        listener: (context, state) {
+          if (state is UserProfileLoaded) {
+            _fullNameController.text = state.profile.fullName;
+            _emailController.text = state.profile.email;
+            _phoneController.text = state.profile.phoneNumber ?? '';
+          } else if (state is UserProfileUpdated) {
+            showAnimatedSnackDialog(
+              context,
+              message: "Profile updated successfully",
+              type: AnimatedSnackBarType.success,
+            );
+            Get.back();
+          } else if (state is UserProfileFailure) {
+            showAnimatedSnackDialog(
+              context,
+              message: state.errorMessage,
+              type: AnimatedSnackBarType.error,
+            );
+          }
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -243,33 +270,33 @@ class _EditProfileBodyState extends State<EditProfileBody> {
 
             const SizedBox(height: 40),
 
-            CustomBtn(
-              text: "Save Changes",
-              height: 55,
-              width: double.infinity,
-              radius: 30,
-              color: AppColors.primaryColor,
-              colorText: Colors.white,
-              weightText: FontWeight.bold,
-              onTap: () async {
-                final storage = getIt.get<LocalStorageHelper>();
-                await storage.saveUserData(
-                  name: _fullNameController.text.trim(),
-                  email: _emailController.text.trim(),
-                  phone: _phoneController.text.trim(),
-                  userType: await storage.getUserType(),
+            BlocBuilder<UserProfileCubit, UserProfileState>(
+              builder: (context, state) {
+                if (state is UserProfileLoading) {
+                  return const Center(child: CustomeCircularLaoding());
+                }
+                return CustomBtn(
+                  text: "Save Changes",
+                  height: 55,
+                  width: double.infinity,
+                  radius: 30,
+                  color: AppColors.primaryColor,
+                  colorText: Colors.white,
+                  weightText: FontWeight.bold,
+                  onTap: () {
+                    context.read<UserProfileCubit>().updateProfile(
+                      fullName: _fullNameController.text.trim(),
+                      username: _fullNameController.text.trim().replaceAll(' ', '_').toLowerCase(),
+                      phoneNumber: _phoneController.text.trim(),
+                      profileImage: _selectedImage,
+                    );
+                  },
                 );
-                showAnimatedSnackDialog(
-                  context,
-                  message: "Profile updated successfully",
-                  type: AnimatedSnackBarType.success,
-                );
-                Get.back();
               },
             ),
           ],
         ),
       ),
-    );
+    )));
   }
 }

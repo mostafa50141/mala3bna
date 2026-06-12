@@ -11,6 +11,14 @@ import 'package:mala3bna/features/player/courts_booking/views/widgets/payment_ca
 import 'package:mala3bna/core/widgets/custom_btn.dart';
 import 'package:intl/intl.dart';
 import 'package:mala3bna/features/player/home/data/models/court_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
+import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:mala3bna/features/player/courts_booking/data/repos/booking_repo.dart';
+import 'package:mala3bna/features/player/courts_booking/presentation/cubit/booking_cubit.dart';
+import 'package:mala3bna/features/player/courts_booking/presentation/cubit/booking_state.dart';
+import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 
 class CourtBookingSummryBody extends StatelessWidget {
   final CourtModel court;
@@ -26,8 +34,10 @@ class CourtBookingSummryBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
+    return BlocProvider<BookingCubit>(
+      create: (context) => BookingCubit(getIt.get<BookingRepo>()),
+      child: Scaffold(
+        body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -78,22 +88,53 @@ class CourtBookingSummryBody extends StatelessWidget {
                     ],
                   ),
                   const Gap(30),
-                  Center(
-                    child: CustomBtn(
-                      text: ' Confirm Booking',
-                      height: 50,
-                      width: 350,
-                      radius: 25,
-                      weightText: FontWeight.bold,
-                      sizeText: 18,
-                      onTap: () {
+                  BlocConsumer<BookingCubit, BookingState>(
+                    listener: (context, state) {
+                      if (state is BookingSuccess) {
                         Get.to(() => ConfirmedBookingPage(
                               court: court,
                               selectedDate: selectedDate,
                               selectedTime: selectedTime,
+                              bookingId: state.booking.id,
                             ));
-                      },
-                    ),
+                      } else if (state is BookingFailure) {
+                        showAnimatedSnackDialog(
+                          context,
+                          message: state.errorMessage,
+                          type: AnimatedSnackBarType.error,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is BookingLoading) {
+                        return const Center(child: CustomeCircularLaoding());
+                      }
+                      return Center(
+                        child: CustomBtn(
+                          text: ' Confirm Booking',
+                          height: 50,
+                          width: 350,
+                          radius: 25,
+                          weightText: FontWeight.bold,
+                          sizeText: 18,
+                          onTap: () {
+                            if (selectedDate == null || selectedTime == null) {
+                              showAnimatedSnackDialog(
+                                context,
+                                message: "Please select date and time",
+                                type: AnimatedSnackBarType.warning,
+                              );
+                              return;
+                            }
+                            context.read<BookingCubit>().createBooking(
+                              fieldId: court.id,
+                              bookingDate: selectedDate!,
+                              startTime: selectedTime!,
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                   const Gap(30),
                 ],
@@ -102,6 +143,6 @@ class CourtBookingSummryBody extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 }
