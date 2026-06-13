@@ -45,9 +45,11 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
       child: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
         listener: (context, state) {
           if (state is SendEmailSuccess) {
-            Get.to(() => OTPVerificationScreen(
-                  cubit: context.read<ResetPasswordCubit>(),
-                ));
+            Get.to(
+              () => OTPVerificationScreen(
+                cubit: context.read<ResetPasswordCubit>(),
+              ),
+            );
           } else if (state is ResetPasswordFailure) {
             showAnimatedSnackDialog(
               context,
@@ -71,7 +73,10 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
                             onPressed: () => Get.back(),
                           ),
                         ),
@@ -92,13 +97,17 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
                         const Gap(24),
                         Text(
                           "Forgot Password?",
-                          style: Style.textStyle30Bold.copyWith(color: Colors.white),
+                          style: Style.textStyle30Bold.copyWith(
+                            color: Colors.white,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                         const Gap(12),
                         Text(
                           "Enter your email to receive a reset code",
-                          style: Style.textStyle16.copyWith(color: Colors.white70),
+                          style: Style.textStyle16.copyWith(
+                            color: Colors.white70,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                         const Gap(40),
@@ -117,7 +126,10 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
                           hintText: "Email Address",
                           obscureText: false,
                           width: double.infinity,
-                          prefixIcon: const Icon(Icons.email, color: Colors.white70),
+                          prefixIcon: const Icon(
+                            Icons.email,
+                            color: Colors.white70,
+                          ),
                           fillcolor: const Color(0xFF2C3617).withOpacity(0.3),
                         ),
                         const Gap(24),
@@ -131,14 +143,20 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
                                 weightText: FontWeight.bold,
                                 sizeText: 18,
                                 onTap: () {
+                                  if (emailController.text.trim().isEmpty) {
+                                    showAnimatedSnackDialog(
+                                      context,
+                                      message: "Please enter your email",
+                                      type: AnimatedSnackBarType.warning,
+                                    );
+                                    return;
+                                  }
                                   if (formKey.currentState!.validate()) {
-                                    context.read<ResetPasswordCubit>().sendEmail(
+                                    context
+                                        .read<ResetPasswordCubit>()
+                                        .sendEmail(
                                           email: emailController.text.trim(),
                                         );
-                                        // navigate 
-                                        Get.to(() => OTPVerificationScreen(
-                                          cubit: context.read<ResetPasswordCubit>(),
-                                        ));
                                   }
                                 },
                               ),
@@ -148,7 +166,9 @@ class _ForgetPasswordBodyState extends State<ForgetPasswordBody> {
                           children: [
                             Text(
                               "Remember your password?",
-                              style: Style.textStyle16.copyWith(color: Colors.grey),
+                              style: Style.textStyle16.copyWith(
+                                color: Colors.grey,
+                              ),
                             ),
                             TextButton(
                               onPressed: () {

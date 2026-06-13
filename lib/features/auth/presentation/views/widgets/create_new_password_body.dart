@@ -125,24 +125,20 @@ class _CreateNewPasswordBodyState extends State<CreateNewPasswordBody> {
                             weightText: FontWeight.bold,
                             sizeText: 18,
                             colorText: Colors.white,
-                            // onTap: () {
-                            //   if (_formKey.currentState!.validate()) {
-                            //     if (_newPasswordController.text !=
-                            //         _confirmPasswordController.text) {
-                            //       showAnimatedSnackDialog(
-                            //         context,
-                            //         message: "⚠️ Passwords do not match",
-                            //         type: AnimatedSnackBarType.warning,
-                            //       );
-                            //       return;
-                            //     }
-                            //     context.read<ResetPasswordCubit>().resetPassword(
-                            //           newPassword: _newPasswordController.text,
-                            //         );
-                            //   }
-                            // },
                             onTap: () {
-                              Get.offAll(() => const LoginScreen());
+                              if (_formKey.currentState!.validate()) {
+                                if (_newPasswordController.text != _confirmPasswordController.text) {
+                                  showAnimatedSnackDialog(
+                                    context,
+                                    message: "Passwords do not match",
+                                    type: AnimatedSnackBarType.warning,
+                                  );
+                                  return;
+                                }
+                                context.read<ResetPasswordCubit>().resetPassword(
+                                  newPassword: _newPasswordController.text.trim(),
+                                );
+                              }
                             },
                           ),
                     const Spacer(flex: 3),

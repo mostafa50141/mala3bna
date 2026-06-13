@@ -180,22 +180,16 @@ class _OTPVerificationBodyState extends State<OTPVerificationBody> {
                           weightText: FontWeight.bold,
                           sizeText: 18,
                           onTap: () {
-                            // String otp = _controllers.map((c) => c.text).join();
-                            // if (otp.length < 6) {
-                            //   showAnimatedSnackDialog(
-                            //     context,
-                            //     message: "⚠️ Please enter the 6-digit code",
-                            //     type: AnimatedSnackBarType.warning,
-                            //   );
-                            //   return;
-                            // }
-                            // context.read<ResetPasswordCubit>().verifyOtp(otp: otp);
-
-                            Get.to(
-                              () => CreateNewPasswordScreen(
-                                cubit: context.read<ResetPasswordCubit>(),
-                              ),
-                            );
+                            String otp = _controllers.map((c) => c.text).join();
+                            if (otp.length < 6) {
+                              showAnimatedSnackDialog(
+                                context,
+                                message: "Please enter the 6-digit code",
+                                type: AnimatedSnackBarType.warning,
+                              );
+                              return;
+                            }
+                            context.read<ResetPasswordCubit>().verifyOtp(otp: otp);
                           },
                         ),
                   const Gap(30),

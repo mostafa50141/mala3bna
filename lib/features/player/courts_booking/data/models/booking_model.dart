@@ -7,7 +7,7 @@ class BookingModel {
   final String sport;
   final String date;
   final String time;
-  final int price;
+  final double price;
   final String status;
   final String? notes;
 
@@ -36,7 +36,7 @@ class BookingModel {
     time: json['start_time'] as String? ?? '',
     price: double.tryParse(
           json['total_price']?.toString() ?? '0',
-        )?.toInt() ?? 0,
+        )?.toDouble() ?? 0,
     status: json['status'] as String? ?? 'pending',
     notes: json['notes'] as String?,
   );

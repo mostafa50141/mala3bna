@@ -44,7 +44,7 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
 
   Future<void> _saveBooking() async {
     final booking = BookingModel(
-      id: '${widget.court.id}-${DateTime.now().millisecondsSinceEpoch}',
+      id: int.parse('${widget.court.id}-${DateTime.now().millisecondsSinceEpoch}'),
       courtName: widget.court.name,
       courtLocation: widget.court.location,
       courtImage: widget.court.imageUrl,
