@@ -39,13 +39,18 @@ class ServerFailure extends Failure {
   factory ServerFailure.fromResponse(int? statuscode, dynamic response) {
     String extractMessage(dynamic response, String fallback) {
       if (response is Map<String, dynamic>) {
-        // Backend wraps errors in "error" object
+        // Shape 1: nested error object
         final error = response['error'];
         if (error is Map<String, dynamic>) {
-          return error['message'] as String? ?? fallback;
+          final msg = error['message'] as String?;
+          if (msg != null && msg.isNotEmpty) return msg;
         }
-        // Fallback for non-wrapped responses
-        return response['message'] as String? ?? fallback;
+        // Shape 2: DRF-style "detail" field
+        final detail = response['detail'];
+        if (detail is String && detail.isNotEmpty) return detail;
+        // Shape 3: flat "message" field
+        final msg = response['message'] as String?;
+        if (msg != null && msg.isNotEmpty) return msg;
       }
       return fallback;
     }

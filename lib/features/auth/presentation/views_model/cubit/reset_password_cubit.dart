@@ -25,7 +25,7 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
   Future<void> verifyOtp({required String otp}) async {
     emit(ResetPasswordLoading());
     this.otp = otp;
-    var result = await repo.verifyOtp(email: email, otp: otp);
+    var result = await repo.verifyOtp(otp: otp);
     result.fold(
       (failure) => emit(ResetPasswordFailure(failure.errmessage ?? "Something went wrong")),
       (_) => emit(VerifyOtpSuccess()),
@@ -34,7 +34,7 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
 
   Future<void> resetPassword({required String newPassword}) async {
     emit(ResetPasswordLoading());
-    var result = await repo.resetPassword(email: email, otp: otp, newPassword: newPassword);
+    var result = await repo.resetPassword(newPassword: newPassword);
     result.fold(
       (failure) => emit(ResetPasswordFailure(failure.errmessage ?? "Something went wrong")),
       (_) => emit(ResetPasswordSuccess()),

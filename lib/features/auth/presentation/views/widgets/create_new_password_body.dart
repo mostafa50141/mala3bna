@@ -41,6 +41,10 @@ class _CreateNewPasswordBodyState extends State<CreateNewPasswordBody> {
 
   @override
   Widget build(BuildContext context) {
+    // NOTE: The OTP is only truly validated here, on the backend, when combined
+    // with the new password. If the OTP was wrong or expired, the error will
+    // surface on THIS screen, not the OTP screen, because the backend has no
+    // separate OTP-only verification endpoint.
     return BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
       listener: (context, state) {
         if (state is ResetPasswordSuccess) {

@@ -6,6 +6,7 @@ import 'package:mala3bna/features/auth/data/Repos/reset_password_repo.dart';
 
 class ResetPasswordRepoImpl implements ResetPasswordRepo {
   final ApiService apiService;
+  String? _storedEmail;
   String? _storedOtp;
 
   ResetPasswordRepoImpl({required this.apiService});
@@ -17,6 +18,7 @@ class ResetPasswordRepoImpl implements ResetPasswordRepo {
         endPoint: 'auth/request-otp/',
         body: {'email': email},
       );
+      _storedEmail = email;
       return right(null);
     } catch (e) {
       if (e is DioException) {
@@ -27,26 +29,26 @@ class ResetPasswordRepoImpl implements ResetPasswordRepo {
   }
 
   @override
-  Future<Either<Failure, void>> verifyOtp({
-    required String email,
-    required String otp,
-  }) async {
-    _storedOtp = otp;
+  Future<Either<Failure, void>> verifyOtp({required String otp}) async {
+    // No backend endpoint exists to verify OTP alone.
+    // Just validate format locally and store it for the final reset call.
+    if (otp.trim().length != 6) {
+      return left(ServerFailure("Please enter a valid 6-digit code"));
+    }
+    _storedOtp = otp.trim();
     return right(null);
   }
 
   @override
   Future<Either<Failure, void>> resetPassword({
-    required String email,
-    required String otp,
     required String newPassword,
   }) async {
     try {
       await apiService.post(
         endPoint: 'auth/reset-password-otp/',
         body: {
-          'email': email,
-          'otp': otp.isNotEmpty ? otp : (_storedOtp ?? ''),
+          'email': _storedEmail ?? '',
+          'otp': _storedOtp ?? '',
           'new_password': newPassword,
         },
       );
