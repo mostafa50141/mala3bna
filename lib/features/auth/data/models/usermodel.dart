@@ -6,7 +6,7 @@ class Usermodel {
   String? phoneNumber;
   String? userType;
   String? profileImage;
-  String? token;        // access token
+  String? token; // access token
   String? refreshToken; // refresh token
 
   Usermodel({
@@ -22,9 +22,12 @@ class Usermodel {
   });
 
   factory Usermodel.fromJson(Map<String, dynamic> json) {
-    // API returns { access, refresh, user: {...} } for login/signup
+    // API returns { access, refresh, user: {...} } for login
+    // OR { tokens: { access, refresh }, user: {...} } for signup
     // OR just user fields directly
     final user = json['user'] as Map<String, dynamic>? ?? json;
+    final tokens = json['tokens'] as Map<String, dynamic>?;
+
     return Usermodel(
       id: user['id'] as int?,
       fullName: user['full_name'] as String?,
@@ -33,8 +36,8 @@ class Usermodel {
       phoneNumber: user['phone_number'] as String?,
       userType: user['user_type'] as String?,
       profileImage: user['profile_image'] as String?,
-      token: json['access'] as String?,
-      refreshToken: json['refresh'] as String?,
+      token: tokens?['access'] as String? ?? json['access'] as String?,
+      refreshToken: tokens?['refresh'] as String? ?? json['refresh'] as String?,
     );
   }
 

@@ -68,8 +68,8 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
 
   Future<void> _checkTokenAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
-    final token = await getIt.get<LocalStorageHelper>().gettoken() ?? 5;
-    if (token != null && token != 5) {
+    final token = await getIt.get<LocalStorageHelper>().gettoken() ;
+    if (token != null && token.isNotEmpty ) {
       Get.offAll(
         () => const AppRoot(),
         transition: Transition.fadeIn,

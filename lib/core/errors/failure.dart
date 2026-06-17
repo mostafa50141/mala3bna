@@ -37,20 +37,37 @@ class ServerFailure extends Failure {
   }
 
   factory ServerFailure.fromResponse(int? statuscode, dynamic response) {
+    String extractMessage(dynamic response, String fallback) {
+      if (response is Map<String, dynamic>) {
+        // Backend wraps errors in "error" object
+        final error = response['error'];
+        if (error is Map<String, dynamic>) {
+          return error['message'] as String? ?? fallback;
+        }
+        // Fallback for non-wrapped responses
+        return response['message'] as String? ?? fallback;
+      }
+      return fallback;
+    }
+
     if (statuscode == 400) {
-      return ServerFailure(response["message"] ?? "Invalid request");
+      return ServerFailure(extractMessage(response, "Invalid request"));
     } else if (statuscode == 401) {
-      return ServerFailure(response["message"] ?? "Wrong email or password");
+      return ServerFailure(extractMessage(response, "Wrong email or password"));
     } else if (statuscode == 403) {
-      return ServerFailure(response["message"] ?? "Account not authorized");
+      return ServerFailure(extractMessage(response, "Account not authorized"));
     } else if (statuscode == 404) {
-      return ServerFailure(response["message"] ?? "Account not found");
+      return ServerFailure(extractMessage(response, "Account not found"));
     } else if (statuscode == 409) {
-      return ServerFailure(response["message"] ?? "Email already registered");
+      return ServerFailure(
+        extractMessage(response, "Email already registered"),
+      );
     } else if (statuscode == 500) {
       return ServerFailure("Internal Server error, Please try later!");
     } else {
-      return ServerFailure("Something went wrong, Please try later!");
+      return ServerFailure(
+        extractMessage(response, "Something went wrong, Please try later!"),
+      );
     }
   }
 }

@@ -25,6 +25,13 @@ void setupServiceLocator() {
   // dio with interceptor
   final dio = Dio();
   dio.interceptors.add(AuthInterceptor());
+  dio.interceptors.add(LogInterceptor(
+    requestBody: true,
+    responseBody: true,
+    requestHeader: true,
+    responseHeader: false,
+    error: true,
+  ));
 
   //api service
   getIt.registerSingleton<ApiService>(ApiService(dio: dio));
