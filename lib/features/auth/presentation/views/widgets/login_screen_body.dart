@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/core/navigation/player_main_navigation.dart';
+import 'package:mala3bna/core/navigation/owner_main_navigation.dart';
+import 'package:mala3bna/core/navigation/coach_main_navigation.dart';
+import 'package:mala3bna/core/role/user_role.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
@@ -19,6 +22,17 @@ import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 import 'package:mala3bna/features/auth/presentation/views_model/cubit/auth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+UserRole _mapUserTypeToRole(String? userType) {
+  switch (userType) {
+    case 'owner':
+      return UserRole.owner;
+    case 'coach':
+      return UserRole.coach;
+    default:
+      return UserRole.player;
+  }
+}
 
 class LoginScreenBody extends StatefulWidget {
   const LoginScreenBody({super.key});
@@ -128,20 +142,16 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                   const Gap(48),
                   BlocConsumer<AuthCubit, AuthState>(
                     listener: (context, state) {
-                      if (state is AuthFailure) {
+                      if (state is AuthSuccess) {
+                        authController.setRole(
+                          _mapUserTypeToRole(state.user.userType),
+                        );
+                      } else if (state is AuthFailure) {
                         showAnimatedSnackDialog(
                           context,
                           message: state.errorMessage,
                           type: AnimatedSnackBarType.error,
                         );
-                      }
-                      if (state is AuthSuccess) {
-                        showAnimatedSnackDialog(
-                          context,
-                          message: "Login successful",
-                          type: AnimatedSnackBarType.success,
-                        );
-                        Get.offAll(() => const AppRoot());
                       }
                     },
                     builder: (context, state) {
@@ -157,13 +167,6 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                                 sizeText: 18,
                                 onTap: () {
                                   if (!formkay.currentState!.validate()) {
-                                    return;
-                                  }
-                                  if (authController.userRole.value == null) {
-                                    Get.snackbar(
-                                      "Error",
-                                      "No account found. Please Sign Up first.",
-                                    );
                                     return;
                                   }
                                   context.read<AuthCubit>().login(
