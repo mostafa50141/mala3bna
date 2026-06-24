@@ -34,7 +34,10 @@ class CourtImageEntity extends Equatable {
 class CourtEntity extends Equatable {
   final String id;
   final String title;
-  final double hourlyRate;
+  final double hourlyRate;  // legacy — equals peakRate
+  final double offPeakRate;
+  final double peakRate;
+  final double membershipDiscount; // percentage 0-100
   final List<CourtImageEntity> images;
   final List<AmenityEntity> amenities;
   final String address;
@@ -46,6 +49,9 @@ class CourtEntity extends Equatable {
     required this.id,
     required this.title,
     required this.hourlyRate,
+    this.offPeakRate = 0.0,
+    this.peakRate = 0.0,
+    this.membershipDiscount = 0.0,
     required this.images,
     required this.amenities,
     this.address = '',
@@ -58,6 +64,9 @@ class CourtEntity extends Equatable {
     String? id,
     String? title,
     double? hourlyRate,
+    double? offPeakRate,
+    double? peakRate,
+    double? membershipDiscount,
     List<CourtImageEntity>? images,
     List<AmenityEntity>? amenities,
     String? address,
@@ -69,6 +78,9 @@ class CourtEntity extends Equatable {
       id: id ?? this.id,
       title: title ?? this.title,
       hourlyRate: hourlyRate ?? this.hourlyRate,
+      offPeakRate: offPeakRate ?? this.offPeakRate,
+      peakRate: peakRate ?? this.peakRate,
+      membershipDiscount: membershipDiscount ?? this.membershipDiscount,
       images: images ?? this.images,
       amenities: amenities ?? this.amenities,
       address: address ?? this.address,
@@ -83,6 +95,9 @@ class CourtEntity extends Equatable {
         id,
         title,
         hourlyRate,
+        offPeakRate,
+        peakRate,
+        membershipDiscount,
         images,
         amenities,
         address,

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
+import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_state.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
 
 class PricingSection extends StatelessWidget {
@@ -7,60 +11,72 @@ class PricingSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SectionCard(
-      accentLeft: BorderSide(color: AppColors.primaryColor, width: 3),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionHeader(
-            title: 'Pricing',
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: AppColors.primaryColor.withValues(alpha: 0.35)),
-              ),
-              child: Text(
-                'Per Hour',
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
+    return BlocBuilder<CourtProfileCubit, CourtProfileState>(
+      builder: (context, state) {
+        CourtEntity? court;
+        if (state is CourtProfileLoaded) court = state.courtProfile;
+
+        final offPeak = court?.offPeakRate ?? 0.0;
+        final peak = court?.peakRate ?? court?.hourlyRate ?? 0.0;
+        final discount = court?.membershipDiscount ?? 0.0;
+
+        return SectionCard(
+          accentLeft: BorderSide(color: AppColors.primaryColor, width: 3),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SectionHeader(
+                title: 'Pricing',
+                trailing: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                        color: AppColors.primaryColor.withValues(alpha: 0.35)),
+                  ),
+                  child: Text(
+                    'Per Hour',
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 16),
+              _PriceRow(
+                icon: Icons.wb_sunny_outlined,
+                iconColor: Colors.amber.shade300,
+                label: 'Off-Peak Hours',
+                subtitle: '11 am – 5 pm',
+                price: offPeak > 0 ? 'EGP ${offPeak.toStringAsFixed(0)}/hr' : '—',
+                priceColor: Colors.white,
+              ),
+              _divider(),
+              _PriceRow(
+                icon: Icons.nightlight_outlined,
+                iconColor: const Color(0xFFB39DDB),
+                label: 'Peak Hours',
+                subtitle: '5 pm – 10 pm',
+                price: peak > 0 ? 'EGP ${peak.toStringAsFixed(0)}/hr' : '—',
+                priceColor: Colors.white,
+              ),
+              _divider(),
+              _PriceRow(
+                icon: Icons.local_offer_outlined,
+                iconColor: AppColors.primaryColor,
+                label: 'Membership Discount',
+                subtitle: 'For registered members',
+                price: discount > 0 ? '−${discount.toStringAsFixed(0)}%' : '—',
+                priceColor: AppColors.primaryColor,
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          _PriceRow(
-            icon: Icons.wb_sunny_outlined,
-            iconColor: Colors.amber.shade300,
-            label: 'Off-Peak Hours',
-            subtitle: '11 am – 5 pm',
-            price: 'EGP 300/hr',
-            priceColor: Colors.white,
-          ),
-          _divider(),
-          _PriceRow(
-            icon: Icons.nightlight_outlined,
-            iconColor: const Color(0xFFB39DDB),
-            label: 'Peak Hours',
-            subtitle: '5 pm – 10 pm',
-            price: 'EGP 460/hr',
-            priceColor: Colors.white,
-          ),
-          _divider(),
-          _PriceRow(
-            icon: Icons.local_offer_outlined,
-            iconColor: AppColors.primaryColor,
-            label: 'Membership Discount',
-            subtitle: 'For registered members',
-            price: '−15%',
-            priceColor: AppColors.primaryColor,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

@@ -28,7 +28,9 @@ class _EditCourtScreenState extends State<EditCourtScreen>
     with SingleTickerProviderStateMixin {
   late final EditCourtCubit _cubit;
   final _formKey = GlobalKey<FormState>();
-  final _hourlyController = TextEditingController();
+  final _offPeakController = TextEditingController();
+  final _peakController = TextEditingController();
+  final _discountController = TextEditingController();
   final _addressController = TextEditingController();
   final _selectedAmenities = <String>{};
 
@@ -58,7 +60,9 @@ class _EditCourtScreenState extends State<EditCourtScreen>
 
   @override
   void dispose() {
-    _hourlyController.dispose();
+    _offPeakController.dispose();
+    _peakController.dispose();
+    _discountController.dispose();
     _addressController.dispose();
     _fadeController.dispose();
     _cubit.close();
@@ -164,14 +168,18 @@ class _EditCourtScreenState extends State<EditCourtScreen>
       _showSnack(state.errors.values.first, isError: true);
     } else if (state is EditCourtLoaded && !_initialized) {
       _initialized = true;
-      final hourly = state.court.hourlyRate.toStringAsFixed(0);
-      if (_hourlyController.text != hourly) _hourlyController.text = hourly;
-      if (_addressController.text != state.court.address) {
-        _addressController.text = state.court.address;
+      // Populate pricing controllers
+      final c = state.court;
+      _offPeakController.text =
+          c.offPeakRate > 0 ? c.offPeakRate.toStringAsFixed(0) : '';
+      _peakController.text =
+          c.peakRate > 0 ? c.peakRate.toStringAsFixed(0) : c.hourlyRate.toStringAsFixed(0);
+      _discountController.text =
+          c.membershipDiscount > 0 ? c.membershipDiscount.toStringAsFixed(0) : '';
+      if (_addressController.text != c.address) {
+        _addressController.text = c.address;
       }
-      // Populate amenities from the court's amenity list
-      // Amenity IDs are 'lights', 'showers', 'cafe', 'equipment' (from CourtModel boolean flags)
-      _selectedAmenities.addAll(state.court.amenities.map((e) => e.id));
+      _selectedAmenities.addAll(c.amenities.map((e) => e.id));
       _fadeController.forward();
     }
   }
@@ -299,7 +307,9 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   ),
                   const SizedBox(height: 12),
                   EditCourtPricingField(
-                    controller: _hourlyController,
+                    offPeakController: _offPeakController,
+                    peakController: _peakController,
+                    discountController: _discountController,
                     onChanged: _markDirty,
                   ),
                   const SizedBox(height: 24),
@@ -406,7 +416,9 @@ class _EditCourtScreenState extends State<EditCourtScreen>
         .map((e) => e.id)
         .toList();
     await context.read<EditCourtCubit>().saveChanges(
-          hourlyRate: _hourlyController.text,
+          peakRate: _peakController.text,
+          offPeakRate: _offPeakController.text,
+          membershipDiscount: _discountController.text,
           amenityIds: amenityIds,
           address: _addressController.text,
         );

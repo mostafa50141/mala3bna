@@ -67,14 +67,14 @@ class EditCourtCubit extends Cubit<EditCourtState> {
 
   /// Validate form fields locally
   EditCourtState validate({
-    required String hourlyRate,
+    required String peakRate,
     required List<CourtImageEntity> images,
     required String address,
   }) {
     final errors = <String, String>{};
-    final parsed = double.tryParse(hourlyRate);
-    if (hourlyRate.isEmpty || parsed == null || parsed <= 0) {
-      errors['hourlyRate'] = 'Hourly rate is required and must be positive';
+    final parsed = double.tryParse(peakRate);
+    if (peakRate.isEmpty || parsed == null || parsed <= 0) {
+      errors['peakRate'] = 'Peak rate is required and must be positive';
     }
     if (images.isEmpty) errors['images'] = 'Add at least one image';
     if (address.trim().isEmpty) errors['address'] = 'Address is required';
@@ -88,15 +88,19 @@ class EditCourtCubit extends Cubit<EditCourtState> {
   }
 
   Future<void> saveChanges({
-    required String hourlyRate,
+    required String peakRate,
+    required String offPeakRate,
+    required String membershipDiscount,
     required List<String> amenityIds,
     required String address,
   }) async {
     if (_court == null) return;
-    final parsed = double.tryParse(hourlyRate) ?? 0.0;
-    
+    final parsedPeak = double.tryParse(peakRate) ?? 0.0;
+    final parsedOffPeak = double.tryParse(offPeakRate) ?? 0.0;
+    final parsedDiscount = double.tryParse(membershipDiscount) ?? 0.0;
+
     final validationState = validate(
-      hourlyRate: hourlyRate,
+      peakRate: peakRate,
       images: _court!.images,
       address: address,
     );
@@ -106,7 +110,7 @@ class EditCourtCubit extends Cubit<EditCourtState> {
 
     final result = await updateUseCase(
       id: _court!.id,
-      hourlyRate: parsed,
+      hourlyRate: parsedPeak, // peak is the main price sent to API
       address: address,
       amenityIds: amenityIds,
     );
@@ -114,7 +118,11 @@ class EditCourtCubit extends Cubit<EditCourtState> {
     result.fold(
       (failure) => emit(EditCourtError(failure.errmessage ?? 'Failed to save changes')),
       (updatedCourt) {
-        _court = updatedCourt;
+        _court = updatedCourt.copyWith(
+          offPeakRate: parsedOffPeak,
+          peakRate: parsedPeak,
+          membershipDiscount: parsedDiscount,
+        );
         emit(EditCourtSuccess());
         emit(EditCourtLoaded(court: _court!));
       },

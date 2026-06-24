@@ -7,6 +7,9 @@ class CourtModel extends Equatable {
   final String id;
   final String title;
   final double hourlyRate;
+  final double offPeakRate;
+  final double peakRate;
+  final double membershipDiscount;
   final List<CourtImageModel> images;
   final List<AmenityModel> amenities;
   final String address;
@@ -18,6 +21,9 @@ class CourtModel extends Equatable {
     required this.id,
     required this.title,
     required this.hourlyRate,
+    this.offPeakRate = 0.0,
+    this.peakRate = 0.0,
+    this.membershipDiscount = 0.0,
     required this.images,
     required this.amenities,
     this.address = '',
@@ -30,6 +36,9 @@ class CourtModel extends Equatable {
     String? id,
     String? title,
     double? hourlyRate,
+    double? offPeakRate,
+    double? peakRate,
+    double? membershipDiscount,
     List<CourtImageModel>? images,
     List<AmenityModel>? amenities,
     String? address,
@@ -41,6 +50,9 @@ class CourtModel extends Equatable {
       id: id ?? this.id,
       title: title ?? this.title,
       hourlyRate: hourlyRate ?? this.hourlyRate,
+      offPeakRate: offPeakRate ?? this.offPeakRate,
+      peakRate: peakRate ?? this.peakRate,
+      membershipDiscount: membershipDiscount ?? this.membershipDiscount,
       images: images ?? this.images,
       amenities: amenities ?? this.amenities,
       address: address ?? this.address,
@@ -112,6 +124,9 @@ class CourtModel extends Equatable {
       id: (json['field_id'] ?? json['id'])?.toString() ?? '',
       title: (json['name'] ?? json['title'])?.toString() ?? '',
       hourlyRate: _toDouble(json['price_per_hour'] ?? json['hourly_rate']),
+      offPeakRate: _toDouble(json['off_peak_rate']),
+      peakRate: _toDouble(json['peak_rate'] ?? json['price_per_hour'] ?? json['hourly_rate']),
+      membershipDiscount: _toDouble(json['membership_discount']),
       images: rawImages
           .map((e) => CourtImageModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -132,6 +147,9 @@ class CourtModel extends Equatable {
         'id': id,
         'title': title,
         'hourly_rate': hourlyRate,
+        'off_peak_rate': offPeakRate,
+        'peak_rate': peakRate,
+        'membership_discount': membershipDiscount,
         'images': images.map((e) => e.toJson()).toList(),
         'amenities': amenities.map((e) => e.toJson()).toList(),
         'address': address,
@@ -145,6 +163,9 @@ class CourtModel extends Equatable {
       id: id,
       title: title,
       hourlyRate: hourlyRate,
+      offPeakRate: offPeakRate,
+      peakRate: peakRate,
+      membershipDiscount: membershipDiscount,
       images: images.map((img) => img.toEntity()).toList(),
       amenities: amenities.map((am) => am.toEntity()).toList(),
       address: address,
@@ -159,6 +180,9 @@ class CourtModel extends Equatable {
         id,
         title,
         hourlyRate,
+        offPeakRate,
+        peakRate,
+        membershipDiscount,
         images,
         amenities,
         address,
