@@ -8,7 +8,6 @@ class EditProfileFormSection extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController dobController;
-  final TextEditingController bioController;
   final VoidCallback onFieldChanged;
   final VoidCallback onDobTap;
 
@@ -18,7 +17,6 @@ class EditProfileFormSection extends StatelessWidget {
     required this.emailController,
     required this.phoneController,
     required this.dobController,
-    required this.bioController,
     required this.onFieldChanged,
     required this.onDobTap,
   });
@@ -80,19 +78,6 @@ class EditProfileFormSection extends StatelessWidget {
                 hintText: 'YYYY-MM-DD',
               ),
             ),
-          ),
-        ),
-        const SizedBox(height: 20),
-
-        // Short Bio
-        _LabeledField(
-          label: 'SHORT BIO',
-          child: _ProfileTextField(
-            controller: bioController,
-            icon: Icons.description_outlined,
-            hintText: 'Tell us about yourself...',
-            maxLines: 3,
-            onChanged: (_) => onFieldChanged(),
           ),
         ),
       ],

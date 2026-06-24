@@ -24,7 +24,6 @@ class _EditProfileViewState extends State<EditProfileView>
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _dobController = TextEditingController();
-  final _bioController = TextEditingController();
 
   DateTime _selectedDob = DateTime(2000);
   String _username = '';
@@ -57,7 +56,6 @@ class _EditProfileViewState extends State<EditProfileView>
     _emailController.dispose();
     _phoneController.dispose();
     _dobController.dispose();
-    _bioController.dispose();
     _fadeController.dispose();
     super.dispose();
   }
@@ -72,7 +70,6 @@ class _EditProfileViewState extends State<EditProfileView>
     _selectedDob = profile.dateOfBirth;
     _dobController.text = _selectedDob.toIso8601String().split('T').first;
     _initialImageUrl = profile.imageUrl;
-    _bioController.text = profile.bio ?? '';
     _username = profile.email; // use email as display identifier
     _isInitialized = true;
     _fadeController.forward();
@@ -139,7 +136,6 @@ class _EditProfileViewState extends State<EditProfileView>
       gender: current?.gender ?? Gender.male,
       imageUrl: current?.imageUrl,
       phoneNumber: _phoneController.text.trim(),
-      bio: _bioController.text.trim(),
     );
     context.read<OwnerProfileCubit>().updateProfile(updated, imageFile: _profileImageFile);
   }
@@ -361,7 +357,6 @@ class _EditProfileViewState extends State<EditProfileView>
                   emailController: _emailController,
                   phoneController: _phoneController,
                   dobController: _dobController,
-                  bioController: _bioController,
                   onFieldChanged: _markDirty,
                   onDobTap: _pickDate,
                 ),
