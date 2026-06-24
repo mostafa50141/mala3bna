@@ -11,7 +11,9 @@ import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets
 /// Main scrollable content area of the owner dashboard.
 /// Switches between loading / error / loaded states via the Cubit.
 class OwnerDashboardBody extends StatelessWidget {
-  const OwnerDashboardBody({super.key});
+  /// Called after a court is successfully added so the parent can switch tabs.
+  final VoidCallback? onCourtAdded;
+  const OwnerDashboardBody({super.key, this.onCourtAdded});
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +52,17 @@ class OwnerDashboardBody extends StatelessWidget {
                 StatsGrid(data: data),
                 const SizedBox(height: 24),
                 OwnerWeeklyRevenueChart(data: data),
-                const SizedBox(height: 20),
-                const AddCourtButton(),
+                if (data.totalCourts == 0) ...<Widget>[
+                  const SizedBox(height: 20),
+                  AddCourtButton(
+                    onCourtAdded: () {
+                      context
+                          .read<OwnerDashboardCubit>()
+                          .loadDashboard();
+                      onCourtAdded?.call();
+                    },
+                  ),
+                ],
                 const SizedBox(height: 24),
               ],
             ),

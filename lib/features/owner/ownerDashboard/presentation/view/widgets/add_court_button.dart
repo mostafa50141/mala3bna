@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/add_court_view.dart';
 
 /// Full-width "Add New Court" button at the bottom of the dashboard.
+/// Only shown when the owner has no courts yet.
 class AddCourtButton extends StatelessWidget {
-  const AddCourtButton({super.key});
+  /// Called when the owner successfully adds their first court.
+  final VoidCallback? onCourtAdded;
+
+  const AddCourtButton({super.key, this.onCourtAdded});
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +32,14 @@ class AddCourtButton extends StatelessWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () {
-          navigator?.push(
-            GetPageRoute(
-              page: () => const AddCourtView(),
-              transition: Transition.rightToLeft,
-            ),
+        onPressed: () async {
+          // Navigate and wait for result — true means court was created
+          final result = await Navigator.of(context).push<bool>(
+            MaterialPageRoute(builder: (_) => const AddCourtView()),
           );
+          if (result == true) {
+            onCourtAdded?.call();
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,

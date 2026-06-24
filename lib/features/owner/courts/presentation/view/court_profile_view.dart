@@ -7,10 +7,17 @@ import 'package:mala3bna/features/owner/courts/presentation/view/widgets/my_cour
 
 class CourtProfileView extends StatelessWidget {
   final String? fieldId;
-  const CourtProfileView({super.key, this.fieldId});
+  /// When true, the cubit is provided by the parent (OwnerMainNavigation)
+  /// via BlocProvider.value — we must NOT create a new one here.
+  final bool fromNavigation;
+  const CourtProfileView({super.key, this.fieldId, this.fromNavigation = false});
 
   @override
   Widget build(BuildContext context) {
+    if (fromNavigation) {
+      // Cubit is already in the widget tree from OwnerMainNavigation
+      return const Scaffold(body: CourtProfileBody());
+    }
     return BlocProvider(
       create: (_) =>
           CourtProfileCubit(getIt<CourtRepository>())..loadCourtProfile(fieldId),

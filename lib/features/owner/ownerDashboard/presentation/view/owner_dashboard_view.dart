@@ -8,7 +8,8 @@ import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/owner_dashboard_body.dart';
 
 class OwnerDashboardView extends StatelessWidget {
-  const OwnerDashboardView({super.key});
+  final VoidCallback? onCourtAdded;
+  const OwnerDashboardView({super.key, this.onCourtAdded});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +20,9 @@ class OwnerDashboardView extends StatelessWidget {
         backgroundColor: AppColors.backgroundColor,
         body: SafeArea(
           child: Column(
-            children: const [
-              DashboardAppBar(),
-              Expanded(child: OwnerDashboardBody()),
+            children: [
+              const DashboardAppBar(),
+              Expanded(child: OwnerDashboardBody(onCourtAdded: onCourtAdded)),
             ],
           ),
         ),
