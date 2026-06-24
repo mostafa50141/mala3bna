@@ -57,4 +57,58 @@ class CourtProfileCubit extends Cubit<CourtProfileState> {
       },
     );
   }
+
+  /// Toggle the court's active/inactive status via the backend.
+  Future<void> toggleStatus() async {
+    final currentState = state;
+    // Extract the current court regardless of state variant
+    final court = currentState is CourtProfileLoaded
+        ? currentState.courtProfile
+        : currentState is CourtProfileToggling
+            ? currentState.courtProfile
+            : currentState is CourtProfileToggleError
+                ? currentState.courtProfile
+                : null;
+
+    if (court == null) return;
+
+    if (court.id.isEmpty) {
+      emit(CourtProfileToggleError(
+        court,
+        'Error: Court ID is missing. Please restart the app completely.',
+      ));
+      Future.delayed(
+        const Duration(seconds: 3),
+        () {
+          if (!isClosed) emit(CourtProfileLoaded(court));
+        },
+      );
+      return;
+    }
+
+    emit(CourtProfileToggling(court));
+
+    final result = await _repository.toggleFieldStatus(court.id);
+
+    result.fold(
+      (failure) {
+        emit(CourtProfileToggleError(
+          court,
+          failure.errmessage ?? 'Failed to update court status.',
+        ));
+        // Revert to loaded after showing the error briefly
+        Future.delayed(
+          const Duration(seconds: 2),
+          () {
+            if (!isClosed) emit(CourtProfileLoaded(court));
+          },
+        );
+      },
+      (newIsActive) {
+        // Create a new court instance with the updated isActive status
+        final updatedCourt = court.copyWith(isActive: newIsActive);
+        emit(CourtProfileLoaded(updatedCourt));
+      },
+    );
+  }
 }

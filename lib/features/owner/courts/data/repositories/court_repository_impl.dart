@@ -80,10 +80,10 @@ class CourtRepositoryImpl implements CourtRepository {
   }
 
   @override
-  Future<Either<Failure, CourtEntity>> toggleFieldStatus(String id) async {
+  Future<Either<Failure, bool>> toggleFieldStatus(String id) async {
     try {
-      final model = await remoteDataSource.toggleFieldStatus(id);
-      return Right(model.toEntity());
+      final newStatus = await remoteDataSource.toggleFieldStatus(id);
+      return Right(newStatus);
     } on Failure catch (f) {
       return Left(f);
     } catch (e) {

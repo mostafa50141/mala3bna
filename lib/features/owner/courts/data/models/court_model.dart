@@ -120,8 +120,14 @@ class CourtModel extends Equatable {
       parsedAmenities.addAll(rawAmenities.map((e) => AmenityModel.fromJson(e as Map<String, dynamic>)));
     }
 
+    final rawId = json['field_id'] ?? json['id'] ?? json['pk'] ?? json['uuid'] ?? json['_id'];
+    final parsedId = rawId?.toString() ?? '';
+    if (parsedId.isEmpty) {
+      print('🔴 [CRITICAL] CourtModel ID IS EMPTY! JSON keys available: ${json.keys.toList()}');
+    }
+
     final model = CourtModel(
-      id: (json['field_id'] ?? json['id'])?.toString() ?? '',
+      id: parsedId,
       title: (json['name'] ?? json['title'])?.toString() ?? '',
       hourlyRate: _toDouble(json['price_per_hour'] ?? json['hourly_rate']),
       offPeakRate: _toDouble(json['off_peak_rate']),

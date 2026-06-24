@@ -20,7 +20,7 @@ abstract class CourtRemoteDataSource {
     String? address,
     List<String>? amenityIds,
   });
-  Future<CourtModel> toggleFieldStatus(String id);
+  Future<bool> toggleFieldStatus(String id);
   Future<CourtImageModel> uploadFieldImage(String fieldId, String filePath);
   Future<void> deleteFieldImage(String imageId);
 }
@@ -59,7 +59,13 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
     final response = await _client.get(endpoint);
     print('[Court Details] Raw response type: ${response.runtimeType}');
     print('[Court Details] Raw response: $response');
-    return CourtModel.fromJson(response);
+    
+    // Ensure the ID is preserved if the backend detail serializer omits it
+    if (response is Map<String, dynamic>) {
+      response['id'] ??= id;
+    }
+    
+    return CourtModel.fromJson(response as Map<String, dynamic>);
   }
 
   @override
@@ -117,9 +123,12 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
   }
 
   @override
-  Future<CourtModel> toggleFieldStatus(String id) async {
+  Future<bool> toggleFieldStatus(String id) async {
     final response = await _client.post(ApiEndpoints.fieldToggleStatus(id));
-    return CourtModel.fromJson(response);
+    if (response is Map<String, dynamic> && response.containsKey('is_active')) {
+      return response['is_active'] == true;
+    }
+    return false; // Default fallback
   }
 
   @override

@@ -12,6 +12,17 @@ class CourtProfileLoaded extends CourtProfileState {
   CourtProfileLoaded(this.courtProfile);
 }
 
+class CourtProfileToggling extends CourtProfileState {
+  final CourtEntity courtProfile; // keep showing the court while toggling
+  CourtProfileToggling(this.courtProfile);
+}
+
+class CourtProfileToggleError extends CourtProfileState {
+  final CourtEntity courtProfile;
+  final String message;
+  CourtProfileToggleError(this.courtProfile, this.message);
+}
+
 class CourtProfileError extends CourtProfileState {
   final String message;
 
