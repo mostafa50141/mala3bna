@@ -1,9 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_state.dart';
-import 'package:mala3bna/features/owner/setting/presentation/model/owner_profile_model.dart';
+import 'package:mala3bna/features/owner/setting/domain/entities/user_entity.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_picture.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_form_section.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_save_button.dart';
@@ -22,9 +23,13 @@ class _EditProfileViewState extends State<EditProfileView>
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _dobController = TextEditingController();
   final _bioController = TextEditingController();
 
+  DateTime _selectedDob = DateTime(2000);
   String _username = '';
+  String? _initialImageUrl;
+  File? _profileImageFile;
   bool _isInitialized = false;
   bool _hasChanges = false;
 
@@ -51,6 +56,7 @@ class _EditProfileViewState extends State<EditProfileView>
     _fullNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _dobController.dispose();
     _bioController.dispose();
     _fadeController.dispose();
     super.dispose();
@@ -58,18 +64,21 @@ class _EditProfileViewState extends State<EditProfileView>
 
   // ─── Helpers ────────────────────────────────────────────────────────
 
-  void _populateFields(OwnerProfileModel profile) {
+  void _populateFields(UserEntity profile) {
     if (_isInitialized) return;
-    _fullNameController.text = profile.fullName;
+    _fullNameController.text = profile.name;
     _emailController.text = profile.email;
-    _phoneController.text = profile.phone;
-    _bioController.text = profile.bio;
-    _username = profile.username;
+    _phoneController.text = profile.phoneNumber ?? '';
+    _selectedDob = profile.dateOfBirth;
+    _dobController.text = _selectedDob.toIso8601String().split('T').first;
+    _initialImageUrl = profile.imageUrl;
+    _bioController.text = profile.bio ?? '';
+    _username = profile.email; // use email as display identifier
     _isInitialized = true;
     _fadeController.forward();
   }
 
-  OwnerProfileModel? _extractProfile(OwnerProfileState state) {
+  UserEntity? _extractProfile(OwnerProfileState state) {
     if (state is OwnerProfileLoaded) return state.profile;
     if (state is OwnerProfileUpdating) return state.profile;
     if (state is OwnerProfileUpdateError) return state.profile;
@@ -120,17 +129,19 @@ class _EditProfileViewState extends State<EditProfileView>
   void _saveProfile() {
     if (!_formKey.currentState!.validate()) return;
     FocusScope.of(context).unfocus();
-    final updated = OwnerProfileModel(
-      fullName: _fullNameController.text.trim(),
-      username: _username,
-      phone: _phoneController.text.trim(),
+    // Get current profile to preserve fields not shown in the form
+    final currentState = context.read<OwnerProfileCubit>().state;
+    final current = _extractProfile(currentState);
+    final updated = UserEntity(
+      name: _fullNameController.text.trim(),
       email: _emailController.text.trim(),
+      dateOfBirth: _selectedDob,
+      gender: current?.gender ?? Gender.male,
+      imageUrl: current?.imageUrl,
+      phoneNumber: _phoneController.text.trim(),
       bio: _bioController.text.trim(),
-      birthDate: '',
-      gender: '',
-      imageUrl: 'assets/images/app_logo.png',
     );
-    context.read<OwnerProfileCubit>().updateProfile(updated);
+    context.read<OwnerProfileCubit>().updateProfile(updated, imageFile: _profileImageFile);
   }
 
   Future<bool> _confirmDiscard() async {
@@ -163,6 +174,35 @@ class _EditProfileViewState extends State<EditProfileView>
       ),
     );
     return result ?? false;
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDob,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: AppColors.primaryColor,
+              onPrimary: Colors.white,
+              surface: AppColors.colorBtnAndCard,
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      setState(() {
+        _selectedDob = picked;
+        _dobController.text = picked.toIso8601String().split('T').first;
+        _markDirty();
+      });
+    }
   }
 
   // ─── State Listener ─────────────────────────────────────────────────
@@ -285,7 +325,13 @@ class _EditProfileViewState extends State<EditProfileView>
               children: [
                 // Avatar
                 const SizedBox(height: 4),
-                const EditProfilePicture(),
+                EditProfilePicture(
+                  initialImageUrl: _initialImageUrl,
+                  onImagePicked: (f) {
+                    _profileImageFile = f;
+                    _markDirty();
+                  },
+                ),
                 const SizedBox(height: 16),
 
                 // Name + Username
@@ -314,8 +360,10 @@ class _EditProfileViewState extends State<EditProfileView>
                   fullNameController: _fullNameController,
                   emailController: _emailController,
                   phoneController: _phoneController,
+                  dobController: _dobController,
                   bioController: _bioController,
                   onFieldChanged: _markDirty,
+                  onDobTap: _pickDate,
                 ),
                 const SizedBox(height: 32),
 

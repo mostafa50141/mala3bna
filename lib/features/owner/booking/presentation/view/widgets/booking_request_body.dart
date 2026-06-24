@@ -13,7 +13,18 @@ class BookingRequestBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<BookingCubit, BookingState>(
       listener: (context, state) {
-        // Show snackbar feedback after accept/decline completes
+        if (state is BookingActionError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.redAccent.withValues(alpha: 0.9),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
       },
       builder: (context, state) {
         if (state is BookingLoading) {

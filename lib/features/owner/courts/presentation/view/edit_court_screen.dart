@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
+import 'package:mala3bna/features/owner/courts/domain/repositories/court_repository.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/edit_court_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/edit_court_state.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/edit_court_shimmer.dart';
@@ -12,9 +15,6 @@ import 'package:mala3bna/features/owner/courts/presentation/view/widgets/edit_co
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/edit_court_location_section.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/edit_court_section_title.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/bottom_action_buttons.dart';
-import 'package:mala3bna/features/owner/courts/data/datasources/court_remote_data_source.dart';
-import 'package:mala3bna/features/owner/courts/data/repositories/court_repository_impl.dart';
-import '../../data/models/court_model.dart';
 
 class EditCourtScreen extends StatefulWidget {
   final String courtId;
@@ -29,6 +29,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
   late final EditCourtCubit _cubit;
   final _formKey = GlobalKey<FormState>();
   final _hourlyController = TextEditingController();
+  final _addressController = TextEditingController();
   final _selectedAmenities = <String>{};
 
   bool _initialized = false;
@@ -42,11 +43,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
   @override
   void initState() {
     super.initState();
-    _cubit = EditCourtCubit(
-      repository: CourtRepositoryImpl(
-        remoteDataSource: CourtRemoteDataSourceImpl(),
-      ),
-    );
+    _cubit = EditCourtCubit(repository: getIt<CourtRepository>());
     _cubit.loadCourt(widget.courtId);
 
     _fadeController = AnimationController(
@@ -62,6 +59,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
   @override
   void dispose() {
     _hourlyController.dispose();
+    _addressController.dispose();
     _fadeController.dispose();
     _cubit.close();
     super.dispose();
@@ -168,6 +166,11 @@ class _EditCourtScreenState extends State<EditCourtScreen>
       _initialized = true;
       final hourly = state.court.hourlyRate.toStringAsFixed(0);
       if (_hourlyController.text != hourly) _hourlyController.text = hourly;
+      if (_addressController.text != state.court.address) {
+        _addressController.text = state.court.address;
+      }
+      // Populate amenities from the court's amenity list
+      // Amenity IDs are 'lights', 'showers', 'cafe', 'equipment' (from CourtModel boolean flags)
       _selectedAmenities.addAll(state.court.amenities.map((e) => e.id));
       _fadeController.forward();
     }
@@ -256,9 +259,11 @@ class _EditCourtScreenState extends State<EditCourtScreen>
   // ─── Form Body ──────────────────────────────────────────────────────
 
   Widget _buildForm(
-      BuildContext context, CourtModel court, EditCourtState state) {
+      BuildContext context, CourtEntity court, EditCourtState state) {
     final isSaving = state is EditCourtSaving;
     final isUploading = state is EditCourtImageUploading;
+    // Map CourtImageEntity -> CourtImageModel structure if needed by EditCourtPhotoGrid
+    // Note: The PhotoGrid needs to accept CourtImageEntity now.
 
     return FadeTransition(
       opacity: _fadeAnimation,
@@ -321,15 +326,13 @@ class _EditCourtScreenState extends State<EditCourtScreen>
 
                   // Location
                   const EditCourtSectionTitle(
-                    title: 'Location',
+                    title: 'Address',
                     icon: Icons.location_on_outlined,
                   ),
                   const SizedBox(height: 12),
                   EditCourtLocationSection(
-                    lat: court.lat,
-                    lng: court.lng,
-                    onChangeLocation: () =>
-                        _showSnack('Location picker coming soon'),
+                    controller: _addressController,
+                    onChanged: _markDirty,
                   ),
                 ],
               ),
@@ -395,7 +398,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
     );
   }
 
-  Future<void> _onSave(BuildContext context, CourtModel court) async {
+  Future<void> _onSave(BuildContext context, CourtEntity court) async {
     FocusScope.of(context).unfocus();
     HapticFeedback.mediumImpact();
     final amenityIds = court.amenities
@@ -405,8 +408,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
     await context.read<EditCourtCubit>().saveChanges(
           hourlyRate: _hourlyController.text,
           amenityIds: amenityIds,
-          lat: court.lat ?? 0.0,
-          lng: court.lng ?? 0.0,
+          address: _addressController.text,
         );
   }
 }

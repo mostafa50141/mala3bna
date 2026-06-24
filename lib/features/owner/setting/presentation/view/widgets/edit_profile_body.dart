@@ -5,7 +5,7 @@ import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/form_widgets.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_state.dart';
-import 'package:mala3bna/features/owner/setting/presentation/model/owner_profile_model.dart';
+import 'package:mala3bna/features/owner/setting/domain/entities/user_entity.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_app_bar.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_picture.dart';
 
@@ -37,18 +37,18 @@ class _EditProfileBodyState extends State<EditProfileBody> {
     super.dispose();
   }
 
-  void _populateFields(OwnerProfileModel profile) {
+  void _populateFields(UserEntity profile) {
     if (!_isInitialized) {
-      _fullNameController.text = profile.fullName;
-      _usernameController.text = profile.username;
-      _phoneController.text = profile.phone;
-      _birthDateController.text = profile.birthDate;
-      _genderController.text = profile.gender;
+      _fullNameController.text = profile.name;
+      _usernameController.text = profile.email; // use email as identifier
+      _phoneController.text = profile.phoneNumber ?? '';
+      _birthDateController.text = profile.dateOfBirth.toIso8601String().split('T').first;
+      _genderController.text = profile.gender == Gender.female ? 'Female' : 'Male';
       _isInitialized = true;
     }
   }
 
-  OwnerProfileModel? _extractProfile(OwnerProfileState state) {
+  UserEntity? _extractProfile(OwnerProfileState state) {
     if (state is OwnerProfileLoaded) return state.profile;
     if (state is OwnerProfileUpdating) return state.profile;
     if (state is OwnerProfileUpdateError) return state.profile;
@@ -58,15 +58,15 @@ class _EditProfileBodyState extends State<EditProfileBody> {
 
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
-      final updatedProfile = OwnerProfileModel(
-        fullName: _fullNameController.text.trim(),
-        username: _usernameController.text.trim(),
-        phone: _phoneController.text.trim(),
-        birthDate: _birthDateController.text.trim(),
-        gender: _genderController.text.trim(),
-        imageUrl: "assets/images/app_logo.png",
+      final current = _extractProfile(context.read<OwnerProfileCubit>().state);
+      final updatedProfile = UserEntity(
+        name: _fullNameController.text.trim(),
+        email: _usernameController.text.trim(),
+        dateOfBirth: current?.dateOfBirth ?? DateTime(2000),
+        gender: _genderController.text == 'Female' ? Gender.female : Gender.male,
+        imageUrl: current?.imageUrl,
+        phoneNumber: _phoneController.text.trim(),
       );
-
       context.read<OwnerProfileCubit>().updateProfile(updatedProfile);
     }
   }

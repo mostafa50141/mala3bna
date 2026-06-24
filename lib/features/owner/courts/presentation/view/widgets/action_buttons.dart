@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/edit_court_screen.dart';
 
 class ActionButtons extends StatefulWidget {
@@ -23,13 +25,16 @@ class _ActionButtonsState extends State<ActionButtons> {
         Expanded(
           child: ElevatedButton.icon(
             onPressed: () {
-              final id = widget.courtId ?? 'court_1';
+              final id = widget.courtId;
+              if (id == null || id.isEmpty) return; // guard: no ID, no navigation
 
+              // After edit screen closes, reload court profile to reflect changes
+              final cubit = context.read<CourtProfileCubit>();
               Get.to(
                 () => EditCourtScreen(courtId: id),
                 transition: Transition.rightToLeft,
                 duration: const Duration(milliseconds: 300),
-              );
+              )?.then((_) => cubit.loadCourtProfile());
             },
             icon: const Icon(Icons.edit_outlined, size: 16),
             label: const Text(

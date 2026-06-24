@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mala3bna/features/owner/setting/data/repo/owner_profile_repository.dart';
+import 'package:mala3bna/features/owner/setting/domain/repositories/setting_repository.dart';
 import 'delete_account_state.dart';
 
 class DeleteAccountCubit extends Cubit<DeleteAccountState> {
-  final OwnerProfileRepository _repository;
+  final SettingRepository _repository;
 
   DeleteAccountCubit(this._repository) : super(const DeleteAccountState());
 
@@ -24,20 +23,13 @@ class DeleteAccountCubit extends Cubit<DeleteAccountState> {
 
     emit(state.copyWith(status: DeleteAccountStatus.loading, errorMessage: null));
 
-    try {
-      // Simulate network call — replace with real API in production
-      await _repository.deleteAccount(password: state.password);
-      emit(state.copyWith(status: DeleteAccountStatus.success));
-    } on TimeoutException {
-      emit(state.copyWith(
+    final result = await _repository.deleteAccount(password: state.password);
+    result.fold(
+      (failure) => emit(state.copyWith(
         status: DeleteAccountStatus.failure,
-        errorMessage: 'Request timed out. Check your connection and retry.',
-      ));
-    } on Exception catch (e) {
-      emit(state.copyWith(
-        status: DeleteAccountStatus.failure,
-        errorMessage: e.toString().replaceFirst('Exception: ', ''),
-      ));
-    }
+        errorMessage: failure.errmessage ?? 'Failed to delete account.',
+      )),
+      (_) => emit(state.copyWith(status: DeleteAccountStatus.success)),
+    );
   }
 }

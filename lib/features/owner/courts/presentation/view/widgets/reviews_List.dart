@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
-import 'review_item.dart';
+// import 'review_item.dart';
 
 class ReviewsList extends StatelessWidget {
-  final List<CourtReview> reviews;
+  final List<dynamic> reviews;
 
   const ReviewsList({super.key, required this.reviews});
 
@@ -15,7 +14,7 @@ class ReviewsList extends StatelessWidget {
     return Column(
       children: [
         for (int i = 0; i < reviews.length; i++) ...[
-          ReviewItem(review: reviews[i]),
+          // ReviewItem(review: reviews[i]),
           if (i < reviews.length - 1) const SizedBox(height: 12),
         ],
       ],

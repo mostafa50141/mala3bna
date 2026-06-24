@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../data/models/court_model.dart';
-import '../../data/models/court_image_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 
 abstract class EditCourtState extends Equatable {
   const EditCourtState();
@@ -14,7 +13,7 @@ class EditCourtInitial extends EditCourtState {}
 class EditCourtLoading extends EditCourtState {}
 
 class EditCourtLoaded extends EditCourtState {
-  final CourtModel court;
+  final CourtEntity court;
 
   const EditCourtLoaded({required this.court});
 
@@ -23,7 +22,7 @@ class EditCourtLoaded extends EditCourtState {
 }
 
 class EditCourtImageUploading extends EditCourtState {
-  final List<CourtImageModel> images;
+  final List<CourtImageEntity> images;
   const EditCourtImageUploading({required this.images});
 
   @override
@@ -31,7 +30,7 @@ class EditCourtImageUploading extends EditCourtState {
 }
 
 class EditCourtImageRemoved extends EditCourtState {
-  final List<CourtImageModel> images;
+  final List<CourtImageEntity> images;
   const EditCourtImageRemoved({required this.images});
 
   @override

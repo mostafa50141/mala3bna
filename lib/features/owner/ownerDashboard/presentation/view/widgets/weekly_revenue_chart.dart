@@ -1,11 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/presentation/model/owner_dashboard_model.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/domain/entities/dashboard_entity.dart';
 
 /// Weekly revenue line chart with gradient fill, growth badge, and styled axes.
 class OwnerWeeklyRevenueChart extends StatelessWidget {
-  final OwnerDashboardModel data;
+  final DashboardEntity data;
 
   const OwnerWeeklyRevenueChart({super.key, required this.data});
 

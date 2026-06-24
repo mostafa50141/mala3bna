@@ -1,46 +1,75 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:mala3bna/core/errors/failure.dart';
-import 'package:mala3bna/core/utils/api_server.dart';
+import 'package:mala3bna/core/network/api_endpoints.dart';
+import 'package:mala3bna/core/network/dio_client.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
-import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/auth/data/Repos/auth_repo.dart';
 import 'package:mala3bna/features/auth/data/models/usermodel.dart';
 
 class AuthRepoImp implements AuthRepo {
-  final ApiService apiService;
+  final DioClient _client;
+  final LocalStorageHelper _storage;
 
-  AuthRepoImp({required this.apiService});
-  // the fun that deal with the api to login
+  AuthRepoImp({required DioClient client, required LocalStorageHelper storage})
+    : _client = client,
+      _storage = storage;
+
   @override
   Future<Either<Failure, Usermodel>> login({
     required String email,
     required String password,
   }) async {
     try {
-      var response = await apiService.post(
-        endPoint: 'auth/login',
-        body: {'email': email, 'password': password},
+      final response = await _client.post(
+        ApiEndpoints.login,
+        data: {'email': email, 'password': password},
       );
-      // here the model that i created to convert the json response
-      //to object and use it in the app the response that came from the api recived here and convert it to usermodel object
-      // and return it to the app
-      Usermodel user = Usermodel.fromJson(response);
-      if (user.token != null) {
-        // save the token in local storage using the helper class that i created
-        await getIt.get<LocalStorageHelper>().savetoken(user.token!);
-        return right(user);
+
+      // ── DEBUG: reveal exact API response structure ──────────────────────────
+      print('=== LOGIN RESPONSE ===');
+      print('Type: ${response.runtimeType}');
+      print('Keys: ${(response as Map<String, dynamic>).keys.toList()}');
+      print('access: ${response['access']}');
+      print('refresh: ${response['refresh']}');
+      print('token: ${response['token']}');
+      print('user key: ${response['user']}');
+      print('Full response: $response');
+      print('=== END LOGIN RESPONSE ===');
+      // ── END DEBUG ───────────────────────────────────────────────────────────
+
+      // Extract tokens BEFORE parsing into Usermodel
+      final access = response['access'] as String?;
+      final refresh = response['refresh'] as String?;
+
+      // Handle nested user object: { "access": "...", "user": { ... } }
+      final dynamic userJson = response['user'] ?? response;
+      final user = Usermodel.fromJson(userJson as Map<String, dynamic>);
+
+      if (access != null) {
+        print('DEBUG: Saving JWT tokens — access=${access.substring(0, 20)}...');
+        await _storage.saveTokens(access: access, refresh: refresh ?? '');
+      } else if (user.token != null) {
+        // Fallback: single-token response (non-JWT backend).
+        print('DEBUG: Saving single token — ${user.token!.substring(0, 20)}...');
+        await _storage.saveAccessToken(user.token!);
       } else {
-        return left(ServerFailure("Invalid token"));
+        print('DEBUG: No token found in response!');
+        return left(ServerFailure('Invalid token'));
       }
+
+      // Verify token was actually saved
+      final savedToken = await _storage.getAccessToken();
+      print('DEBUG: Token saved successfully — ${savedToken != null ? 'YES (${savedToken.substring(0, 20)}...)' : 'NO — null!'}');
+
+      return right(user);
+    } on Failure catch (f) {
+      print('DEBUG: Auth Failure — $f');
+      return left(f);
     } catch (e) {
-      if (e is DioException) {
-        return left(ServerFailure.fromDioError(e));
-      }
+      print('DEBUG: Auth unexpected error — $e');
       return left(ServerFailure(e.toString()));
     }
   }
-  // same as sign up  but with different end point and body
 
   @override
   Future<Either<Failure, Usermodel>> signUp({
@@ -51,9 +80,9 @@ class AuthRepoImp implements AuthRepo {
     required String role,
   }) async {
     try {
-      var response = await apiService.post(
-        endPoint: 'auth/signup/',
-        body: {
+      final response = await _client.post(
+        ApiEndpoints.signup,
+        data: {
           'email': email,
           'password': password,
           'name': name,
@@ -61,59 +90,22 @@ class AuthRepoImp implements AuthRepo {
           'role': role,
         },
       );
-      Usermodel user = Usermodel.fromJson(response);
-      if (user.token != null) {
-        // save the token in local storage using the helper class that i created
-        await getIt.get<LocalStorageHelper>().savetoken(user.token!);
-        return right(user);
+      final user = Usermodel.fromJson(response as Map<String, dynamic>);
+
+      final access = response['access'] as String?;
+      final refresh = response['refresh'] as String?;
+      if (access != null) {
+        await _storage.saveTokens(access: access, refresh: refresh ?? '');
+      } else if (user.token != null) {
+        await _storage.saveAccessToken(user.token!);
       } else {
-        return left(ServerFailure("Invalid token"));
+        return left(ServerFailure('Invalid token'));
       }
+      return right(user);
+    } on Failure catch (f) {
+      return left(f);
     } catch (e) {
-      if (e is DioException) {
-        return left(ServerFailure.fromDioError(e));
-      }
       return left(ServerFailure(e.toString()));
     }
   }
-
-  // fake api for testing the app without the real api and to test the ui and the flow of the app
-  // without waiting for the api to be ready
-  // @override
-  // Future<Either<Failure, Usermodel>> login({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   await Future.delayed(const Duration(seconds: 2));
-  //   final fakeUser = Usermodel(
-  //     id: 1,
-  //     fullName: "Mustafa",
-  //     email: email,
-  //     token: "fake_token_123",
-  //     userType: "player",
-  //   );
-  //   await getIt.get<LocalStorageHelper>().savetoken(fakeUser.token!);
-
-  //   return right(fakeUser);
-  // }
-
-  // @override
-  // Future<Either<Failure, Usermodel>> signUp({
-  //   required String email,
-  //   required String password,
-  //   required String name,
-  //   required String phone,
-  //   required String role,
-  // }) async {
-  //   await Future.delayed(const Duration(seconds: 2));
-  //   final fakeUser = Usermodel(
-  //     id: 1,
-  //     fullName: name,
-  //     email: email,
-  //     token: "fake_token_123",
-  //     userType: role,
-  //   );
-  //   await getIt.get<LocalStorageHelper>().savetoken(fakeUser.token!);
-  //   return right(fakeUser);
-  // }
 }

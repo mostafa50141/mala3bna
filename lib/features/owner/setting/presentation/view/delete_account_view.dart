@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
-import 'package:mala3bna/features/owner/setting/data/repo/owner_profile_repository.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
+import 'package:mala3bna/features/owner/setting/domain/repositories/setting_repository.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/delete_account_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/delete_account_state.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/delete_account_danger_icon.dart';
@@ -19,7 +20,7 @@ class DeleteAccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => DeleteAccountCubit(OwnerProfileRepository()),
+      create: (_) => DeleteAccountCubit(getIt<SettingRepository>()),
       child: const _DeleteAccountBody(),
     );
   }

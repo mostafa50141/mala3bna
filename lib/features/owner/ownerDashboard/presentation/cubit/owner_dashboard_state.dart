@@ -1,4 +1,4 @@
-import 'package:mala3bna/features/owner/ownerDashboard/presentation/model/owner_dashboard_model.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/domain/entities/dashboard_entity.dart';
 
 abstract class OwnerDashboardState {}
 
@@ -7,7 +7,7 @@ class OwnerDashboardInitial extends OwnerDashboardState {}
 class OwnerDashboardLoading extends OwnerDashboardState {}
 
 class OwnerDashboardLoaded extends OwnerDashboardState {
-  final OwnerDashboardModel dashboardData;
+  final DashboardEntity dashboardData;
 
   OwnerDashboardLoaded(this.dashboardData);
 }

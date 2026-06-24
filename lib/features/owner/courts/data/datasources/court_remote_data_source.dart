@@ -1,76 +1,145 @@
-import 'dart:async';
-
+import 'package:dio/dio.dart';
+import 'package:mala3bna/core/network/api_endpoints.dart';
+import 'package:mala3bna/core/network/dio_client.dart';
 import '../models/court_model.dart';
 import '../models/court_image_model.dart';
-import '../models/amenity_model.dart';
-import '../models/update_court_request.dart';
 
-/// Remote data source. Currently mocked and prepared for real HTTP integration.
 abstract class CourtRemoteDataSource {
-  Future<CourtModel> getCourtDetails(String id);
-
-  /// Uploads an image and returns created CourtImageModel
-  Future<CourtImageModel> uploadCourtImage(String courtId, String filePath);
-
-  Future<void> removeCourtImage(String courtId, String imageId);
-
-  Future<void> updateCourt(UpdateCourtRequest request);
+  Future<List<CourtModel>> getOwnerFields();
+  Future<CourtModel> getFieldDetails(String id);
+  Future<CourtModel> addField({
+    required String title,
+    required double hourlyRate,
+    required String address,
+    required List<String> amenityIds,
+  });
+  Future<CourtModel> updateField({
+    required String id,
+    String? title,
+    double? hourlyRate,
+    String? address,
+    List<String>? amenityIds,
+  });
+  Future<CourtModel> toggleFieldStatus(String id);
+  Future<CourtImageModel> uploadFieldImage(String fieldId, String filePath);
+  Future<void> deleteFieldImage(String imageId);
 }
 
 class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
-  // In production, inject http client / api client here
+  final DioClient _client;
+
+  CourtRemoteDataSourceImpl(this._client);
 
   @override
-  Future<CourtModel> getCourtDetails(String id) async {
-    // Placeholder mocked response (simulate network latency)
-    await Future.delayed(const Duration(milliseconds: 600));
+  Future<List<CourtModel>> getOwnerFields() async {
+    final response = await _client.get(ApiEndpoints.fields);
+    print('[Courts] Raw getOwnerFields response: $response');
 
-    final sampleAmenities = [
-      AmenityModel(id: '1', title: 'Lights', iconAsset: ''),
-      AmenityModel(id: '2', title: 'Showers', iconAsset: ''),
-      AmenityModel(id: '3', title: 'Cafe', iconAsset: ''),
-      AmenityModel(id: '4', title: 'Parking', iconAsset: ''),
-      AmenityModel(id: '5', title: 'Equipment', iconAsset: ''),
-      AmenityModel(id: '6', title: 'Toilets', iconAsset: ''),
-    ];
+    // Django REST Framework can return either:
+    //   A) A raw List  → [{ "id": 1, ... }, ...]
+    //   B) A paginated Map  → { "count": N, "results": [...] }
+    final List<dynamic> data;
+    if (response is List) {
+      data = response;
+    } else if (response is Map && response.containsKey('results')) {
+      data = response['results'] as List<dynamic>;
+    } else {
+      print('[Courts] Unexpected response structure: $response');
+      data = [];
+    }
 
-    final images = [
-      CourtImageModel(id: 'i1', url: 'assets/images/sample_court_1.jpg'),
-      CourtImageModel(id: 'i2', url: 'assets/images/sample_court_2.jpg'),
-    ];
-
-    return CourtModel(
-      id: id,
-      title: 'Sample Court',
-      hourlyRate: 450.0,
-      images: images,
-      amenities: sampleAmenities,
-      lat: 30.0444,
-      lng: 31.2357,
-    );
+    print('[Courts] Parsed ${data.length} court(s)');
+    return data.map((json) => CourtModel.fromJson(json as Map<String, dynamic>)).toList();
   }
 
   @override
-  Future<CourtImageModel> uploadCourtImage(
-    String courtId,
+  Future<CourtModel> getFieldDetails(String id) async {
+    final endpoint = ApiEndpoints.fieldDetail(id);
+    print('[Court Details] Calling endpoint: $endpoint');
+    final response = await _client.get(endpoint);
+    print('[Court Details] Raw response type: ${response.runtimeType}');
+    print('[Court Details] Raw response: $response');
+    return CourtModel.fromJson(response);
+  }
+
+  @override
+  Future<CourtModel> addField({
+    required String title,
+    required double hourlyRate,
+    required String address,
+    required List<String> amenityIds,
+  }) async {
+    final response = await _client.post(
+      ApiEndpoints.fields,
+      data: {
+        'title': title,
+        'hourly_rate': hourlyRate,
+        'address': address,
+        'amenities': amenityIds,
+      },
+    );
+    return CourtModel.fromJson(response);
+  }
+
+  @override
+  Future<CourtModel> updateField({
+    required String id,
+    String? title,
+    double? hourlyRate,
+    String? address,
+    List<String>? amenityIds,
+  }) async {
+    final Map<String, dynamic> data = {};
+    if (title != null) data['name'] = title;
+    if (hourlyRate != null) data['price_per_hour'] = hourlyRate;
+    if (address != null) data['address'] = address;
+
+    // Backend uses boolean flags, not a list of amenity IDs
+    if (amenityIds != null) {
+      data['has_lights']    = amenityIds.contains('lights');
+      data['has_showers']   = amenityIds.contains('showers');
+      data['has_cafe']      = amenityIds.contains('cafe');
+      data['has_equipment'] = amenityIds.contains('equipment');
+    }
+
+    print('[UpdateField] Sending PATCH (form-urlencoded) to ${ApiEndpoints.fieldDetail(id)}');
+    print('[UpdateField] Body: $data');
+
+    // Use form-urlencoded (lighter than multipart, no file overhead)
+    // Django accepts this via FormParser alongside MultiPartParser
+    final rawResponse = await _client.patchForm(
+      ApiEndpoints.fieldDetail(id),
+      data: data,
+    );
+
+    print('[UpdateField] Response: $rawResponse');
+    return CourtModel.fromJson(rawResponse);
+  }
+
+  @override
+  Future<CourtModel> toggleFieldStatus(String id) async {
+    final response = await _client.post(ApiEndpoints.fieldToggleStatus(id));
+    return CourtModel.fromJson(response);
+  }
+
+  @override
+  Future<CourtImageModel> uploadFieldImage(
+    String fieldId,
     String filePath,
   ) async {
-    // Simulate upload delay and return a new image model with mock url
-    await Future.delayed(const Duration(seconds: 1));
-    final id = DateTime.now().millisecondsSinceEpoch.toString();
-    return CourtImageModel(id: id, url: filePath);
+    final formData = FormData.fromMap({
+      'field': fieldId,
+      'image': await MultipartFile.fromFile(filePath),
+    });
+    final response = await _client.postMultipart(
+      ApiEndpoints.fieldImages,
+      formData: formData,
+    );
+    return CourtImageModel.fromJson(response);
   }
 
   @override
-  Future<void> removeCourtImage(String courtId, String imageId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return;
-  }
-
-  @override
-  Future<void> updateCourt(UpdateCourtRequest request) async {
-    // Simulate network latency and success
-    await Future.delayed(const Duration(seconds: 1));
-    return;
+  Future<void> deleteFieldImage(String imageId) async {
+    await _client.delete(ApiEndpoints.fieldImageDetail(imageId));
   }
 }

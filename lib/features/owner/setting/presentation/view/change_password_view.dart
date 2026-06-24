@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/utils/service_locator.dart';
+import 'package:mala3bna/features/owner/setting/domain/repositories/setting_repository.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/change_password_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/change_password_state.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/change_password_field.dart';
@@ -14,7 +16,7 @@ class ChangePasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ChangePasswordCubit(),
+      create: (_) => ChangePasswordCubit(getIt<SettingRepository>()),
       child: const _ChangePasswordBody(),
     );
   }

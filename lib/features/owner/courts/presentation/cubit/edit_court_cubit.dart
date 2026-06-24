@@ -1,78 +1,83 @@
 import 'package:bloc/bloc.dart';
-
-import '../../data/models/court_model.dart';
-import '../../data/models/court_image_model.dart';
-import '../../data/models/update_court_request.dart';
-import '../../domain/repositories/court_repository.dart';
-import '../../domain/usecases/update_court_usecase.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
+import 'package:mala3bna/features/owner/courts/domain/repositories/court_repository.dart';
+import 'package:mala3bna/features/owner/courts/domain/usecases/update_field_usecase.dart';
 import 'edit_court_state.dart';
 
 class EditCourtCubit extends Cubit<EditCourtState> {
   final CourtRepository repository;
-  final UpdateCourtUseCase updateUseCase;
+  late final UpdateFieldUseCase updateUseCase;
 
-  CourtModel? _court;
+  CourtEntity? _court;
 
   EditCourtCubit({required this.repository})
-    : updateUseCase = UpdateCourtUseCase(repository),
-      super(EditCourtInitial());
+      : super(EditCourtInitial()) {
+    updateUseCase = UpdateFieldUseCase(repository);
+  }
 
-  CourtModel? get court => _court;
+  CourtEntity? get court => _court;
 
   Future<void> loadCourt(String id) async {
     emit(EditCourtLoading());
-    try {
-      final c = await repository.getCourtDetails(id);
-      _court = c;
-      emit(EditCourtLoaded(court: c));
-    } catch (e) {
-      emit(EditCourtError('Failed to load court: ${e.toString()}'));
-    }
+    final result = await repository.getFieldDetails(id);
+    result.fold(
+      (failure) => emit(EditCourtError(failure.errmessage ?? 'Failed to load court')),
+      (c) {
+        _court = c;
+        emit(EditCourtLoaded(court: c));
+      },
+    );
   }
 
   Future<void> pickAndUploadImage(String filePath) async {
     if (_court == null) return;
-    final currentImages = List<CourtImageModel>.from(_court!.images);
+    final currentImages = List<CourtImageEntity>.from(_court!.images);
     emit(EditCourtImageUploading(images: currentImages));
-    try {
-      final uploaded = await repository.uploadCourtImage(_court!.id, filePath);
-      currentImages.add(uploaded);
-      _court = _court!.copyWith(images: currentImages);
-      emit(EditCourtLoaded(court: _court!));
-    } catch (e) {
-      emit(EditCourtError('Image upload failed: ${e.toString()}'));
-    }
+
+    final result = await repository.uploadFieldImage(
+      fieldId: _court!.id,
+      filePath: filePath,
+    );
+
+    result.fold(
+      (failure) => emit(EditCourtError(failure.errmessage ?? 'Image upload failed')),
+      (uploaded) {
+        currentImages.add(uploaded);
+        _court = _court!.copyWith(images: currentImages);
+        emit(EditCourtLoaded(court: _court!));
+      },
+    );
   }
 
   Future<void> removeImage(String imageId) async {
     if (_court == null) return;
-    final currentImages = List<CourtImageModel>.from(_court!.images);
-    try {
-      await repository.removeCourtImage(_court!.id, imageId);
-      currentImages.removeWhere((i) => i.id == imageId);
-      _court = _court!.copyWith(images: currentImages);
-      emit(EditCourtImageRemoved(images: currentImages));
-      emit(EditCourtLoaded(court: _court!));
-    } catch (e) {
-      emit(EditCourtError('Failed to remove image: ${e.toString()}'));
-    }
+    final currentImages = List<CourtImageEntity>.from(_court!.images);
+    final result = await repository.deleteFieldImage(imageId);
+
+    result.fold(
+      (failure) => emit(EditCourtError(failure.errmessage ?? 'Failed to remove image')),
+      (_) {
+        currentImages.removeWhere((i) => i.id == imageId);
+        _court = _court!.copyWith(images: currentImages);
+        emit(EditCourtImageRemoved(images: currentImages));
+        emit(EditCourtLoaded(court: _court!));
+      },
+    );
   }
 
   /// Validate form fields locally
   EditCourtState validate({
     required String hourlyRate,
-    required List<CourtImageModel> images,
-    required double? lat,
-    required double? lng,
+    required List<CourtImageEntity> images,
+    required String address,
   }) {
     final errors = <String, String>{};
     final parsed = double.tryParse(hourlyRate);
     if (hourlyRate.isEmpty || parsed == null || parsed <= 0) {
-      errors['hourlyRate'] =
-          'Hourly rate is required and must be a positive number';
+      errors['hourlyRate'] = 'Hourly rate is required and must be positive';
     }
     if (images.isEmpty) errors['images'] = 'Add at least one image';
-    if (lat == null || lng == null) errors['location'] = 'Location required';
+    if (address.trim().isEmpty) errors['address'] = 'Address is required';
 
     if (errors.isNotEmpty) {
       final state = EditCourtFormValidation(errors);
@@ -85,44 +90,34 @@ class EditCourtCubit extends Cubit<EditCourtState> {
   Future<void> saveChanges({
     required String hourlyRate,
     required List<String> amenityIds,
-    required double lat,
-    required double lng,
+    required String address,
   }) async {
     if (_court == null) return;
     final parsed = double.tryParse(hourlyRate) ?? 0.0;
+    
     final validationState = validate(
       hourlyRate: hourlyRate,
       images: _court!.images,
-      lat: lat,
-      lng: lng,
+      address: address,
     );
     if (validationState is EditCourtFormValidation) return;
 
     emit(EditCourtSaving());
-    try {
-      final request = UpdateCourtRequest(
-        id: _court!.id,
-        hourlyRate: parsed,
-        images: _court!.images,
-        amenityIds: amenityIds,
-        lat: lat,
-        lng: lng,
-      );
 
-      await updateUseCase(request);
-      emit(EditCourtSuccess());
-      // Refresh loaded state with updated values
-      _court = _court!.copyWith(
-        hourlyRate: parsed,
-        amenities: _court!.amenities
-            .where((a) => amenityIds.contains(a.id))
-            .toList(),
-        lat: lat,
-        lng: lng,
-      );
-      emit(EditCourtLoaded(court: _court!));
-    } catch (e) {
-      emit(EditCourtError('Failed to save changes: ${e.toString()}'));
-    }
+    final result = await updateUseCase(
+      id: _court!.id,
+      hourlyRate: parsed,
+      address: address,
+      amenityIds: amenityIds,
+    );
+
+    result.fold(
+      (failure) => emit(EditCourtError(failure.errmessage ?? 'Failed to save changes')),
+      (updatedCourt) {
+        _court = updatedCourt;
+        emit(EditCourtSuccess());
+        emit(EditCourtLoaded(court: _court!));
+      },
+    );
   }
 }

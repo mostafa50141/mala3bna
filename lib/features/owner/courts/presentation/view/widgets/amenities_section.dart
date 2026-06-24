@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
 
 class AmenitiesSectionCourtProfile extends StatelessWidget {
-  final CourtProfileModel vm;
+  final CourtEntity vm;
 
   const AmenitiesSectionCourtProfile({super.key, required this.vm});
 
@@ -40,7 +40,7 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
     );
   }
 
-  Widget _amenityChip(CourtAmenity item) {
+  Widget _amenityChip(AmenityEntity item) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -54,7 +54,7 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(item.icon, color: AppColors.primaryColor, size: 16),
+          Icon(Icons.check_circle_outline, color: AppColors.primaryColor, size: 16),
           const SizedBox(width: 6),
           Text(
             item.title,

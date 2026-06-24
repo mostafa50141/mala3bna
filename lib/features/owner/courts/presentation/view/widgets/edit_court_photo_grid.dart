@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/edit_court_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/dashed_add_photo.dart';
-import '../../../data/models/court_image_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 
 /// Horizontal photo grid with upload, delete confirmation, and network image support.
 class EditCourtPhotoGrid extends StatelessWidget {
-  final List<CourtImageModel> images;
+  final List<CourtImageEntity> images;
   final bool isUploading;
   final VoidCallback onDirty;
 
@@ -35,10 +36,17 @@ class EditCourtPhotoGrid extends StatelessWidget {
                   ? null
                   : () async {
                       HapticFeedback.lightImpact();
-                      const samplePath = 'assets/images/sample_court_1.jpg';
-                      await context
-                          .read<EditCourtCubit>()
-                          .pickAndUploadImage(samplePath);
+                      // Open gallery with multi-image selection
+                      final picker = ImagePicker();
+                      final picked = await picker.pickMultiImage(
+                        imageQuality: 80,
+                      );
+                      if (picked.isEmpty || !context.mounted) return;
+                      final cubit = context.read<EditCourtCubit>();
+                      // Upload each selected image one by one
+                      for (final file in picked) {
+                        await cubit.pickAndUploadImage(file.path);
+                      }
                     },
               child: isUploading
                   ? const _UploadingPlaceholder()

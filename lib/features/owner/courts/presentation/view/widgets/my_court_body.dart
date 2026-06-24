@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_state.dart';
-import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/action_buttons.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/amenities_section.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/header_section.dart';
@@ -73,7 +73,7 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
                     padding: const EdgeInsets.fromLTRB(16, 20, 16, 40),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        const ActionButtons(),
+                        ActionButtons(courtId: vm.id),
                         const SizedBox(height: 20),
                         TabsSection(
                           onTabChanged: (i) => setState(() => _selectedTab = i),
@@ -106,7 +106,7 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
 
 // ─── Details Tab ───────────────────────────────────────────────────────────────
 class _DetailsTab extends StatelessWidget {
-  final CourtProfileModel vm;
+  final CourtEntity vm;
 
   const _DetailsTab({super.key, required this.vm});
 
@@ -121,7 +121,7 @@ class _DetailsTab extends StatelessWidget {
         const SizedBox(height: 16),
         RatingsSection(vm: vm),
         const SizedBox(height: 16),
-        ReviewsList(reviews: vm.reviews),
+        const ReviewsList(reviews: []),
       ],
     );
   }

@@ -42,20 +42,19 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
   void _initAnimations() {
     _contentAnimController = AnimationController(
       vsync: this,
-      duration: OnboardingConstants.contentAnimDuration +
+      duration:
+          OnboardingConstants.contentAnimDuration +
           OnboardingConstants.contentAnimDelay,
     );
 
     // Title animates immediately over the first 350ms
-    _titleSlide = Tween<Offset>(
-      begin: const Offset(0.0, 0.4),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _contentAnimController,
-        curve: const Interval(0.0, 0.8, curve: Curves.easeOut),
-      ),
-    );
+    _titleSlide = Tween<Offset>(begin: const Offset(0.0, 0.4), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _contentAnimController,
+            curve: const Interval(0.0, 0.8, curve: Curves.easeOut),
+          ),
+        );
 
     _titleOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -65,15 +64,13 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
     );
 
     // Description animates with a slight delay
-    _descSlide = Tween<Offset>(
-      begin: const Offset(0.0, 0.6),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _contentAnimController,
-        curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
-      ),
-    );
+    _descSlide = Tween<Offset>(begin: const Offset(0.0, 0.6), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _contentAnimController,
+            curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
+          ),
+        );
 
     _descOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
@@ -105,9 +102,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
 
         return TweenAnimationBuilder<Color?>(
           duration: OnboardingConstants.bgGradientDuration,
-          tween: ColorTween(
-            end: OnboardingConstants.bgTopColors[currentPage],
-          ),
+          tween: ColorTween(end: OnboardingConstants.bgTopColors[currentPage]),
           builder: (context, topColor, _) {
             return Container(
               width: double.infinity,
@@ -175,12 +170,14 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
                           ),
 
                           const SizedBox(
-                            height: OnboardingConstants.spacingIndicatorToButton,
+                            height:
+                                OnboardingConstants.spacingIndicatorToButton,
                           ),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: OnboardingConstants.contentHorizontalPadding,
+                              horizontal:
+                                  OnboardingConstants.contentHorizontalPadding,
                             ),
                             child: OnboardingNextButton(isLastPage: isLastPage),
                           ),

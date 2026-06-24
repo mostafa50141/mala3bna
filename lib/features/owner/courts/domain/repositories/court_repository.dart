@@ -1,13 +1,42 @@
-import '../../data/models/court_model.dart';
-import '../../data/models/court_image_model.dart';
-import '../../data/models/update_court_request.dart';
+import 'package:dartz/dartz.dart';
+import 'package:mala3bna/core/errors/failure.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 
+/// Domain contract for court/field operations.
+/// All methods return [Either<Failure, T>] — no raw exceptions leak upward.
 abstract class CourtRepository {
-  Future<CourtModel> getCourtDetails(String id);
+  /// GET /api/v1/fields/
+  Future<Either<Failure, List<CourtEntity>>> getOwnerFields();
 
-  Future<CourtImageModel> uploadCourtImage(String courtId, String filePath);
+  /// GET /api/v1/fields/{id}/
+  Future<Either<Failure, CourtEntity>> getFieldDetails(String id);
 
-  Future<void> removeCourtImage(String courtId, String imageId);
+  /// POST /api/v1/fields/
+  Future<Either<Failure, CourtEntity>> addField({
+    required String title,
+    required double hourlyRate,
+    required String address,
+    required List<String> amenityIds,
+  });
 
-  Future<void> updateCourt(UpdateCourtRequest request);
+  /// PATCH /api/v1/fields/{id}/
+  Future<Either<Failure, CourtEntity>> updateField({
+    required String id,
+    String? title,
+    double? hourlyRate,
+    String? address,
+    List<String>? amenityIds,
+  });
+
+  /// POST /api/v1/fields/{id}/toggle-status/
+  Future<Either<Failure, CourtEntity>> toggleFieldStatus(String id);
+
+  /// POST /api/v1/field_images/  (multipart)
+  Future<Either<Failure, CourtImageEntity>> uploadFieldImage({
+    required String fieldId,
+    required String filePath,
+  });
+
+  /// DELETE /api/v1/field_images/{imageId}/
+  Future<Either<Failure, void>> deleteFieldImage(String imageId);
 }

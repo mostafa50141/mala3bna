@@ -7,16 +7,20 @@ class EditProfileFormSection extends StatelessWidget {
   final TextEditingController fullNameController;
   final TextEditingController emailController;
   final TextEditingController phoneController;
+  final TextEditingController dobController;
   final TextEditingController bioController;
   final VoidCallback onFieldChanged;
+  final VoidCallback onDobTap;
 
   const EditProfileFormSection({
     super.key,
     required this.fullNameController,
     required this.emailController,
     required this.phoneController,
+    required this.dobController,
     required this.bioController,
     required this.onFieldChanged,
+    required this.onDobTap,
   });
 
   @override
@@ -60,6 +64,22 @@ class EditProfileFormSection extends StatelessWidget {
             keyboardType: TextInputType.phone,
             onChanged: (_) => onFieldChanged(),
             validator: (v) => v!.isEmpty ? 'Phone is required' : null,
+          ),
+        ),
+        const SizedBox(height: 20),
+
+        // Date of Birth
+        _LabeledField(
+          label: 'DATE OF BIRTH',
+          child: GestureDetector(
+            onTap: onDobTap,
+            child: AbsorbPointer(
+              child: _ProfileTextField(
+                controller: dobController,
+                icon: Icons.calendar_today_outlined,
+                hintText: 'YYYY-MM-DD',
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 20),

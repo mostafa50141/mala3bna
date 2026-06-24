@@ -1,35 +1,68 @@
-// creating a helper class to handle local storage operations using secure package package
+// Helper class to handle local storage operations using flutter_secure_storage.
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LocalStorageHelper {
-  final storage = FlutterSecureStorage(
+  static const _accessTokenKey = 'access_token';
+  static const _refreshTokenKey = 'refresh_token';
+  static const _onboardingKey = 'onboarding_seen';
+
+  final _storage = const FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
 
-  // ─── Auth token ─────────────────────────────────────────────────────────────
+  // ─── Access Token ─────────────────────────────────────────────────────────
 
-  Future<void> savetoken(String token) async {
-    await storage.write(key: 'token', value: token);
+  Future<void> saveAccessToken(String token) =>
+      _storage.write(key: _accessTokenKey, value: token);
+
+  Future<String?> getAccessToken() => _storage.read(key: _accessTokenKey);
+
+  Future<void> deleteAccessToken() => _storage.delete(key: _accessTokenKey);
+
+  // ─── Refresh Token ────────────────────────────────────────────────────────
+
+  Future<void> saveRefreshToken(String token) =>
+      _storage.write(key: _refreshTokenKey, value: token);
+
+  Future<String?> getRefreshToken() => _storage.read(key: _refreshTokenKey);
+
+  Future<void> deleteRefreshToken() => _storage.delete(key: _refreshTokenKey);
+
+  // ─── Save / clear both tokens together ───────────────────────────────────
+
+  Future<void> saveTokens({
+    required String access,
+    required String refresh,
+  }) async {
+    await saveAccessToken(access);
+    await saveRefreshToken(refresh);
   }
 
-  Future<String?> gettoken() async {
-    return await storage.read(key: 'token') ?? '';
+  Future<void> clearAllTokens() async {
+    await deleteAccessToken();
+    await deleteRefreshToken();
   }
 
-  Future<void> deletetoken() async {
-    await storage.delete(key: 'token');
-  }
+  // ─── Backward-compat aliases (used by existing auth feature) ─────────────
 
-  // ─── Onboarding seen flag ───────────────────────────────────────────────────
+  /// Saves an access token. Prefer [saveAccessToken] for new code.
+  Future<void> savetoken(String token) => saveAccessToken(token);
+
+  /// Returns the stored access token. Prefer [getAccessToken] for new code.
+  Future<String?> gettoken() => getAccessToken();
+
+  /// Deletes the stored access token. Prefer [deleteAccessToken] for new code.
+  Future<void> deletetoken() => deleteAccessToken();
+
+  // ─── Onboarding seen flag ─────────────────────────────────────────────────
 
   /// Persists that the user has completed (or skipped) onboarding.
-  Future<void> saveOnboardingSeen() async {
-    await storage.write(key: 'onboarding_seen', value: 'true');
-  }
+  Future<void> saveOnboardingSeen() =>
+      _storage.write(key: _onboardingKey, value: 'true');
 
   /// Returns [true] if the user has already seen onboarding; [false] otherwise.
   Future<bool> isOnboardingSeen() async {
-    final value = await storage.read(key: 'onboarding_seen');
+    final value = await _storage.read(key: _onboardingKey);
     return value == 'true';
   }
 }

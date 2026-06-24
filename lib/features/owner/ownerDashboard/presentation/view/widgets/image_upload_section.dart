@@ -1,34 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
-class ImageUploadSection extends StatefulWidget {
-  const ImageUploadSection({super.key});
+class ImageUploadSection extends StatelessWidget {
+  final MultiImagePickerController controller;
 
-  @override
-  State<ImageUploadSection> createState() => _ImageUploadSectionState();
-}
-
-class _ImageUploadSectionState extends State<ImageUploadSection> {
-  final ImagePicker _picker = ImagePicker();
-  late final MultiImagePickerController _imageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _imageController = MultiImagePickerController(
-      maxImages: 10,
-      images: [],
-      picker: (int pickCount, Object? params) async {
-        final pickedFiles = await _picker.pickMultiImage();
-        return pickedFiles
-            .take(pickCount)
-            .map((xFile) => convertXFileToImageFile(xFile))
-            .toList();
-      },
-    );
-  }
+  const ImageUploadSection({super.key, required this.controller});
 
   /*void _submit() {
     final images = _imageController.images;
@@ -59,7 +36,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: MultiImagePickerView(
-          controller: _imageController,
+          controller: controller,
           padding: const EdgeInsets.all(4),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
@@ -82,7 +59,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
                   top: 5,
                   right: 5,
                   child: GestureDetector(
-                    onTap: () => _imageController.removeImage(imageFile),
+                    onTap: () => controller.removeImage(imageFile),
                     child: Container(
                       padding: const EdgeInsets.all(3),
                       decoration: const BoxDecoration(
@@ -101,7 +78,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
             );
           },
           initialWidget: GestureDetector(
-            onTap: _imageController.pickImages,
+            onTap: controller.pickImages,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -145,7 +122,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
               size: 30,
               color: AppColors.primaryColor,
             ),
-            onPressed: _imageController.pickImages,
+            onPressed: controller.pickImages,
           ),
         ),
       ),

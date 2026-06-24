@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/data/amenity_of_add_court.dart';
+
+class Amenity {
+  final String id;
+  final String label;
+  bool isSelected;
+
+  Amenity({required this.id, required this.label, this.isSelected = false});
+}
 
 class AmenitiesWidget extends StatefulWidget {
   final List<Amenity>? amenities;
@@ -87,7 +94,7 @@ class _AmenityItem extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),

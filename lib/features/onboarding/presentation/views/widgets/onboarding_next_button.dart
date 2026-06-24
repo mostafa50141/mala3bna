@@ -29,8 +29,9 @@ class OnboardingNextButton extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius:
-              BorderRadius.circular(OnboardingConstants.nextButtonRadius),
+          borderRadius: BorderRadius.circular(
+            OnboardingConstants.nextButtonRadius,
+          ),
           boxShadow: [
             BoxShadow(
               color: AppColors.primaryColor.withValues(alpha: 0.35),
@@ -43,15 +44,14 @@ class OnboardingNextButton extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () => context.read<OnboardingCubit>().nextPage(),
-            borderRadius:
-                BorderRadius.circular(OnboardingConstants.nextButtonRadius),
+            borderRadius: BorderRadius.circular(
+              OnboardingConstants.nextButtonRadius,
+            ),
             child: Center(
               child: AnimatedSwitcher(
                 duration: OnboardingConstants.buttonAnimDuration,
-                transitionBuilder: (child, animation) => FadeTransition(
-                  opacity: animation,
-                  child: child,
-                ),
+                transitionBuilder: (child, animation) =>
+                    FadeTransition(opacity: animation, child: child),
                 child: Text(
                   isLastPage ? 'ابدأ الآن' : 'التالي',
                   // Key is required so AnimatedSwitcher detects the widget swap.

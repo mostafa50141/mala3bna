@@ -1,8 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mala3bna/features/owner/setting/domain/repositories/setting_repository.dart';
 import 'change_password_state.dart';
 
 class ChangePasswordCubit extends Cubit<ChangePasswordState> {
-  ChangePasswordCubit() : super(const ChangePasswordState());
+  final SettingRepository _repository;
+
+  ChangePasswordCubit(this._repository) : super(const ChangePasswordState());
 
   void currentPasswordChanged(String value) {
     emit(state.copyWith(currentPassword: value, errorMessage: null));
@@ -32,7 +35,6 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
   }
 
   Future<void> submit() async {
-    // Validate
     if (state.currentPassword.isEmpty) {
       emit(state.copyWith(errorMessage: 'Current password is required'));
       return;
@@ -63,15 +65,16 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
     }
 
     emit(state.copyWith(status: ChangePasswordStatus.submitting));
-    try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-      emit(state.copyWith(status: ChangePasswordStatus.success));
-    } catch (e) {
-      emit(state.copyWith(
+    final result = await _repository.changePassword(
+      currentPassword: state.currentPassword,
+      newPassword: state.newPassword,
+    );
+    result.fold(
+      (failure) => emit(state.copyWith(
         status: ChangePasswordStatus.failure,
-        errorMessage: 'Failed to update password. Please try again.',
-      ));
-    }
+        errorMessage: failure.errmessage ?? 'Failed to update password.',
+      )),
+      (_) => emit(state.copyWith(status: ChangePasswordStatus.success)),
+    );
   }
 }

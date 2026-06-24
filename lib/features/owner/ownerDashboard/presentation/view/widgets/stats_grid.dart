@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/presentation/model/owner_dashboard_model.dart';
+import 'package:mala3bna/features/owner/ownerDashboard/domain/entities/dashboard_entity.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/dashboard_stat_card.dart';
 
 /// 2×2 grid of dashboard statistic cards.
 class StatsGrid extends StatelessWidget {
-  final OwnerDashboardModel data;
+  final DashboardEntity data;
 
   const StatsGrid({super.key, required this.data});
 

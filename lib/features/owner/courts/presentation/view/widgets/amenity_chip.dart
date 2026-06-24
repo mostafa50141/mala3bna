@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import '../../../data/models/amenity_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 
 class AmenityChip extends StatelessWidget {
-  final AmenityModel amenity;
+  final AmenityEntity amenity;
   final bool selected;
   final VoidCallback onTap;
 

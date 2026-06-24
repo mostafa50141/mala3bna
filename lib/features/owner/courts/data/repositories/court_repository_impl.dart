@@ -1,8 +1,8 @@
-import '../models/court_model.dart';
-import '../models/court_image_model.dart';
-import '../models/update_court_request.dart';
-import '../../domain/repositories/court_repository.dart';
-import '../datasources/court_remote_data_source.dart';
+import 'package:dartz/dartz.dart';
+import 'package:mala3bna/core/errors/failure.dart';
+import 'package:mala3bna/features/owner/courts/data/datasources/court_remote_data_source.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
+import 'package:mala3bna/features/owner/courts/domain/repositories/court_repository.dart';
 
 class CourtRepositoryImpl implements CourtRepository {
   final CourtRemoteDataSource remoteDataSource;
@@ -10,22 +10,111 @@ class CourtRepositoryImpl implements CourtRepository {
   CourtRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<CourtModel> getCourtDetails(String id) {
-    return remoteDataSource.getCourtDetails(id);
+  Future<Either<Failure, List<CourtEntity>>> getOwnerFields() async {
+    try {
+      final models = await remoteDataSource.getOwnerFields();
+      return Right(models.map((model) => model.toEntity()).toList());
+    } on Failure catch (f) {
+      return Left(f);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
-  Future<CourtImageModel> uploadCourtImage(String courtId, String filePath) {
-    return remoteDataSource.uploadCourtImage(courtId, filePath);
+  Future<Either<Failure, CourtEntity>> getFieldDetails(String id) async {
+    try {
+      final model = await remoteDataSource.getFieldDetails(id);
+      return Right(model.toEntity());
+    } on Failure catch (f) {
+      return Left(f);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
-  Future<void> removeCourtImage(String courtId, String imageId) {
-    return remoteDataSource.removeCourtImage(courtId, imageId);
+  Future<Either<Failure, CourtEntity>> addField({
+    required String title,
+    required double hourlyRate,
+    required String address,
+    required List<String> amenityIds,
+  }) async {
+    try {
+      final model = await remoteDataSource.addField(
+        title: title,
+        hourlyRate: hourlyRate,
+        address: address,
+        amenityIds: amenityIds,
+      );
+      return Right(model.toEntity());
+    } on Failure catch (f) {
+      return Left(f);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
-  Future<void> updateCourt(UpdateCourtRequest request) {
-    return remoteDataSource.updateCourt(request);
+  Future<Either<Failure, CourtEntity>> updateField({
+    required String id,
+    String? title,
+    double? hourlyRate,
+    String? address,
+    List<String>? amenityIds,
+  }) async {
+    try {
+      final model = await remoteDataSource.updateField(
+        id: id,
+        title: title,
+        hourlyRate: hourlyRate,
+        address: address,
+        amenityIds: amenityIds,
+      );
+      return Right(model.toEntity());
+    } on Failure catch (f) {
+      return Left(f);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CourtEntity>> toggleFieldStatus(String id) async {
+    try {
+      final model = await remoteDataSource.toggleFieldStatus(id);
+      return Right(model.toEntity());
+    } on Failure catch (f) {
+      return Left(f);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, CourtImageEntity>> uploadFieldImage({
+    required String fieldId,
+    required String filePath,
+  }) async {
+    try {
+      final model = await remoteDataSource.uploadFieldImage(fieldId, filePath);
+      return Right(model.toEntity());
+    } on Failure catch (f) {
+      return Left(f);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteFieldImage(String imageId) async {
+    try {
+      await remoteDataSource.deleteFieldImage(imageId);
+      return const Right(null);
+    } on Failure catch (f) {
+      return Left(f);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 }

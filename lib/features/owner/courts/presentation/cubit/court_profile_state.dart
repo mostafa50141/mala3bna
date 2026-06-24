@@ -1,4 +1,4 @@
-import 'package:mala3bna/features/owner/courts/presentation/view_model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 
 abstract class CourtProfileState {}
 
@@ -7,7 +7,7 @@ class CourtProfileInitial extends CourtProfileState {}
 class CourtProfileLoading extends CourtProfileState {}
 
 class CourtProfileLoaded extends CourtProfileState {
-  final CourtProfileModel courtProfile;
+  final CourtEntity courtProfile;
 
   CourtProfileLoaded(this.courtProfile);
 }
