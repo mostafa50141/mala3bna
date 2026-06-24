@@ -121,7 +121,6 @@ class _ProfileTextField extends StatelessWidget {
   final IconData icon;
   final String hintText;
   final TextInputType keyboardType;
-  final int maxLines;
   final ValueChanged<String>? onChanged;
   final String? Function(String?)? validator;
 
@@ -130,7 +129,6 @@ class _ProfileTextField extends StatelessWidget {
     required this.icon,
     required this.hintText,
     this.keyboardType = TextInputType.text,
-    this.maxLines = 1,
     this.onChanged,
     this.validator,
   });
@@ -140,7 +138,6 @@ class _ProfileTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
-      maxLines: maxLines,
       validator: validator,
       onChanged: onChanged,
       style: const TextStyle(color: Colors.white, fontSize: 15),
@@ -150,15 +147,7 @@ class _ProfileTextField extends StatelessWidget {
           color: Colors.white.withValues(alpha: 0.25),
           fontSize: 14,
         ),
-        prefixIcon: Padding(
-          padding: EdgeInsets.only(
-            top: maxLines > 1 ? 14 : 0,
-          ),
-          child: Icon(icon, color: Colors.white38, size: 20),
-        ),
-        prefixIconConstraints: maxLines > 1
-            ? const BoxConstraints(minWidth: 48, minHeight: 48)
-            : null,
+        prefixIcon: Icon(icon, color: Colors.white38, size: 20),
         filled: true,
         fillColor: AppColors.colorBtnAndCard,
         contentPadding: const EdgeInsets.symmetric(
