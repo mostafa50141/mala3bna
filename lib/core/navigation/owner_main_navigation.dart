@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/widgets/custom_bottom_nav.dart';
+import 'package:mala3bna/features/owner/booking/domain/repositories/booking_repository.dart';
+import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
+import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_state.dart';
 import 'package:mala3bna/features/owner/booking/presentation/view/booking_request_view.dart';
 import 'package:mala3bna/features/owner/courts/domain/repositories/court_repository.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
@@ -23,16 +26,22 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
   /// trigger a reload when the owner adds their first court.
   late final CourtProfileCubit _courtProfileCubit;
 
+  /// Lifted to this level so the nav bar badge can read pendingCount.
+  late final BookingCubit _bookingCubit;
+
   @override
   void initState() {
     super.initState();
     _courtProfileCubit = CourtProfileCubit(getIt<CourtRepository>())
       ..loadCourtProfile();
+    _bookingCubit = BookingCubit(getIt<BookingRepository>())
+      ..loadBookings();
   }
 
   @override
   void dispose() {
     _courtProfileCubit.close();
+    _bookingCubit.close();
     super.dispose();
   }
 
@@ -48,7 +57,11 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
   Widget build(BuildContext context) {
     final List<Widget> pages = [
       OwnerDashboardView(onCourtAdded: _onCourtAdded),
-      const BookingRequestView(),
+      // Pass the lifted cubit so BookingRequestView shares the same instance
+      BlocProvider.value(
+        value: _bookingCubit,
+        child: const BookingRequestView(),
+      ),
       BlocProvider.value(
         value: _courtProfileCubit,
         child: const CourtProfileView(fromNavigation: true),
@@ -56,35 +69,48 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
       const OwnerSettingsView(),
     ];
 
-    return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: pages),
-      bottomNavigationBar: CustomBottomNav(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        badges: [0, 3, 0, 0],
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_outlined),
-            activeIcon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+    return BlocBuilder<BookingCubit, BookingState>(
+      bloc: _bookingCubit,
+      buildWhen: (prev, next) {
+        // Rebuild only when pendingCount actually changes
+        final prevCount = prev is BookingLoaded ? prev.pendingCount : 0;
+        final nextCount = next is BookingLoaded ? next.pendingCount : 0;
+        return prevCount != nextCount;
+      },
+      builder: (context, bookingState) {
+        final pendingCount =
+            bookingState is BookingLoaded ? bookingState.pendingCount : 0;
+        return Scaffold(
+          body: IndexedStack(index: _currentIndex, children: pages),
+          bottomNavigationBar: CustomBottomNav(
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            badges: [0, pendingCount, 0, 0],
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.dashboard_outlined),
+                activeIcon: Icon(Icons.dashboard),
+                label: 'Dashboard',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_month_outlined),
+                activeIcon: Icon(Icons.calendar_month),
+                label: 'Booking',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.stadium_outlined),
+                activeIcon: Icon(Icons.stadium),
+                label: 'Courts',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings_outlined),
+                activeIcon: Icon(Icons.settings),
+                label: 'Profile',
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            activeIcon: Icon(Icons.calendar_month),
-            label: 'Booking',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.stadium_outlined),
-            activeIcon: Icon(Icons.stadium),
-            label: 'Courts',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-            label: 'Profile',
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/service_locator.dart';
-import 'package:mala3bna/features/owner/booking/domain/repositories/booking_repository.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_state.dart';
 import 'package:mala3bna/features/owner/booking/presentation/view/widgets/booking_request_body.dart';
@@ -12,16 +10,14 @@ class BookingRequestView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => BookingCubit(getIt<BookingRepository>())..loadBookings(),
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        body: Column(
-          children: [
-            _BookingHeader(),
-            const Expanded(child: BookingRequestBody()),
-          ],
-        ),
+    // BookingCubit is provided by OwnerMainNavigation — no new BlocProvider needed.
+    return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
+      body: Column(
+        children: [
+          _BookingHeader(),
+          const Expanded(child: BookingRequestBody()),
+        ],
       ),
     );
   }
