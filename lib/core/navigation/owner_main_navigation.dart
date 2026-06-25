@@ -62,8 +62,11 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
         value: _bookingCubit,
         child: const BookingRequestView(),
       ),
-      BlocProvider.value(
-        value: _courtProfileCubit,
+      MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: _courtProfileCubit),
+          BlocProvider.value(value: _bookingCubit),
+        ],
         child: const CourtProfileView(fromNavigation: true),
       ),
       const OwnerSettingsView(),

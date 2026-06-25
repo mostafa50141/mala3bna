@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/owner/booking/domain/entities/booking_entity.dart';
+import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
+import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_state.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_state.dart';
 import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
@@ -127,12 +130,211 @@ class _DetailsTab extends StatelessWidget {
   }
 }
 
-// ─── Bookings Tab Placeholder ──────────────────────────────────────────────────
+// ─── Bookings Tab — Weekly Schedule ───────────────────────────────────────────
 class _BookingsTab extends StatelessWidget {
   const _BookingsTab({super.key});
 
+  // Hours shown in the grid (6 AM → 12 AM)
+  static const int _startHour = 6;
+  static const int _endHour = 24;
+
+  static const _days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
   @override
   Widget build(BuildContext context) {
+    // Get current court id from CourtProfileCubit
+    final courtState = context.watch<CourtProfileCubit>().state;
+    final String? courtId = courtState is CourtProfileLoaded
+        ? courtState.courtProfile.id
+        : courtState is CourtProfileToggling
+            ? courtState.courtProfile.id
+            : null;
+
+    // Get bookings from BookingCubit (provided by OwnerMainNavigation)
+    final bookingState = context.watch<BookingCubit>().state;
+
+    if (bookingState is BookingLoading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 48),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (bookingState is! BookingLoaded) {
+      return _emptySchedule();
+    }
+
+    // Filter to this court only, with approved status
+    final List<BookingEntity> courtBookings = bookingState.allBookings
+        .where((b) =>
+            (courtId == null || b.fieldId == courtId) &&
+            b.status != BookingStatus.declined)
+        .toList();
+
+    // Build a lookup: weekdayIndex (0=Mon) → hour → list of bookings
+    final now = DateTime.now();
+    final weekStart = now.subtract(Duration(days: now.weekday - 1));
+    // Map: day index (0-6) -> hour (int) -> bookings
+    final Map<int, Map<int, List<BookingEntity>>> grid = {
+      for (int i = 0; i < 7; i++) i: {},
+    };
+
+    for (final b in courtBookings) {
+      final parsed = DateTime.tryParse(b.dateTime);
+      if (parsed == null) continue;
+      final dayIdx = parsed.weekday - 1; // 0=Mon
+      // Only show current week
+      final weekEnd = weekStart.add(const Duration(days: 7));
+      if (parsed.isBefore(weekStart) || parsed.isAfter(weekEnd)) continue;
+      final hour = parsed.hour;
+      grid[dayIdx]!.putIfAbsent(hour, () => []).add(b);
+    }
+
+    final bool hasAnyBooking =
+        grid.values.any((dayMap) => dayMap.isNotEmpty);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // ── Week header ──────────────────────────────────────────────
+        Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_view_week_rounded,
+                  size: 16, color: Colors.grey),
+              const SizedBox(width: 6),
+              Text(
+                'Week of ${_formatDate(weekStart)} – ${_formatDate(weekStart.add(const Duration(days: 6)))}',
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ],
+          ),
+        ),
+
+        if (!hasAnyBooking) _emptySchedule(),
+        if (hasAnyBooking) _buildGrid(grid),
+
+        const SizedBox(height: 16),
+        // ── Legend ───────────────────────────────────────────────────
+        Row(
+          children: [
+            _LegendDot(color: AppColors.primaryColor, label: 'Approved'),
+            const SizedBox(width: 16),
+            _LegendDot(color: Colors.orange, label: 'Pending'),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGrid(Map<int, Map<int, List<BookingEntity>>> grid) {
+    const double hourRowHeight = 52;
+    const double hourLabelWidth = 44;
+    const double dayColWidth = 48;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.colorBtnAndCard,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+      ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Day header row ─────────────────────────────────────
+            Row(
+              children: [
+                SizedBox(width: hourLabelWidth), // spacer above hour labels
+                ...List.generate(7, (d) {
+                  return SizedBox(
+                    width: dayColWidth,
+                    child: Center(
+                      child: Text(
+                        _days[d],
+                        style: TextStyle(
+                          color: d == DateTime.now().weekday - 1
+                              ? AppColors.primaryColor
+                              : Colors.grey,
+                          fontSize: 11,
+                          fontWeight: d == DateTime.now().weekday - 1
+                              ? FontWeight.bold
+                              : FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
+            const Divider(color: Colors.white10, height: 1),
+            // ── Hour rows ──────────────────────────────────────────
+            ...List.generate(_endHour - _startHour, (i) {
+              final hour = _startHour + i;
+              return Column(
+                children: [
+                  SizedBox(
+                    height: hourRowHeight,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Hour label
+                        SizedBox(
+                          width: hourLabelWidth,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Text(
+                              _formatHour(hour),
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: 10),
+                            ),
+                          ),
+                        ),
+                        // Day cells
+                        ...List.generate(7, (d) {
+                          final bookingsHere = grid[d]?[hour] ?? [];
+                          return SizedBox(
+                            width: dayColWidth,
+                            height: hourRowHeight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: bookingsHere.isEmpty
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white
+                                            .withValues(alpha: 0.03),
+                                        borderRadius:
+                                            BorderRadius.circular(6),
+                                        border: Border.all(
+                                          color: Colors.white
+                                              .withValues(alpha: 0.05),
+                                        ),
+                                      ),
+                                    )
+                                  : _BookedCell(
+                                      bookings: bookingsHere,
+                                    ),
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                  if (i < _endHour - _startHour - 1)
+                    const Divider(
+                        color: Colors.white10, height: 1, indent: 44),
+                ],
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _emptySchedule() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 48),
@@ -158,7 +360,7 @@ class _BookingsTab extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             const Text(
-              'No bookings yet',
+              'No bookings this week',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -167,16 +369,211 @@ class _BookingsTab extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Upcoming reservations will appear here.',
+              'Approved and pending reservations\nwill appear here.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
+              style:
+                  TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
             ),
           ],
         ),
       ),
     );
   }
+
+  String _formatHour(int h) {
+    if (h == 0 || h == 24) return '12 AM';
+    if (h < 12) return '$h AM';
+    if (h == 12) return '12 PM';
+    return '${h - 12} PM';
+  }
+
+  String _formatDate(DateTime d) => '${d.day}/${d.month}';
 }
+
+// ─── Single booked cell ────────────────────────────────────────────────────────
+class _BookedCell extends StatelessWidget {
+  final List<BookingEntity> bookings;
+  const _BookedCell({required this.bookings});
+
+  @override
+  Widget build(BuildContext context) {
+    final first = bookings.first;
+    final isPending = first.status == BookingStatus.pending;
+    final color =
+        isPending ? Colors.orange : AppColors.primaryColor;
+
+    return GestureDetector(
+      onTap: () => _showDetail(context),
+      child: Container(
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: color.withValues(alpha: 0.55), width: 1),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              isPending
+                  ? Icons.hourglass_top_rounded
+                  : Icons.check_circle_outline_rounded,
+              color: color,
+              size: 14,
+            ),
+            if (bookings.length > 1)
+              Text(
+                '+${bookings.length}',
+                style: TextStyle(
+                    color: color,
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDetail(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.colorBtnAndCard,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => _BookingDetailSheet(bookings: bookings),
+    );
+  }
+}
+
+// ─── Bottom-sheet detail ───────────────────────────────────────────────────────
+class _BookingDetailSheet extends StatelessWidget {
+  final List<BookingEntity> bookings;
+  const _BookingDetailSheet({required this.bookings});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 36,
+            height: 4,
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: Colors.white24,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          ...bookings.map((b) => _DetailRow(booking: b)),
+        ],
+      ),
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  final BookingEntity booking;
+  const _DetailRow({required this.booking});
+
+  @override
+  Widget build(BuildContext context) {
+    final isPending = booking.status == BookingStatus.pending;
+    final statusColor = isPending ? Colors.orange : AppColors.primaryColor;
+    final statusLabel = isPending ? 'Pending' : 'Approved';
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColors.primaryColor.withValues(alpha: 0.2),
+            backgroundImage: booking.avatarUrl.isNotEmpty
+                ? NetworkImage(booking.avatarUrl)
+                : null,
+            child: booking.avatarUrl.isEmpty
+                ? const Icon(Icons.person, color: Colors.white54, size: 20)
+                : null,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  booking.playerName,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${booking.dateTime}  •  ${booking.duration}',
+                  style:
+                      const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: statusColor.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                  color: statusColor.withValues(alpha: 0.45), width: 1),
+            ),
+            child: Text(
+              statusLabel,
+              style: TextStyle(
+                  color: statusColor,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Legend dot ───────────────────────────────────────────────────────────────
+class _LegendDot extends StatelessWidget {
+  final Color color;
+  final String label;
+  const _LegendDot({required this.color, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 5),
+        Text(label,
+            style: const TextStyle(color: Colors.grey, fontSize: 11)),
+      ],
+    );
+  }
+}
+
+
 
 // ─── Skeleton Loading ──────────────────────────────────────────────────────────
 class _CourtProfileSkeleton extends StatefulWidget {
