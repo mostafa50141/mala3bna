@@ -22,7 +22,7 @@ class AuthRepoImp implements AuthRepo {
         endPoint: 'auth/login/',
         body: {'email': email, 'password': password},
       );
-      Usermodel user = Usermodel.fromJson(response);
+      Usermodel user = Usermodel.fromJson(response as Map<String, dynamic>);
       if (user.token != null) {
         await getIt.get<LocalStorageHelper>().savetoken(user.token!);
         if (user.refreshToken != null) {
@@ -66,7 +66,7 @@ class AuthRepoImp implements AuthRepo {
           'user_type': role,
         },
       );
-      Usermodel user = Usermodel.fromJson(response);
+      Usermodel user = Usermodel.fromJson(response as Map<String, dynamic>);
       if (user.token != null) {
         await getIt.get<LocalStorageHelper>().savetoken(user.token!);
         if (user.refreshToken != null) {

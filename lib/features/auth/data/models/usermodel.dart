@@ -22,22 +22,40 @@ class Usermodel {
   });
 
   factory Usermodel.fromJson(Map<String, dynamic> json) {
-    // API returns { access, refresh, user: {...} } for login
-    // OR { tokens: { access, refresh }, user: {...} } for signup
-    // OR just user fields directly
-    final user = json['user'] as Map<String, dynamic>? ?? json;
-    final tokens = json['tokens'] as Map<String, dynamic>?;
+    // Check which shape we have
+    final bool isNestedShape = json.containsKey('user');
+    final bool isTokensShape = json.containsKey('tokens');
+
+    // Extract user data
+    final user = isNestedShape
+        ? json['user'] as Map<String, dynamic>
+        : json; // flat shape - user data is in root
+
+    // Extract tokens
+    String? accessToken;
+    String? refreshToken;
+
+    if (isTokensShape) {
+      // Signup shape: { "tokens": { "access": "...", "refresh": "..." } }
+      final tokens = json['tokens'] as Map<String, dynamic>?;
+      accessToken = tokens?['access'] as String?;
+      refreshToken = tokens?['refresh'] as String?;
+    } else {
+      // Login shape: { "access": "...", "refresh": "..." }
+      accessToken = json['access'] as String?;
+      refreshToken = json['refresh'] as String?;
+    }
 
     return Usermodel(
-      id: user['id'] as int?,
+      id: (user['id'] ?? user['user_id']) as int?,
       fullName: user['full_name'] as String?,
       username: user['username'] as String?,
       email: user['email'] as String?,
       phoneNumber: user['phone_number'] as String?,
-      userType: user['user_type'] as String?,
+      userType: (user['user_type']) as String?,
       profileImage: user['profile_image'] as String?,
-      token: tokens?['access'] as String? ?? json['access'] as String?,
-      refreshToken: tokens?['refresh'] as String? ?? json['refresh'] as String?,
+      token: accessToken,
+      refreshToken: refreshToken,
     );
   }
 
