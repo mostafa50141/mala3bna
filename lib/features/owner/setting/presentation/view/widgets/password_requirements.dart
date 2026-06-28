@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Animated password requirements checklist.
@@ -41,7 +42,7 @@ class PasswordRequirements extends StatelessWidget {
                           size: 16, color: AppColors.primaryColor),
                       const SizedBox(width: 6),
                       Text(
-                        'PASSWORD REQUIREMENTS',
+                        'PASSWORD REQUIREMENTS'.tr,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.5),
                           fontSize: 11,
@@ -53,17 +54,17 @@ class PasswordRequirements extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   _RequirementRow(
-                    label: 'Minimum 8 characters',
+                    label: 'Minimum 8 characters'.tr,
                     isMet: hasMinLength,
                   ),
                   const SizedBox(height: 8),
                   _RequirementRow(
-                    label: 'At least one uppercase letter',
+                    label: 'At least one uppercase letter'.tr,
                     isMet: hasUppercase,
                   ),
                   const SizedBox(height: 8),
                   _RequirementRow(
-                    label: 'At least one special character',
+                    label: 'At least one special character'.tr,
                     isMet: hasSpecialChar,
                   ),
                 ],

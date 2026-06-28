@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Animated password strength indicator bar with label.
@@ -49,7 +50,7 @@ class PasswordStrengthBar extends StatelessWidget {
         Row(
           children: [
             Text(
-              'Password strength: ',
+              'Password strength: '.tr,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.4),
                 fontSize: 12,
@@ -58,7 +59,7 @@ class PasswordStrengthBar extends StatelessWidget {
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               child: Text(
-                label,
+                label.tr,
                 key: ValueKey(label),
                 style: TextStyle(
                   color: _color,

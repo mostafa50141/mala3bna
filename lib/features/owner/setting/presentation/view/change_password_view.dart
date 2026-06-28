@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/owner/setting/domain/repositories/setting_repository.dart';
@@ -106,8 +107,8 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          'Change Password',
+        title: Text(
+          'Change Password'.tr,
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -131,7 +132,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
         listener: (context, state) {
           if (state.status == ChangePasswordStatus.success) {
             HapticFeedback.mediumImpact();
-            _showSnack('Password updated successfully!');
+            _showSnack('Password updated successfully!'.tr);
             Future.delayed(
               const Duration(milliseconds: 800),
               () {
@@ -179,9 +180,9 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ── Header ──
-            const Text(
-              'Secure Your Account',
-              style: TextStyle(
+            Text(
+              'Secure Your Account'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
@@ -190,7 +191,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             ),
             const SizedBox(height: 6),
             Text(
-              'Ensure you\'re using a long, random password\nto stay secure.',
+              'Ensure you\'re using a long, random password\nto stay secure.'.tr,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.5),
                 fontSize: 14,
@@ -200,10 +201,10 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             const SizedBox(height: 32),
 
             // ── Current Password ──
-            _fieldLabel('Current Password'),
+            _fieldLabel('Current Password'.tr),
             const SizedBox(height: 8),
             ChangePasswordField(
-              hint: 'Enter current password',
+              hint: 'Enter current password'.tr,
               icon: Icons.lock_outline,
               isVisible: state.isCurrentPasswordVisible,
               onChanged: cubit.currentPasswordChanged,
@@ -213,10 +214,10 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             const SizedBox(height: 24),
 
             // ── New Password ──
-            _fieldLabel('New Password'),
+            _fieldLabel('New Password'.tr),
             const SizedBox(height: 8),
             ChangePasswordField(
-              hint: 'Enter new password',
+              hint: 'Enter new password'.tr,
               icon: Icons.lock_outline,
               isVisible: state.isNewPasswordVisible,
               onChanged: cubit.newPasswordChanged,
@@ -234,10 +235,10 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             const SizedBox(height: 24),
 
             // ── Confirm Password ──
-            _fieldLabel('Confirm New Password'),
+            _fieldLabel('Confirm New Password'.tr),
             const SizedBox(height: 8),
             ChangePasswordField(
-              hint: 'Repeat new password',
+              hint: 'Repeat new password'.tr,
               icon: Icons.lock_outline,
               isVisible: state.isConfirmPasswordVisible,
               onChanged: cubit.confirmPasswordChanged,
@@ -271,7 +272,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
                       color: Colors.white.withValues(alpha: 0.25)),
                   const SizedBox(width: 6),
                   Text(
-                    'Encrypted end-to-end',
+                    'Encrypted end-to-end'.tr,
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.25),
                       fontSize: 12,
@@ -358,9 +359,9 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
                   key: const ValueKey('label'),
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Update Password',
-                      style: TextStyle(
+                    Text(
+                      'Update Password'.tr,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
