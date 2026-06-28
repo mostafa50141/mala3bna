@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Hero banner at the top of the Privacy Policy screen.
@@ -52,12 +53,12 @@ class PrivacyHeaderBanner extends StatelessWidget {
                 height: 1.15,
               ),
               children: [
-                const TextSpan(
-                  text: 'Your Data,\n',
-                  style: TextStyle(color: Colors.white),
+                TextSpan(
+                  text: 'Your Data,\n'.tr,
+                  style: const TextStyle(color: Colors.white),
                 ),
                 TextSpan(
-                  text: 'Protected.',
+                  text: 'Protected.'.tr,
                   style: TextStyle(color: AppColors.primaryColor),
                 ),
               ],
@@ -67,7 +68,7 @@ class PrivacyHeaderBanner extends StatelessWidget {
 
           // Subtitle
           Text(
-            'At Mala3bna, we prioritize your privacy as much as your performance. Learn how we handle your information to provide the best sports facility experience.',
+            'At Mala3bna, we prioritize your privacy as much as your performance. Learn how we handle your information to provide the best sports facility experience.'.tr,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.5),
               fontSize: 13,

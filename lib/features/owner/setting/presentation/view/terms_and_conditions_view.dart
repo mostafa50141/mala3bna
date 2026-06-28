@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/terms_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/terms_state.dart';
@@ -58,13 +59,13 @@ class _TermsBodyState extends State<_TermsBody> {
     if (state.status == TermsStatus.accepted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Row(
+          content: Row(
             children: [
-              Icon(Icons.check_circle_outline, color: Colors.white, size: 20),
-              SizedBox(width: 10),
+              const Icon(Icons.check_circle_outline, color: Colors.white, size: 20),
+              const SizedBox(width: 10),
               Text(
-                'Terms accepted!',
-                style: TextStyle(
+                'Terms accepted!'.tr,
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),

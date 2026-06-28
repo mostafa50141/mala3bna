@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Sticky bottom "Accept & Continue" button.
@@ -42,7 +43,7 @@ class TermsAcceptButton extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'Scroll to the bottom to accept',
+                    'Scroll to the bottom to accept'.tr,
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.3),
                       fontSize: 12,
@@ -107,7 +108,7 @@ class TermsAcceptButton extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'ACCEPT & CONTINUE',
+                            'ACCEPT & CONTINUE'.tr,
                             style: TextStyle(
                               color: canAccept
                                   ? Colors.white

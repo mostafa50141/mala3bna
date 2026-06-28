@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Top hero banner displaying the document name and last-updated date.
@@ -47,7 +48,7 @@ class TermsHeaderBanner extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 Text(
-                  'OFFICIAL DOCUMENT',
+                  'OFFICIAL DOCUMENT'.tr,
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 10,
@@ -61,9 +62,9 @@ class TermsHeaderBanner extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Title
-          const Text(
-            'Neon Athletics\nTerms',
-            style: TextStyle(
+          Text(
+            'Neon Athletics\nTerms'.tr,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 28,
               fontWeight: FontWeight.w800,
@@ -82,7 +83,7 @@ class TermsHeaderBanner extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                'Last updated: January 2025',
+                'Last updated: January 2025'.tr,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.4),
                   fontSize: 12,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/privacy_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/privacy_state.dart';
@@ -65,9 +66,9 @@ class _PrivacyBody extends StatelessWidget {
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: const Text(
-        'Privacy Policy',
-        style: TextStyle(
+      title: Text(
+        'Privacy Policy'.tr,
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.w700,
@@ -129,7 +130,7 @@ class _ContentView extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          'POLICY SECTIONS',
+          'POLICY SECTIONS'.tr,
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.4),
             fontSize: 11,
