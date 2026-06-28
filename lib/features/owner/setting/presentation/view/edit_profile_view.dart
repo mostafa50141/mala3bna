@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_state.dart';
@@ -147,24 +148,24 @@ class _EditProfileViewState extends State<EditProfileView>
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.colorBtnAndCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text(
-          'Discard changes?',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          'Discard changes?'.tr,
+          style: const TextStyle(color: Colors.white),
         ),
-        content: const Text(
-          'You have unsaved changes. Are you sure?',
-          style: TextStyle(color: Colors.white70),
+        content: Text(
+          'You have unsaved changes. Are you sure?'.tr,
+          style: const TextStyle(color: Colors.white70),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text('Keep Editing',
+            child: Text('Keep Editing'.tr,
                 style: TextStyle(color: AppColors.primaryColor)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Discard',
-                style: TextStyle(color: Colors.redAccent)),
+            child: Text('Discard'.tr,
+                style: const TextStyle(color: Colors.redAccent)),
           ),
         ],
       ),
@@ -206,7 +207,7 @@ class _EditProfileViewState extends State<EditProfileView>
   void _onStateChanged(BuildContext context, OwnerProfileState state) {
     if (state is OwnerProfileUpdateSuccess) {
       _hasChanges = false;
-      _showSnack('Profile updated successfully!');
+      _showSnack('Profile updated successfully!'.tr);
       Navigator.pop(context);
     } else if (state is OwnerProfileUpdateError) {
       _showSnack(state.message, isError: true);
@@ -265,9 +266,9 @@ class _EditProfileViewState extends State<EditProfileView>
           }
         },
       ),
-      title: const Text(
-        'Edit Profile',
-        style: TextStyle(
+      title: Text(
+        'Edit Profile'.tr,
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.w700,
@@ -417,7 +418,7 @@ class _EditProfileViewState extends State<EditProfileView>
               onPressed: () =>
                   context.read<OwnerProfileCubit>().loadProfile(),
               icon: const Icon(Icons.refresh, size: 18),
-              label: const Text('Retry'),
+              label: Text('Retry'.tr),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 foregroundColor: Colors.white,

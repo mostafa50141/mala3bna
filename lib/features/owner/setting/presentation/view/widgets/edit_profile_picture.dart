@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
@@ -42,7 +43,7 @@ class _EditProfilePictureState extends State<EditProfilePicture> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('فشل فتح اختيار الصورة'),
+            content: Text('Failed to pick image'.tr),
             backgroundColor: Colors.redAccent.shade700,
             behavior: SnackBarBehavior.floating,
             shape:
@@ -78,9 +79,9 @@ class _EditProfilePictureState extends State<EditProfilePicture> {
                 ),
               ),
 
-              const Text(
-                'تغيير صورة الملف الشخصي',
-                style: TextStyle(
+              Text(
+                'Change Profile Picture'.tr,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -91,7 +92,7 @@ class _EditProfilePictureState extends State<EditProfilePicture> {
               // Gallery
               _SheetOption(
                 icon: Icons.photo_library_rounded,
-                label: 'اختر من المعرض',
+                label: 'Choose from Gallery'.tr,
                 onTap: () => _pickImage(ImageSource.gallery),
               ),
 
@@ -100,7 +101,7 @@ class _EditProfilePictureState extends State<EditProfilePicture> {
               // Camera
               _SheetOption(
                 icon: Icons.camera_alt_rounded,
-                label: 'التقط صورة',
+                label: 'Take a Photo'.tr,
                 onTap: () => _pickImage(ImageSource.camera),
               ),
 
@@ -109,7 +110,7 @@ class _EditProfilePictureState extends State<EditProfilePicture> {
               // Cancel
               _SheetOption(
                 icon: Icons.close_rounded,
-                label: 'إلغاء',
+                label: 'Cancel'.tr,
                 color: Colors.redAccent,
                 onTap: () => Navigator.pop(context),
               ),

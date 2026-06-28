@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Individual labeled form fields matching the design.
@@ -28,7 +29,7 @@ class EditProfileFormSection extends StatelessWidget {
       children: [
         // Full Name
         _LabeledField(
-          label: 'FULL NAME',
+          label: 'Full Name'.tr.toUpperCase(),
           child: _ProfileTextField(
             controller: fullNameController,
             icon: Icons.person_outline,
@@ -41,7 +42,7 @@ class EditProfileFormSection extends StatelessWidget {
 
         // Email Address
         _LabeledField(
-          label: 'EMAIL ADDRESS',
+          label: 'Email'.tr.toUpperCase(),
           child: _ProfileTextField(
             controller: emailController,
             icon: Icons.email_outlined,
@@ -54,7 +55,7 @@ class EditProfileFormSection extends StatelessWidget {
 
         // Phone Number
         _LabeledField(
-          label: 'PHONE NUMBER',
+          label: 'Phone'.tr.toUpperCase(),
           child: _ProfileTextField(
             controller: phoneController,
             icon: Icons.phone_outlined,
@@ -68,7 +69,7 @@ class EditProfileFormSection extends StatelessWidget {
 
         // Date of Birth
         _LabeledField(
-          label: 'DATE OF BIRTH',
+          label: 'Date of Birth'.tr.toUpperCase(),
           child: GestureDetector(
             onTap: onDobTap,
             child: AbsorbPointer(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Full-width save button with gradient, glow, and animated loading state.
@@ -63,15 +64,15 @@ class EditProfileSaveButton extends StatelessWidget {
                     strokeWidth: 2.5,
                   ),
                 )
-              : const Row(
-                  key: ValueKey('save'),
+              : Row(
+                  key: const ValueKey('save'),
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.check_circle_outline,
+                    const Icon(Icons.check_circle_outline,
                         size: 20, color: Colors.white),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      'Save Changes',
+                      'Save Changes'.tr,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,

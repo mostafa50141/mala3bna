@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/info_chip.dart';
@@ -52,8 +53,8 @@ class UserInfoSection extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: onEditPressed,
             icon: const Icon(Icons.edit_note_outlined, size: 18),
-            label: const Text('Edit Profile',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+            label: Text('Edit Profile'.tr,
+                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
               side: BorderSide(

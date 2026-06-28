@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Connected social accounts section at the bottom of edit profile.
@@ -12,7 +13,7 @@ class EditProfileConnectedAccounts extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'CONNECTED ACCOUNTS',
+          'Connected Accounts'.tr.toUpperCase(),
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.4),
             fontSize: 11,

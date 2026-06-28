@@ -49,6 +49,11 @@ const Map<String, String> _en = {
   'Profile updated successfully!': 'Profile updated successfully!',
   'Could not load profile': 'Could not load profile',
   'Try Again': 'Try Again',
+  'Connected Accounts': 'Connected Accounts',
+  'Failed to pick image': 'Failed to pick image',
+  'Change Profile Picture': 'Change Profile Picture',
+  'Choose from Gallery': 'Choose from Gallery',
+  'Take a Photo': 'Take a Photo',
 
   // ── Auth ──────────────────────────────────────────────────────────────────────
   'Login': 'Login',
@@ -274,6 +279,11 @@ const Map<String, String> _ar = {
   'Profile updated successfully!': 'تم تحديث الملف الشخصي بنجاح!',
   'Could not load profile': 'تعذّر تحميل الملف الشخصي',
   'Try Again': 'حاول مجدداً',
+  'Connected Accounts': 'الحسابات المرتبطة',
+  'Failed to pick image': 'فشل فتح اختيار الصورة',
+  'Change Profile Picture': 'تغيير صورة الملف الشخصي',
+  'Choose from Gallery': 'اختر من المعرض',
+  'Take a Photo': 'التقط صورة',
 
   // ── Auth ──────────────────────────────────────────────────────────────────────
   'Login': 'تسجيل الدخول',
