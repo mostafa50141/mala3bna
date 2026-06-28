@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -16,9 +17,31 @@ class HeaderSection extends StatefulWidget {
 class _HeaderSectionState extends State<HeaderSection> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  Timer? _autoPlayTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoPlay();
+  }
+
+  void _startAutoPlay() {
+    final count = widget.vm.images.length;
+    if (count <= 1) return;
+    _autoPlayTimer = Timer.periodic(const Duration(seconds: 3), (_) {
+      if (!mounted) return;
+      final next = (_currentPage + 1) % count;
+      _pageController.animateToPage(
+        next,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
 
   @override
   void dispose() {
+    _autoPlayTimer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -215,13 +238,14 @@ class _HeaderSectionState extends State<HeaderSection> {
           ),
 
           // ── Carousel dots ──────────────────────────────────────────
+          if (widget.vm.images.length > 1)
           Positioned(
             bottom: 8,
             left: 0,
             right: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(1, (i) {
+              children: List.generate(widget.vm.images.length, (i) {
                 final active = _currentPage == i;
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
