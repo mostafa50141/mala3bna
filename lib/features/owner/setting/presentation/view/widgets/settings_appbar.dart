@@ -146,7 +146,7 @@ class SettingAppBar extends StatelessWidget {
               'Profile & Settings'.tr,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 17,
+                fontSize: 19,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.2,
               ),
@@ -154,7 +154,7 @@ class SettingAppBar extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               'Manage your account'.tr,
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
             ),
           ],
         ),

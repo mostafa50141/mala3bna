@@ -59,7 +59,7 @@ class SettingsTile extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: Style.textStyle14Bold
+                          style: Style.textStyle16Bold
                               .copyWith(color: titleColor),
                         ),
                         if (subtitle != null) ...[
@@ -67,7 +67,7 @@ class SettingsTile extends StatelessWidget {
                           Text(
                             subtitle!,
                             style: const TextStyle(
-                                color: Colors.grey, fontSize: 11),
+                                color: Colors.grey, fontSize: 13),
                           ),
                         ],
                       ],

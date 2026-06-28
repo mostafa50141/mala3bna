@@ -49,7 +49,7 @@ class SocialFooter extends StatelessWidget {
               onPressed: () {},
               child: Text(
                 'Privacy Policy',
-                style: Style.textStyle14Bold.copyWith(
+                style: Style.textStyle16Bold.copyWith(
                   color: AppColors.primaryColor,
                 ),
               ),
@@ -59,7 +59,7 @@ class SocialFooter extends StatelessWidget {
               onPressed: () {},
               child: Text(
                 'Terms & Conditions',
-                style: Style.textStyle14Bold.copyWith(
+                style: Style.textStyle16Bold.copyWith(
                   color: AppColors.primaryColor,
                 ),
               ),

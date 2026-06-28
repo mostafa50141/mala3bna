@@ -23,7 +23,7 @@ class InfoChip extends StatelessWidget {
         const SizedBox(width: 6),
         Text(
           label,
-          style: Style.textStyle14Bold.copyWith(color: Colors.white70),
+          style: Style.textStyle16Bold.copyWith(color: Colors.white70),
         ),
       ],
     );

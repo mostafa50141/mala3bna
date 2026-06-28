@@ -28,7 +28,7 @@ class UserInfoSection extends StatelessWidget {
       children: [
         Text(
           '@$username',
-          style: Style.textStyle14Bold
+          style: Style.textStyle16Bold
               .copyWith(color: AppColors.primaryColor, letterSpacing: 0.3),
         ),
         const SizedBox(height: 4),
@@ -36,7 +36,7 @@ class UserInfoSection extends StatelessWidget {
           fullName,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: Style.textStyle20Bold,
+          style: Style.textStyle20Bold.copyWith(fontSize: 24),
         ),
         const SizedBox(height: 8),
         Wrap(
@@ -52,9 +52,9 @@ class UserInfoSection extends StatelessWidget {
           height: 36,
           child: OutlinedButton.icon(
             onPressed: onEditPressed,
-            icon: const Icon(Icons.edit_note_outlined, size: 18),
+            icon: const Icon(Icons.edit_note_outlined, size: 20),
             label: Text('Edit Profile'.tr,
-                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
               side: BorderSide(

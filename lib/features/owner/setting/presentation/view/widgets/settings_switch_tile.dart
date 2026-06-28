@@ -48,7 +48,7 @@ class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.title, style: Style.textStyle14Bold),
+                    Text(widget.title, style: Style.textStyle16Bold),
                     const SizedBox(height: 3),
                     Text(
                       _isEnabled ? 'Enabled' : 'Disabled',
@@ -56,7 +56,7 @@ class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
                         color: _isEnabled
                             ? AppColors.primaryColor
                             : Colors.grey.shade600,
-                        fontSize: 11,
+                        fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
