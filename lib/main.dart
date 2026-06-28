@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData.dark().copyWith(
-        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
+        textTheme: GoogleFonts.cairoTextTheme(ThemeData.dark().textTheme),
         splashColor: Colors.transparent,
         scaffoldBackgroundColor: AppColors.backgroundColor,
       ),
