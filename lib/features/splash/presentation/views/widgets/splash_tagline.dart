@@ -10,10 +10,7 @@ import 'package:mala3bna/features/splash/presentation/views/widgets/splash_const
 class SplashTagline extends StatelessWidget {
   final Animation<double> opacityAnimation;
 
-  const SplashTagline({
-    super.key,
-    required this.opacityAnimation,
-  });
+  const SplashTagline({super.key, required this.opacityAnimation});
 
   @override
   Widget build(BuildContext context) {

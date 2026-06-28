@@ -4,29 +4,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:get/get.dart';
 import 'package:mala3bna/core/role/app_root.dart';
+import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/features/onboarding/presentation/views/onboarding_screen.dart';
-import 'package:mala3bna/features/splash/presentation/views/widgets/splash_app_name.dart';
-import 'package:mala3bna/features/splash/presentation/views/widgets/splash_background.dart';
 import 'package:mala3bna/features/splash/presentation/views/widgets/splash_constants.dart';
-import 'package:mala3bna/features/splash/presentation/views/widgets/splash_logo.dart';
-import 'package:mala3bna/features/splash/presentation/views/widgets/splash_tagline.dart';
 import 'package:mala3bna/features/splash/presentation/views_model/cubit/splash_cubit.dart';
 import 'package:mala3bna/features/welcome_screen/presentation/views/welcome_screen.dart';
 
-/// The main body of the splash screen.
+/// Clean white splash screen body.
 ///
-/// Animation architecture — single controller, interval-based sequencing:
+/// Animation sequence (single controller, 2 400 ms):
 ///
-///  ┌──────────────────────────────────────────────────────────────────────┐
-///  │  0 ms ──── 600 ms    Logo:     scale 0.4→1.0 (easeOutBack) + fade   │
-///  │  700 ms ── 1 200 ms  AppName:  slideUp + fade (easeOut)              │
-///  │  1 300 ms─ 1 700 ms  Tagline:  fade in (easeIn)                      │
-///  │  1 800 ms─ 2 400 ms  Shimmer:  diagonal light sweep on logo          │
-///  │  2 400 ms            Controller complete → Cubit emits nav state      │
-///  └──────────────────────────────────────────────────────────────────────┘
-///
-/// A second looping [_bgController] drives the background breathing effect
-/// independently, so it doesn't interfere with the main sequence timing.
+///  ┌────────────────────────────────────────────────────────────────────────┐
+///  │  0 ms  ──  700 ms   Logo:   scale 0.6→1.0 (easeOutBack) + fade in    │
+///  │  700 ms── 1 400 ms  Logo:   subtle bounce pulse (easeInOut)           │
+///  │  1 400 ms─ 2 000 ms Dots:   sequential fade-in loading indicator      │
+///  │  2 400 ms           Controller complete → Cubit emits nav state        │
+///  └────────────────────────────────────────────────────────────────────────┘
 class SplashScreenBody extends StatefulWidget {
   const SplashScreenBody({super.key});
 
@@ -36,29 +29,26 @@ class SplashScreenBody extends StatefulWidget {
 
 class _SplashScreenBodyState extends State<SplashScreenBody>
     with TickerProviderStateMixin {
-  // ─── Controllers ──────────────────────────────────────────────────────────
+  // ─── Controllers ────────────────────────────────────────────────────────────
   late final AnimationController _mainController;
-  late final AnimationController _bgController;
+  late final AnimationController _pulseController;
 
-  // ─── Main animations ──────────────────────────────────────────────────────
+  // ─── Animations ─────────────────────────────────────────────────────────────
   late final Animation<double> _logoScale;
   late final Animation<double> _logoOpacity;
-  late final Animation<Offset> _nameSlide;
-  late final Animation<double> _nameOpacity;
-  late final Animation<double> _tagOpacity;
-  late final Animation<double> _shimmer;
-
-  // ─── Background breath ────────────────────────────────────────────────────
-  late final Animation<double> _bgBreath;
+  late final Animation<double> _dot1Opacity;
+  late final Animation<double> _dot2Opacity;
+  late final Animation<double> _dot3Opacity;
+  late final Animation<double> _pulseScale;
 
   @override
   void initState() {
     super.initState();
-    // Make status bar transparent so the splash fills edge-to-edge.
+    // Fully transparent status bar — white background reads as light icons
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
       ),
     );
     _initAnimations();
@@ -66,113 +56,59 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
   }
 
   void _initAnimations() {
-    // ── Main controller (runs once, 2 400 ms) ─────────────────────────────
+    // ── Main controller (runs once, 2 400 ms) ───────────────────────────────
     _mainController = AnimationController(
       vsync: this,
       duration: SplashConstants.totalDuration,
     )..addStatusListener(_onMainAnimationStatus);
 
-    // ── Background controller (loops, 4 s) ────────────────────────────────
-    _bgController = AnimationController(
+    // ── Pulse controller (loops, 1.2 s) — subtle scale breath on logo ───────
+    _pulseController = AnimationController(
       vsync: this,
-      duration: SplashConstants.bgBreathDuration,
+      duration: const Duration(milliseconds: 1200),
     )..repeat(reverse: true);
 
-    _bgBreath = CurvedAnimation(
-      parent: _bgController,
-      curve: Curves.easeInOut,
+    _pulseScale = Tween<double>(begin: 1.0, end: 1.04).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
 
-    // ── Logo scale ────────────────────────────────────────────────────────
-    _logoScale = Tween<double>(
-      begin: SplashConstants.logoScaleBegin,
-      end: SplashConstants.logoScaleEnd,
-    ).animate(
+    // ── Logo scale (0 → 700 ms = 0.0 → 0.29) ───────────────────────────────
+    _logoScale = Tween<double>(begin: 0.6, end: 1.0).animate(
       CurvedAnimation(
         parent: _mainController,
-        curve: const Interval(
-          SplashConstants.logoScaleIntervalStart,
-          SplashConstants.logoScaleIntervalEnd,
-          curve: Curves.easeOutBack,
-        ),
+        curve: const Interval(0.0, 0.29, curve: Curves.easeOutBack),
       ),
     );
 
-    // ── Logo opacity ──────────────────────────────────────────────────────
-    _logoOpacity = Tween<double>(
-      begin: SplashConstants.logoOpacityBegin,
-      end: SplashConstants.logoOpacityEnd,
-    ).animate(
+    // ── Logo opacity (0 → 500 ms = 0.0 → 0.21) ─────────────────────────────
+    _logoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _mainController,
-        curve: const Interval(
-          SplashConstants.logoOpacityIntervalStart,
-          SplashConstants.logoOpacityIntervalEnd,
-          curve: Curves.easeIn,
-        ),
+        curve: const Interval(0.0, 0.21, curve: Curves.easeIn),
       ),
     );
 
-    // ── App name slide ────────────────────────────────────────────────────
-    _nameSlide = Tween<Offset>(
-      begin: Offset(0.0, SplashConstants.nameSlideBeginDy),
-      end: Offset.zero,
-    ).animate(
+    // ── Dots sequential fade (1 400 ms → 2 200 ms = 0.58 → 0.92) ───────────
+    _dot1Opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _mainController,
-        curve: const Interval(
-          SplashConstants.nameSlideIntervalStart,
-          SplashConstants.nameSlideIntervalEnd,
-          curve: Curves.easeOut,
-        ),
+        curve: const Interval(0.58, 0.70, curve: Curves.easeIn),
       ),
     );
-
-    // ── App name opacity ──────────────────────────────────────────────────
-    _nameOpacity = Tween<double>(
-      begin: SplashConstants.nameOpacityBegin,
-      end: SplashConstants.nameOpacityEnd,
-    ).animate(
+    _dot2Opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _mainController,
-        curve: const Interval(
-          SplashConstants.nameOpacityIntervalStart,
-          SplashConstants.nameOpacityIntervalEnd,
-          curve: Curves.easeIn,
-        ),
+        curve: const Interval(0.67, 0.79, curve: Curves.easeIn),
       ),
     );
-
-    // ── Tagline opacity ───────────────────────────────────────────────────
-    _tagOpacity = Tween<double>(
-      begin: SplashConstants.tagOpacityBegin,
-      end: SplashConstants.tagOpacityEnd,
-    ).animate(
+    _dot3Opacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _mainController,
-        curve: const Interval(
-          SplashConstants.tagOpacityIntervalStart,
-          SplashConstants.tagOpacityIntervalEnd,
-          curve: Curves.easeIn,
-        ),
-      ),
-    );
-
-    // ── Shimmer sweep ─────────────────────────────────────────────────────
-    _shimmer = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _mainController,
-        curve: const Interval(
-          SplashConstants.shimmerIntervalStart,
-          SplashConstants.shimmerIntervalEnd,
-          curve: Curves.easeInOut,
-        ),
+        curve: const Interval(0.76, 0.92, curve: Curves.easeIn),
       ),
     );
   }
 
-  /// Fired when [_mainController] reaches `completed`.
-  /// Delegates the navigation decision to [SplashCubit].
   void _onMainAnimationStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed && mounted) {
       context.read<SplashCubit>().checkNavigationTarget();
@@ -183,7 +119,7 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
   void dispose() {
     _mainController.removeStatusListener(_onMainAnimationStatus);
     _mainController.dispose();
-    _bgController.dispose();
+    _pulseController.dispose();
     super.dispose();
   }
 
@@ -192,40 +128,62 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
     return BlocListener<SplashCubit, SplashState>(
       listener: _onSplashState,
       child: Scaffold(
-        backgroundColor: Colors.black,
-        body: SplashBackground(
-          breathAnimation: _bgBreath,
-          child: SafeArea(
-            // Extend gradient behind status bar / home indicator
-            top: false,
-            bottom: false,
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // ── Logo ──────────────────────────────────────────────
-                  SplashLogo(
-                    scaleAnimation: _logoScale,
-                    opacityAnimation: _logoOpacity,
-                    shimmerAnimation: _shimmer,
-                  ),
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          top: false,
+          bottom: false,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ── Logo with scale + fade + subtle pulse ──────────────────
+                AnimatedBuilder(
+                  animation: Listenable.merge([
+                    _logoScale,
+                    _logoOpacity,
+                    _pulseScale,
+                  ]),
+                  builder: (context, _) {
+                    return Opacity(
+                      opacity: _logoOpacity.value.clamp(0.0, 1.0),
+                      child: Transform.scale(
+                        scale: _logoScale.value * _pulseScale.value,
+                        child: SizedBox(
+                          width: SplashConstants.logoSize + 60,
+                          height: SplashConstants.logoSize + 60,
+                          child: Image.asset(
+                            AssetsData.splashscreenLogo,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
 
-                  const SizedBox(height: SplashConstants.verticalSpacingLogo),
+                const SizedBox(height: 48),
 
-                  // ── App name ──────────────────────────────────────────
-                  SplashAppName(
-                    slideAnimation: _nameSlide,
-                    opacityAnimation: _nameOpacity,
-                  ),
-
-                  const SizedBox(
-                    height: SplashConstants.verticalSpacingTagline,
-                  ),
-
-                  // ── Tagline ───────────────────────────────────────────
-                  SplashTagline(opacityAnimation: _tagOpacity),
-                ],
-              ),
+                // ── Three-dot loading indicator (sequential fade) ──────────
+                AnimatedBuilder(
+                  animation: Listenable.merge([
+                    _dot1Opacity,
+                    _dot2Opacity,
+                    _dot3Opacity,
+                  ]),
+                  builder: (context, _) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildDot(_dot1Opacity.value),
+                        const SizedBox(width: 10),
+                        _buildDot(_dot2Opacity.value),
+                        const SizedBox(width: 10),
+                        _buildDot(_dot3Opacity.value),
+                      ],
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -233,9 +191,20 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
     );
   }
 
-  /// Reacts to navigation states emitted by [SplashCubit].
-  /// GetX [Get.offAll] with [Transition.fadeIn] prevents any white flash
-  /// or hard cut between the splash and the next screen.
+  Widget _buildDot(double opacity) {
+    return Opacity(
+      opacity: opacity.clamp(0.0, 1.0),
+      child: Container(
+        width: 8,
+        height: 8,
+        decoration: const BoxDecoration(
+          color: Color(0xFF1B6B5A), // brand teal
+          shape: BoxShape.circle,
+        ),
+      ),
+    );
+  }
+
   void _onSplashState(BuildContext context, SplashState state) {
     if (state is SplashNavigateToHome) {
       Get.offAll(
