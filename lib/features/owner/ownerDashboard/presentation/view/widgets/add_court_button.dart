@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/add_court_view.dart';
 
@@ -48,14 +49,14 @@ class AddCourtButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add_rounded, size: 22, color: Colors.white),
-            SizedBox(width: 10),
+            const Icon(Icons.add_rounded, size: 22, color: Colors.white),
+            const SizedBox(width: 10),
             Text(
-              'Add New Court',
-              style: TextStyle(
+              'Add New Court'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w700,

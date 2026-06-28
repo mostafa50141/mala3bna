@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
@@ -99,18 +100,18 @@ class ImageUploadSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Tap to upload images',
-                    style: TextStyle(
+                  Text(
+                    'Tap to upload images'.tr,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'PNG, JPG up to 5MB',
-                    style: TextStyle(color: Colors.white38, fontSize: 12),
+                  Text(
+                    'PNG, JPG up to 5MB'.tr,
+                    style: const TextStyle(color: Colors.white38, fontSize: 12),
                   ),
                 ],
               ),

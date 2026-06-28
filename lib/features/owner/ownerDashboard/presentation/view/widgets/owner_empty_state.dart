@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Empty state shown when the dashboard has no data to display.
@@ -27,9 +28,9 @@ class DashboardEmptyView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'No Data Yet',
-              style: TextStyle(
+            Text(
+              'No Data Yet'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
@@ -37,7 +38,7 @@ class DashboardEmptyView extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Your dashboard will populate once you\nadd courts and receive bookings.',
+              'Your dashboard will populate once you\nadd courts and receive bookings.'.tr,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.45),

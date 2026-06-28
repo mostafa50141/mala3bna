@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/domain/entities/dashboard_entity.dart';
 
@@ -39,7 +40,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Weekly Revenue',
+                      'Weekly Revenue'.tr,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.5),
                         fontSize: 13,
@@ -48,7 +49,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'EGP ${data.weeklyEarnings.toStringAsFixed(0)}',
+                      '${'EGP'.tr} ${data.weeklyEarnings.toStringAsFixed(0)}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 28,
@@ -107,7 +108,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
 
           // ── Subtitle ──
           Text(
-            'Last 7 days',
+            'Last 7 days'.tr,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.3),
               fontSize: 12,
@@ -168,7 +169,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
           ),
           getTooltipItems: (touchedSpots) => touchedSpots.map((spot) {
             return LineTooltipItem(
-              'EGP ${spot.y.toStringAsFixed(0)}',
+              '${'EGP'.tr} ${spot.y.toStringAsFixed(0)}',
               TextStyle(
                 color: AppColors.primaryColor,
                 fontWeight: FontWeight.w700,
@@ -218,7 +219,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Text(
-        days[index],
+        days[index].tr,
         style: TextStyle(
           color: Colors.white.withValues(alpha: 0.35),
           fontSize: 11,

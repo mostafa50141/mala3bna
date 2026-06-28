@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/domain/entities/dashboard_entity.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/dashboard_stat_card.dart';
@@ -27,7 +28,7 @@ class StatsGrid extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'OVERVIEW',
+              'OVERVIEW'.tr,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.4),
                 fontSize: 11,
@@ -56,7 +57,7 @@ class StatsGrid extends StatelessWidget {
             ),
             DashboardStatCard(
               title: 'Weekly Earnings',
-              value: 'EGP ${data.weeklyEarnings.toStringAsFixed(0)}',
+              value: '${'EGP'.tr} ${data.weeklyEarnings.toStringAsFixed(0)}',
               icon: Icons.account_balance_wallet_outlined,
               accentColor: const Color(0xFF5B8DEF),
             ),

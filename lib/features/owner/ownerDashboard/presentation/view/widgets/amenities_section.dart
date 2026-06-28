@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/amenities_widget.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/form_widgets.dart';
 
@@ -12,9 +13,9 @@ class AmenitiesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AddCourtSectionHeader(
+        AddCourtSectionHeader(
           icon: Icons.check_circle_outline,
-          title: 'Amenities',
+          title: 'Amenities'.tr,
         ),
         const SizedBox(height: 12),
 

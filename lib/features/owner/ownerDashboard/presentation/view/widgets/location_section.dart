@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/form_widgets.dart';
 
@@ -11,17 +12,17 @@ class LocationSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AddCourtSectionHeader(
+        AddCourtSectionHeader(
           icon: Icons.location_on_outlined,
-          title: 'Location',
+          title: 'Location'.tr,
         ),
         const SizedBox(height: 12),
         AddCourtTextField(
           controller: addressController,
-          hintText: "Enter your court's address",
+          hintText: "Enter your court's address".tr,
           prefixIcon: Icons.map_outlined,
           validator: (v) =>
-              (v == null || v.isEmpty) ? 'Address is required' : null,
+              (v == null || v.isEmpty) ? 'Address is required'.tr : null,
         ),
         const SizedBox(height: 14),
 
@@ -66,7 +67,7 @@ class LocationSection extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Tap to pin location',
+                        'Tap to pin location'.tr,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.5),
                           fontSize: 13,
@@ -80,6 +81,7 @@ class LocationSection extends StatelessWidget {
           ),
         ),
       ],
+
     );
   }
 }

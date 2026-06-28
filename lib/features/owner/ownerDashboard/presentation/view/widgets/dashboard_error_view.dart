@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Error state with icon, message, and retry button.
@@ -37,9 +38,9 @@ class DashboardErrorView extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Title
-            const Text(
-              'Something went wrong',
-              style: TextStyle(
+            Text(
+              'Something went wrong'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
@@ -66,9 +67,9 @@ class DashboardErrorView extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded, size: 18),
-                label: const Text(
-                  'Try Again',
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                label: Text(
+                  'Try Again'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,

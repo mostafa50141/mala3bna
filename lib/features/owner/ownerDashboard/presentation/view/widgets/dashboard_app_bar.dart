@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/cubit/owner_dashboard_cubit.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/cubit/owner_dashboard_state.dart';
@@ -55,7 +56,7 @@ class DashboardAppBar extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      _greeting(),
+                      _greeting().tr,
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.45),
                         fontSize: 12,
@@ -184,9 +185,9 @@ class _NotificationsSheet extends StatelessWidget {
                 size: 22,
               ),
               const SizedBox(width: 10),
-              const Text(
-                'Notifications',
-                style: TextStyle(
+              Text(
+                'Notifications'.tr,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
@@ -204,7 +205,7 @@ class _NotificationsSheet extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'No notifications yet',
+            'No notifications yet'.tr,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.6),
               fontSize: 15,
@@ -213,7 +214,7 @@ class _NotificationsSheet extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            "You're all caught up! New alerts\nwill appear here.",
+            "You're all caught up! New alerts\nwill appear here.".tr,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.35),

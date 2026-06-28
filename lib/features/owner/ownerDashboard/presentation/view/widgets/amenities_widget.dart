@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 class Amenity {
@@ -126,7 +127,7 @@ class _AmenityItem extends StatelessWidget {
             const SizedBox(width: 10),
             // Label
             Text(
-              amenity.label,
+              amenity.label.tr,
               style: TextStyle(
                 color: amenity.isSelected
                     ? Colors.white

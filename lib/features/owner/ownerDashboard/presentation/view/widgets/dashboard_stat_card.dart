@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// A single statistic card with icon badge, value, title, and optional accent color.
@@ -68,7 +69,7 @@ class DashboardStatCard extends StatelessWidget {
 
           // ── Title ──
           Text(
-            title,
+            title.tr,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.45),
               fontSize: 12,

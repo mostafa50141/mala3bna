@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
@@ -80,8 +81,8 @@ class _AddCourtViewState extends State<AddCourtView> {
         listener: (context, state) {
           if (state is AddCourtSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Court created successfully!'),
+              SnackBar(
+                content: Text('Court created successfully!'.tr),
                 backgroundColor: Colors.green,
               ),
             );
@@ -164,9 +165,9 @@ class _AddCourtViewState extends State<AddCourtView> {
                                         strokeWidth: 2.5,
                                       ),
                                     )
-                                  : const Text(
-                                      'Save Court',
-                                      style: TextStyle(
+                                  : Text(
+                                      'Save Court'.tr,
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 0.5,
@@ -190,9 +191,9 @@ class _AddCourtViewState extends State<AddCourtView> {
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                               ),
-                              child: const Text(
-                                'Cancel',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                              child: Text(
+                                'Cancel'.tr,
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -239,11 +240,11 @@ class _AddCourtViewState extends State<AddCourtView> {
                     color: Colors.white, size: 20),
                 onPressed: () => Navigator.maybePop(context),
               ),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Add Your Court',
+                  'Add Your Court'.tr,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
