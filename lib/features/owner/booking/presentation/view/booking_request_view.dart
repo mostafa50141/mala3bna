@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_state.dart';
@@ -49,10 +50,10 @@ class _BookingHeader extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Booking Requests',
-                  style: TextStyle(
+                  'Booking Requests'.tr,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -87,7 +88,7 @@ class _BookingHeader extends StatelessWidget {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          '${state.pendingCount} Pending',
+                          '${state.pendingCount} ${'Pending'.tr}',
                           style: const TextStyle(
                             color: Colors.orange,
                             fontSize: 12,

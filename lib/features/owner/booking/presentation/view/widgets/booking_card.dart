@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
 import 'package:mala3bna/features/owner/booking/domain/entities/booking_entity.dart';
@@ -30,11 +31,11 @@ class BookingCard extends StatelessWidget {
   String get _statusLabel {
     switch (booking.status) {
       case BookingStatus.approved:
-        return 'Approved';
+        return 'Approved'.tr;
       case BookingStatus.declined:
-        return 'Declined';
+        return 'Declined'.tr;
       case BookingStatus.pending:
-        return 'Pending';
+        return 'Pending'.tr;
     }
   }
 
@@ -148,7 +149,7 @@ class BookingCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: _ActionButton(
-                                label: 'Decline',
+                                label: 'Decline'.tr,
                                 icon: Icons.close_rounded,
                                 color: Colors.redAccent,
                                 outlined: true,
@@ -161,7 +162,7 @@ class BookingCard extends StatelessWidget {
                                       .showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          '${booking.playerName}\'s booking declined'),
+                                          '${booking.playerName} - ${'booking declined'.tr}'),
                                       backgroundColor:
                                           Colors.redAccent.withValues(alpha: 0.9),
                                       behavior:
@@ -179,7 +180,7 @@ class BookingCard extends StatelessWidget {
                             const SizedBox(width: 10),
                             Expanded(
                               child: _ActionButton(
-                                label: 'Accept',
+                                label: 'Accept'.tr,
                                 icon: Icons.check_rounded,
                                 color: AppColors.primaryColor,
                                 outlined: false,
@@ -192,7 +193,7 @@ class BookingCard extends StatelessWidget {
                                       .showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          '${booking.playerName}\'s booking accepted ✓'),
+                                          '${booking.playerName} - ${'booking accepted ✓'.tr}'),
                                       backgroundColor:
                                           AppColors.primaryColor.withValues(alpha: 0.9),
                                       behavior:

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_navigation/src/routes/default_route.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/change_password_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/delete_account_view.dart';
@@ -24,12 +22,12 @@ class SettingsContent extends StatelessWidget {
       children: [
         SettingsSwitchTile(
           icon: Icons.notifications_none,
-          title: "Push Notifications",
-          subtitle: "Enabled",
+          title: 'Push Notifications'.tr,
+          subtitle: 'Enabled'.tr,
         ),
         SettingsTile(
           icon: Icons.color_lens_outlined,
-          title: "App Theme",
+          title: 'App Theme'.tr,
           onTap: () {
             showModalBottomSheet(
               context: context,
@@ -40,7 +38,7 @@ class SettingsContent extends StatelessWidget {
         ),
         SettingsTile(
           icon: Icons.language_outlined,
-          title: "Language",
+          title: 'Language'.tr,
           onTap: () {
             showModalBottomSheet(
               context: context,
@@ -51,7 +49,7 @@ class SettingsContent extends StatelessWidget {
         ),
         SettingsTile(
           icon: Icons.person_outline,
-          title: "Change Personal Info",
+          title: 'Change Personal Info'.tr,
           onTap: () {
             final cubit = context.read<OwnerProfileCubit>();
             navigator?.push(
@@ -67,7 +65,7 @@ class SettingsContent extends StatelessWidget {
         ),
         SettingsTile(
           icon: Icons.lock_outline,
-          title: "Change Password",
+          title: 'Change Password'.tr,
           onTap: () {
             Navigator.push(
               context,
@@ -79,7 +77,7 @@ class SettingsContent extends StatelessWidget {
         ),
         SettingsTile(
           icon: Icons.help_outline,
-          title: "Need Help?",
+          title: 'Need Help?'.tr,
           onTap: () {
             Navigator.push(
               context,
@@ -91,7 +89,7 @@ class SettingsContent extends StatelessWidget {
         ),
         SettingsTile(
           icon: Icons.delete_outline,
-          title: "Delete Account",
+          title: 'Delete Account'.tr,
           isDanger: true,
           onTap: () {
             Navigator.push(
@@ -104,7 +102,7 @@ class SettingsContent extends StatelessWidget {
         ),
         SettingsTile(
           icon: Icons.description_outlined,
-          title: "Privacy Policy",
+          title: 'Privacy Policy'.tr,
           onTap: () {
             Navigator.push(
               context,
@@ -116,7 +114,7 @@ class SettingsContent extends StatelessWidget {
         ),
         SettingsTile(
           icon: Icons.verified_user_outlined,
-          title: "Terms & Conditions",
+          title: 'Terms & Conditions'.tr,
           onTap: () {
             Navigator.push(
               context,

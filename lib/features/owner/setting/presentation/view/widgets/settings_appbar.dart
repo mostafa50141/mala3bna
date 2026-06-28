@@ -36,17 +36,17 @@ class SettingAppBar extends StatelessWidget {
             size: 26,
           ),
         ),
-        title: const Text(
-          'Log Out',
+        title: Text(
+          'Log Out'.tr,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: Text(
-          'Are you sure you want to log out\nof your account?',
+          'Are you sure you want to log out\nof your account?'.tr,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.6),
@@ -73,8 +73,8 @@ class SettingAppBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Cancel',
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  child: Text('Cancel'.tr,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
                 ),
               ),
               const SizedBox(width: 12),
@@ -91,8 +91,8 @@ class SettingAppBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Log Out',
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  child: Text('Log Out'.tr,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
                 ),
               ),
             ],
@@ -142,9 +142,9 @@ class SettingAppBar extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Profile & Settings',
-              style: TextStyle(
+            Text(
+              'Profile & Settings'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -153,8 +153,8 @@ class SettingAppBar extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              'Manage your account',
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+              'Manage your account'.tr,
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ],
         ),

@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/owner/booking/domain/entities/booking_entity.dart';
 
 class TopInfoAtBookingRequestCard extends StatelessWidget {
   final BookingEntity booking;
+  final Color statusColor;
+  final String statusLabel;
 
   const TopInfoAtBookingRequestCard({
     super.key,
     required this.booking,
-    required Color statusColor,
-    required String statusLabel,
+    required this.statusColor,
+    required this.statusLabel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final isApproved = booking.status == BookingStatus.approved;
-
     return Row(
       children: [
         CircleAvatar(
@@ -48,15 +47,13 @@ class TopInfoAtBookingRequestCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            color: isApproved
-                ? AppColors.primaryColor.withValues(alpha: .15)
-                : Colors.orange.withValues(alpha: .15),
+            color: statusColor.withValues(alpha: .15),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            isApproved ? "Approved" : "Pending",
+            statusLabel,
             style: Style.textStyle12Bold.copyWith(
-              color: isApproved ? AppColors.primaryColor : Colors.orange,
+              color: statusColor,
             ),
           ),
         ),
