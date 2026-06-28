@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 class HelpCenterDirectSupport extends StatelessWidget {
@@ -20,7 +21,7 @@ class HelpCenterDirectSupport extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Direct Support',
+                'Direct Support'.tr,
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontSize: 18,
@@ -33,9 +34,9 @@ class HelpCenterDirectSupport extends StatelessWidget {
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text(
-                  'ONLINE NOW',
-                  style: TextStyle(
+                child: Text(
+                  'ONLINE NOW'.tr,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 10,
                     fontWeight: FontWeight.w800,
@@ -46,7 +47,7 @@ class HelpCenterDirectSupport extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Chat with our athletic support\nteam',
+            'Chat with our athletic support\nteam'.tr,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.6),
               fontSize: 13,
@@ -60,7 +61,7 @@ class HelpCenterDirectSupport extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Icons.chat_bubble_outline, size: 18),
-                  label: const Text('Start Chat'),
+                  label: Text('Start Chat'.tr),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     foregroundColor: Colors.black,
@@ -82,7 +83,7 @@ class HelpCenterDirectSupport extends StatelessWidget {
                   onPressed: () {},
                   icon: Icon(Icons.email_outlined,
                       size: 18, color: AppColors.primaryColor),
-                  label: Text('Email Us',
+                  label: Text('Email Us'.tr,
                       style: TextStyle(color: AppColors.primaryColor)),
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/help_center_categories.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/help_center_direct_support.dart';
@@ -60,9 +61,9 @@ class _HelpCenterViewState extends State<HelpCenterView>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Heading
-                    const Text(
-                      'How can we help?',
-                      style: TextStyle(
+                    Text(
+                      'How can we help?'.tr,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -124,7 +125,7 @@ class _HelpCenterViewState extends State<HelpCenterView>
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: const DecorationImage(
-              image: AssetImage('assets/images/app_logo.png'),
+              image: AssetImage('assets/images/app_icon.png'),
               fit: BoxFit.cover,
             ),
             border: Border.all(
@@ -145,9 +146,9 @@ class _HelpCenterViewState extends State<HelpCenterView>
               fontWeight: FontWeight.w700,
             ),
           ),
-          const Text(
-            'Help Center',
-            style: TextStyle(
+          Text(
+            'Help Center'.tr,
+            style: const TextStyle(
               color: Colors.white54,
               fontSize: 12,
               fontWeight: FontWeight.w400,
@@ -157,9 +158,9 @@ class _HelpCenterViewState extends State<HelpCenterView>
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
           icon: Icon(
-            Icons.notifications_none_rounded,
+            Icons.arrow_back_ios_new_rounded,
             color: AppColors.primaryColor,
             size: 24,
           ),

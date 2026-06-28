@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 class HelpCenterFaqList extends StatelessWidget {
@@ -35,9 +36,9 @@ class HelpCenterFaqList extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Popular Questions',
-              style: TextStyle(
+            Text(
+              'Popular Questions'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -46,7 +47,7 @@ class HelpCenterFaqList extends StatelessWidget {
             TextButton(
               onPressed: () {},
               child: Text(
-                'View All',
+                'View All'.tr,
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontSize: 13,
@@ -58,8 +59,8 @@ class HelpCenterFaqList extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         ...faqs.map((faq) => _FaqTile(
-              question: faq['question']!,
-              answer: faq['answer']!,
+              question: faq['question']!.tr,
+              answer: faq['answer']!.tr,
             )),
       ],
     );
