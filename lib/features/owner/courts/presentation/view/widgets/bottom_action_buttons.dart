@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 class BottomActionButtons extends StatelessWidget {
@@ -32,8 +33,8 @@ class BottomActionButtons extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
-              child: const Text(
-                'Cancel',
+              child: Text(
+                'Cancel'.tr,
                 style: TextStyle(
                   color: Colors.white70,
                   fontWeight: FontWeight.w500,
@@ -93,10 +94,10 @@ class BottomActionButtons extends StatelessWidget {
                             color: Colors.white,
                           ),
                         )
-                      : const Text(
-                          'Save Changes',
-                          key: ValueKey('save'),
-                          style: TextStyle(
+                      : Text(
+                          'Save Changes'.tr,
+                          key: const ValueKey('save'),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                             fontSize: 15,

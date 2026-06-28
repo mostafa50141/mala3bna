@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
@@ -21,9 +22,9 @@ class RatingsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionHeader(
-            title: 'Reviews & Ratings',
+            title: 'Reviews & Ratings'.tr,
             trailing: Text(
-              '${vm.reviewCount} reviews',
+              '${vm.reviewCount} ${'reviews'.tr}',
               style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ),
@@ -47,7 +48,7 @@ class RatingsSection extends StatelessWidget {
                   StarsWidget(rating: vm.rating),
                   const SizedBox(height: 6),
                   Text(
-                    'out of 5',
+                    'out of 5'.tr,
                     style: TextStyle(color: Colors.grey.shade500, fontSize: 11),
                   ),
                 ],

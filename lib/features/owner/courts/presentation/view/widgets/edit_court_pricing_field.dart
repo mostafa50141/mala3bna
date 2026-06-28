@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
 
@@ -25,8 +26,8 @@ class EditCourtPricingField extends StatelessWidget {
         children: [
           _PriceInput(
             controller: offPeakController,
-            label: 'Off-Peak Hours',
-            subtitle: '11 am – 5 pm',
+            label: 'Off-Peak Hours'.tr,
+            subtitle: '11 am – 5 pm'.tr,
             icon: Icons.wb_sunny_outlined,
             iconColor: Colors.amber.shade300,
             hintText: 'e.g. 300',
@@ -36,8 +37,8 @@ class EditCourtPricingField extends StatelessWidget {
           const _Divider(),
           _PriceInput(
             controller: peakController,
-            label: 'Peak Hours',
-            subtitle: '5 pm – 10 pm',
+            label: 'Peak Hours'.tr,
+            subtitle: '5 pm – 10 pm'.tr,
             icon: Icons.nightlight_outlined,
             iconColor: const Color(0xFFB39DDB),
             hintText: 'e.g. 460',
@@ -47,8 +48,8 @@ class EditCourtPricingField extends StatelessWidget {
           const _Divider(),
           _PriceInput(
             controller: discountController,
-            label: 'Membership Discount',
-            subtitle: 'For registered members',
+            label: 'Membership Discount'.tr,
+            subtitle: 'For registered members'.tr,
             icon: Icons.local_offer_outlined,
             iconColor: AppColors.primaryColor,
             hintText: 'e.g. 15',

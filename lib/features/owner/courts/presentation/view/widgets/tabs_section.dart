@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Tab bar that exposes [onTabChanged] so the parent can switch content.
@@ -25,8 +27,8 @@ class _TabsSectionState extends State<TabsSection> {
       padding: const EdgeInsets.all(4),
       child: Row(
         children: [
-          _buildTab('Details', 0),
-          _buildTab('Bookings', 1),
+          _buildTab('Details'.tr, 0),
+          _buildTab('Bookings'.tr, 1),
         ],
       ),
     );
@@ -59,7 +61,7 @@ class _TabsSectionState extends State<TabsSection> {
           alignment: Alignment.center,
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 250),
-            style: TextStyle(
+            style: GoogleFonts.cairo(
               color: active ? Colors.white : Colors.grey,
               fontWeight: active ? FontWeight.w600 : FontWeight.w400,
               fontSize: 14,

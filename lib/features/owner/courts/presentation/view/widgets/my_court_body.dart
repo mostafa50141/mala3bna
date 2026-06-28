@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/booking/domain/entities/booking_entity.dart';
@@ -205,7 +206,7 @@ class _BookingsTab extends StatelessWidget {
                   size: 16, color: Colors.grey),
               const SizedBox(width: 6),
               Text(
-                'Week of ${_formatDate(weekStart)} – ${_formatDate(weekStart.add(const Duration(days: 6)))}',
+                '${'Week of'.tr} ${_formatDate(weekStart)} – ${_formatDate(weekStart.add(const Duration(days: 6)))}',
                 style: const TextStyle(color: Colors.grey, fontSize: 12),
               ),
             ],
@@ -219,9 +220,9 @@ class _BookingsTab extends StatelessWidget {
         // ── Legend ───────────────────────────────────────────────────
         Row(
           children: [
-            _LegendDot(color: AppColors.primaryColor, label: 'Approved'),
+            _LegendDot(color: AppColors.primaryColor, label: 'Approved'.tr),
             const SizedBox(width: 16),
-            _LegendDot(color: Colors.orange, label: 'Pending'),
+            _LegendDot(color: Colors.orange, label: 'Pending'.tr),
           ],
         ),
       ],
@@ -253,7 +254,7 @@ class _BookingsTab extends StatelessWidget {
                     width: dayColWidth,
                     child: Center(
                       child: Text(
-                        _days[d],
+                        _days[d].tr,
                         style: TextStyle(
                           color: d == DateTime.now().weekday - 1
                               ? AppColors.primaryColor
@@ -359,20 +360,20 @@ class _BookingsTab extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'No bookings this week',
-              style: TextStyle(
+            Text(
+              'No bookings this week'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Approved and pending reservations\nwill appear here.',
+            Text(
+              'Approved and pending reservations\nwill appear here.'.tr,
               textAlign: TextAlign.center,
               style:
-                  TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
+                  const TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
             ),
           ],
         ),
@@ -483,7 +484,7 @@ class _DetailRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final isPending = booking.status == BookingStatus.pending;
     final statusColor = isPending ? Colors.orange : AppColors.primaryColor;
-    final statusLabel = isPending ? 'Pending' : 'Approved';
+    final statusLabel = isPending ? 'Pending'.tr : 'Approved'.tr;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -720,9 +721,9 @@ class _ErrorState extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
-              'Oops! Something went wrong',
-              style: TextStyle(
+            Text(
+              'Something went wrong'.tr,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -745,9 +746,9 @@ class _ErrorState extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded, size: 18),
-                label: const Text(
-                  'Try Again',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                label: Text(
+                  'Try Again'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,

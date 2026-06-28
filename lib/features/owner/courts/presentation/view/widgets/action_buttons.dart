@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_state.dart';
@@ -152,9 +151,9 @@ class _EditButton extends StatelessWidget {
         )?.then((_) => cubit.loadCourtProfile());
       },
       icon: const Icon(Icons.edit_outlined, size: 16),
-      label: const Text(
-        'Edit Court',
-        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+      label: Text(
+        'Edit Court'.tr,
+        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryColor,
@@ -185,7 +184,7 @@ class _StatusToggleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // Colors per state
     final Color accentColor = isActive ? Colors.redAccent : AppColors.primaryColor;
-    final String label = isActive ? 'Disable Court' : 'Enable Court';
+    final String label = isActive ? 'Disable Court'.tr : 'Enable Court'.tr;
     final IconData icon =
         isActive ? Icons.pause_circle_outline : Icons.play_circle_outline;
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_state.dart';
@@ -26,7 +27,7 @@ class PricingSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SectionHeader(
-                title: 'Pricing',
+                title: 'Pricing'.tr,
                 trailing: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -37,7 +38,7 @@ class PricingSection extends StatelessWidget {
                         color: AppColors.primaryColor.withValues(alpha: 0.35)),
                   ),
                   child: Text(
-                    'Per Hour',
+                    'Per Hour'.tr,
                     style: TextStyle(
                       color: AppColors.primaryColor,
                       fontSize: 11,
@@ -50,26 +51,26 @@ class PricingSection extends StatelessWidget {
               _PriceRow(
                 icon: Icons.wb_sunny_outlined,
                 iconColor: Colors.amber.shade300,
-                label: 'Off-Peak Hours',
-                subtitle: '11 am – 5 pm',
-                price: offPeak > 0 ? 'EGP ${offPeak.toStringAsFixed(0)}/hr' : '—',
+                label: 'Off-Peak Hours'.tr,
+                subtitle: '11 am – 5 pm'.tr,
+                price: offPeak > 0 ? '${offPeak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
                 priceColor: Colors.white,
               ),
               _divider(),
               _PriceRow(
                 icon: Icons.nightlight_outlined,
                 iconColor: const Color(0xFFB39DDB),
-                label: 'Peak Hours',
-                subtitle: '5 pm – 10 pm',
-                price: peak > 0 ? 'EGP ${peak.toStringAsFixed(0)}/hr' : '—',
+                label: 'Peak Hours'.tr,
+                subtitle: '5 pm – 10 pm'.tr,
+                price: peak > 0 ? '${peak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
                 priceColor: Colors.white,
               ),
               _divider(),
               _PriceRow(
                 icon: Icons.local_offer_outlined,
                 iconColor: AppColors.primaryColor,
-                label: 'Membership Discount',
-                subtitle: 'For registered members',
+                label: 'Membership Discount'.tr,
+                subtitle: 'For registered members'.tr,
                 price: discount > 0 ? '−${discount.toStringAsFixed(0)}%' : '—',
                 priceColor: AppColors.primaryColor,
               ),

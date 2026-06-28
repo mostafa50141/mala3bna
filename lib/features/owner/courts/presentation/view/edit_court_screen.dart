@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/owner/courts/domain/repositories/court_repository.dart';
@@ -118,27 +119,27 @@ class _EditCourtScreenState extends State<EditCourtScreen>
       builder: (ctx) => AlertDialog(
         backgroundColor: AppColors.colorBtnAndCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text(
-          'Discard changes?',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          'Discard changes?'.tr,
+          style: const TextStyle(color: Colors.white),
         ),
-        content: const Text(
-          'You have unsaved changes. Are you sure?',
-          style: TextStyle(color: Colors.white70),
+        content: Text(
+          'You have unsaved changes. Are you sure?'.tr,
+          style: const TextStyle(color: Colors.white70),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(
-              'Keep Editing',
+              'Keep Editing'.tr,
               style: TextStyle(color: AppColors.primaryColor),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text(
-              'Discard',
-              style: TextStyle(color: Colors.redAccent),
+            child: Text(
+              'Discard'.tr,
+              style: const TextStyle(color: Colors.redAccent),
             ),
           ),
         ],
@@ -163,7 +164,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
       _showSnack(state.message, isError: true);
     } else if (state is EditCourtSuccess) {
       _hasUnsavedChanges = false;
-      _showSnack('Court updated successfully!');
+      _showSnack('Court updated successfully!'.tr);
     } else if (state is EditCourtFormValidation) {
       _showSnack(state.errors.values.first, isError: true);
     } else if (state is EditCourtLoaded && !_initialized) {
@@ -220,7 +221,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   );
                 }
                 return EditCourtErrorView(
-                  message: 'Something went wrong',
+                  message: 'Something went wrong'.tr,
                   onRetry: () => _cubit.loadCourt(widget.courtId),
                 );
               },
@@ -251,9 +252,9 @@ class _EditCourtScreenState extends State<EditCourtScreen>
         ),
         onPressed: _handleBack,
       ),
-      title: const Text(
-        'Edit Court',
-        style: TextStyle(
+      title: Text(
+        'Edit Court'.tr,
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.w700,
@@ -288,8 +289,8 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   if (court.title.isNotEmpty) _courtTitleHeader(court.title),
 
                   // Photos
-                  const EditCourtSectionTitle(
-                    title: 'Court Photos',
+                  EditCourtSectionTitle(
+                    title: 'Court Photos'.tr,
                     icon: Icons.photo_library_outlined,
                   ),
                   const SizedBox(height: 12),
@@ -301,8 +302,8 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   const SizedBox(height: 24),
 
                   // Pricing
-                  const EditCourtSectionTitle(
-                    title: 'Pricing',
+                  EditCourtSectionTitle(
+                    title: 'Pricing'.tr,
                     icon: Icons.attach_money_rounded,
                   ),
                   const SizedBox(height: 12),
@@ -315,8 +316,8 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   const SizedBox(height: 24),
 
                   // Amenities
-                  const EditCourtSectionTitle(
-                    title: 'Amenities',
+                  EditCourtSectionTitle(
+                    title: 'Amenities'.tr,
                     icon: Icons.sports_soccer_outlined,
                   ),
                   const SizedBox(height: 12),
@@ -335,8 +336,8 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   const SizedBox(height: 24),
 
                   // Location
-                  const EditCourtSectionTitle(
-                    title: 'Address',
+                  EditCourtSectionTitle(
+                    title: 'Address'.tr,
                     icon: Icons.location_on_outlined,
                   ),
                   const SizedBox(height: 12),

@@ -131,10 +131,6 @@ class _HeaderSectionState extends State<HeaderSection> {
                 ),
                 child: Row(
                   children: [
-                    _GlassIconButton(
-                      icon: Icons.arrow_back_ios_new,
-                      onPressed: () => Navigator.maybePop(context),
-                    ),
                     const Spacer(),
                     _GlassIconButton(
                       icon: Icons.more_horiz,

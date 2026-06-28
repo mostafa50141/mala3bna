@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 
@@ -74,7 +75,7 @@ class EditCourtAmenitiesSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  opt.label,
+                  opt.label.tr,
                   style: TextStyle(
                     color: selected ? Colors.white : Colors.white60,
                     fontWeight: selected ? FontWeight.w600 : FontWeight.w400,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
@@ -14,7 +15,7 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionHeader(title: 'Amenities'),
+          SectionHeader(title: 'Amenities'.tr),
           const SizedBox(height: 16),
           _buildAmenitiesWrap(),
         ],
@@ -24,10 +25,10 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
 
   Widget _buildAmenitiesWrap() {
     if (vm.amenities.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Text(
-          'No amenities listed.',
+          'No amenities listed.'.tr,
           style: TextStyle(color: Colors.grey, fontSize: 13),
         ),
       );
@@ -57,7 +58,7 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
           Icon(Icons.check_circle_outline, color: AppColors.primaryColor, size: 16),
           const SizedBox(width: 6),
           Text(
-            item.title,
+            item.title.tr,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 12,

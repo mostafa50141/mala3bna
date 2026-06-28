@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 // import 'review_item.dart';
 
@@ -50,18 +51,18 @@ class _EmptyReviews extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'No reviews yet',
-              style: TextStyle(
+            Text(
+              'No reviews yet'.tr,
+              style: const TextStyle(
                 color: Colors.white70,
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Be the first to share your experience!',
-              style: TextStyle(color: Colors.grey, fontSize: 12),
+            Text(
+              'Be the first to share your experience!'.tr,
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ],
         ),
