@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:gap/gap.dart';
-import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/games_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_coach_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_courts_category.dart';
@@ -113,53 +112,16 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                               child: Center(child: CustomeCircularLaoding()),
                             );
                           } else if (state is CourtsSuccess) {
-                            if (state.courts.isEmpty) {
-                              return SizedBox(
-                                height: 220,
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        Icons.sports_soccer,
-                                        color: Colors.grey,
-                                        size: 40,
-                                      ),
-                                      const Gap(8),
-                                      Text(
-                                        'No courts found',
-                                        style: Style.textStyle16.copyWith(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
                             return ListViewOfCourtsCategory(
                               courts: state.courts,
                             );
                           } else if (state is CourtsEmpty) {
-                            return SizedBox(
-                              height: 220,
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.sports_soccer,
-                                      color: Colors.grey,
-                                      size: 40,
-                                    ),
-                                    const Gap(8),
-                                    Text(
-                                      'No courts found',
-                                      style: Style.textStyle16.copyWith(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(24),
+                                child: Text(
+                                  'No courts found',
+                                  style: TextStyle(color: Colors.grey),
                                 ),
                               ),
                             );

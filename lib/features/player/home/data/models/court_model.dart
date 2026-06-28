@@ -38,16 +38,19 @@ class CourtModel {
   });
 
   factory CourtModel.fromJson(Map<String, dynamic> json) {
-    final images = (json['images'] as List<dynamic>? ?? [])
+    // Parse images from field_images array
+    final fieldImages = json['field_images'] as List<dynamic>? ?? [];
+    final images = fieldImages
         .map((img) => img['image'] as String? ?? '')
         .where((url) => url.isNotEmpty)
         .toList();
 
     return CourtModel(
-      id: json['id'] as int,
+      id: json['field_id'] as int,
       name: json['name'] as String? ?? '',
-      sport: json['field_type'] as String? ?? 'Football',
+      sport: json['sport_type'] as String? ?? 'Football',
       location: json['address'] as String? ?? '',
+      rating: (json['average_rating'] as num?)?.toDouble() ?? 0.0,
       pricePerHour: double.tryParse(
             json['price_per_hour']?.toString() ?? '0',
           ) ?? 0.0,
@@ -59,8 +62,11 @@ class CourtModel {
       hasShowers: json['has_showers'] as bool? ?? false,
       hasCafe: json['has_cafe'] as bool? ?? false,
       hasEquipment: json['has_equipment'] as bool? ?? false,
-      imageUrl: images.isNotEmpty ? images.first : 'assets/images/Court.png',
+      imageUrl: images.isNotEmpty
+          ? images.first
+          : 'assets/images/Court.png',
       images: images,
+      distance: '',
     );
   }
 }

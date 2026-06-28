@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -39,11 +40,28 @@ class CourtsCategory extends StatelessWidget {
             children: [
               Expanded(
                 flex: 6,
-                child: Image(
-                  image: AssetImage(court.imageUrl),
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+                child: court.imageUrl.startsWith('http')
+                    ? CachedNetworkImage(
+                        imageUrl: court.imageUrl,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          color: AppColors.colorBtnAndCard,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Image.asset(
+                          'assets/images/Court.png',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Image.asset(
+                        court.imageUrl,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
               Expanded(
                 flex: 4,

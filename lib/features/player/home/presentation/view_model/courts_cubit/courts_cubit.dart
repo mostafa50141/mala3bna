@@ -51,18 +51,27 @@ class CourtsCubit extends Cubit<CourtsState> {
   }
 
   void _applyFilters() {
-    var result = allCourts;
+    var result = List<CourtModel>.from(allCourts);
+    
     if (selectedSport != 'All') {
       result = result.where((c) =>
         c.sport.toLowerCase() == selectedSport.toLowerCase()
       ).toList();
     }
+    
     if (searchQuery.isNotEmpty) {
       result = result.where((c) =>
-        c.name.toLowerCase().contains(searchQuery.toLowerCase())
+        c.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
+        c.location.toLowerCase().contains(searchQuery.toLowerCase())
       ).toList();
     }
+    
     filteredCourts = result;
-    emit(CourtsSuccess(courts: filteredCourts));
+    
+    if (filteredCourts.isEmpty) {
+      emit(CourtsEmpty());
+    } else {
+      emit(CourtsSuccess(courts: filteredCourts));
+    }
   }
 }

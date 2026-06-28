@@ -14,13 +14,17 @@ class CourtsRepoImpl implements CourtsRepo {
   Future<Either<Failure, List<CourtModel>>> getCourts() async {
     try {
       var response = await apiService.get(endPoint: 'fields/');
+      
+      // API returns a direct array, not wrapped in "results"
       final List<dynamic> data = response is List
           ? response
           : (response['results'] as List<dynamic>? ?? []);
+      
       final courts = data
           .map((json) => CourtModel.fromJson(json as Map<String, dynamic>))
           .where((court) => court.isActive)
           .toList();
+      
       return right(courts);
     } catch (e) {
       if (e is DioException) {
