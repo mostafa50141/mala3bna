@@ -51,4 +51,8 @@ class AuthCubit extends Cubit<AuthState> {
     await getIt.get<LocalStorageHelper>().deletetoken();
     emit(AuthInitial());
   }
+
+  void resetState() {
+    emit(AuthInitial());
+  }
 }

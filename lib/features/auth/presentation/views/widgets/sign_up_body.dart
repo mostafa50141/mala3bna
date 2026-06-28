@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:mala3bna/core/role/app_root.dart';
 import 'package:mala3bna/core/role/user_role.dart';
+import 'package:mala3bna/core/navigation/player_main_navigation.dart';
+import 'package:mala3bna/core/navigation/owner_main_navigation.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
@@ -19,6 +20,15 @@ import 'package:mala3bna/core/widgets/custom_btn.dart';
 import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 import 'package:mala3bna/features/auth/presentation/views_model/cubit/auth_cubit.dart';
+
+UserRole _mapUserTypeToRole(String? userType) {
+  switch (userType) {
+    case 'owner':
+      return UserRole.owner;
+    default:
+      return UserRole.player;
+  }
+}
 
 class SignUpBody extends StatefulWidget {
   const SignUpBody({super.key});
@@ -42,6 +52,10 @@ class _SignUpBodyState extends State<SignUpBody> {
     password = TextEditingController();
     name = TextEditingController();
     phone = TextEditingController();
+    // Reset any stale error state when screen opens
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) context.read<AuthCubit>().resetState();
+    });
   }
 
   @override
@@ -153,12 +167,24 @@ class _SignUpBodyState extends State<SignUpBody> {
                           );
                         }
                         if (state is AuthSuccess) {
-                          Get.offAll(() => const AppRoot());
+                          final authController = Get.find<AuthController>();
+                          authController.setRole(
+                            _mapUserTypeToRole(state.user.userType),
+                          );
                           showAnimatedSnackDialog(
                             context,
                             message: "Account created successfully",
                             type: AnimatedSnackBarType.success,
                           );
+                          switch (state.user.userType) {
+                            case 'owner':
+                              Get.offAll(() => const OwnerMainNavigation());
+                              break;
+                            case 'player':
+                            default:
+                              Get.offAll(() => const PlayerMainNavigation());
+                              break;
+                          }
                         }
                       },
                       builder: (context, state) {

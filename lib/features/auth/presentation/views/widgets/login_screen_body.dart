@@ -19,6 +19,8 @@ import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 import 'package:mala3bna/features/auth/presentation/views_model/cubit/auth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mala3bna/core/navigation/player_main_navigation.dart';
+import 'package:mala3bna/core/navigation/owner_main_navigation.dart';
 
 UserRole _mapUserTypeToRole(String? userType) {
   switch (userType) {
@@ -49,6 +51,10 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
     super.initState();
     email = TextEditingController();
     password = TextEditingController();
+    // Reset any stale error state when screen opens
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (mounted) context.read<AuthCubit>().resetState();
+    // });
   }
 
   @override
@@ -143,11 +149,26 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                         authController.setRole(
                           _mapUserTypeToRole(state.user.userType),
                         );
+                        // Navigate based on role
+                        switch (state.user.userType) {
+                          case 'owner':
+                            Get.offAll(() => const OwnerMainNavigation());
+                            break;
+                          case 'coach':
+                            Get.offAll(() => const PlayerMainNavigation());
+                            break;
+                          case 'player':
+                          default:
+                            Get.offAll(() => const PlayerMainNavigation());
+                            break;
+                        }
                       } else if (state is AuthFailure) {
+                        print(state.errorMessage);
                         showAnimatedSnackDialog(
                           context,
                           message: state.errorMessage,
                           type: AnimatedSnackBarType.error,
+                          
                         );
                       }
                     },
