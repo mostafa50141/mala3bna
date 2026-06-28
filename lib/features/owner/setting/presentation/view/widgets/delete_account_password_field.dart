@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Password confirmation field for the delete account flow.
@@ -25,7 +26,7 @@ class DeleteAccountPasswordField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'CONFIRM WITH PASSWORD',
+          'CONFIRM WITH PASSWORD'.tr,
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.45),
             fontSize: 11,
@@ -41,7 +42,7 @@ class DeleteAccountPasswordField extends StatelessWidget {
           onChanged: onChanged,
           style: const TextStyle(color: Colors.white, fontSize: 15),
           decoration: InputDecoration(
-            hintText: 'Enter current password',
+            hintText: 'Enter current password'.tr,
             hintStyle: TextStyle(
               color: Colors.white.withValues(alpha: 0.22),
               fontSize: 14,

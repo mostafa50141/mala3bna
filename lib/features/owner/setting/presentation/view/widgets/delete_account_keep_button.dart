@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Green outlined "Keep My Account" button.
@@ -32,7 +33,7 @@ class DeleteAccountKeepButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          'Keep My Account',
+          'Keep My Account'.tr,
           style: TextStyle(
             color: isEnabled
                 ? AppColors.primaryColor

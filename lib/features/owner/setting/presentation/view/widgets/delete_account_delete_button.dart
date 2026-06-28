@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// Red "Delete Account" button with loading spinner and enabled/disabled states.
 class DeleteAccountDeleteButton extends StatelessWidget {
@@ -45,10 +46,10 @@ class DeleteAccountDeleteButton extends StatelessWidget {
                     strokeWidth: 2.5,
                   ),
                 )
-              : const Text(
-                  key: ValueKey('label'),
-                  'Delete Account',
-                  style: TextStyle(
+              : Text(
+                  key: const ValueKey('label'),
+                  'Delete Account'.tr,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

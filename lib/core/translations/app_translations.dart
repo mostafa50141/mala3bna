@@ -230,6 +230,11 @@ const Map<String, String> _en = {
   'Fair': 'Fair',
   'Medium': 'Medium',
   'Strong': 'Strong',
+  'Are you sure you want\nto delete your\naccount?': 'Are you sure you want\nto delete your\naccount?',
+  'This action is permanent. All your bookings,\nstats, and personal data will be erased\nforever.': 'This action is permanent. All your bookings,\nstats, and personal data will be erased\nforever.',
+  'Account Security': 'Account Security',
+  'CONFIRM WITH PASSWORD': 'CONFIRM WITH PASSWORD',
+  'Keep My Account': 'Keep My Account',
 };
 
 // ─── Arabic ─────────────────────────────────────────────────────────────────────
@@ -451,5 +456,10 @@ const Map<String, String> _ar = {
   'Fair': 'مقبولة',
   'Medium': 'جيدة',
   'Strong': 'قوية',
+  'Are you sure you want\nto delete your\naccount?': 'هل أنت متأكد من أنك تريد\nحذف حسابك؟',
+  'This action is permanent. All your bookings,\nstats, and personal data will be erased\nforever.': 'هذا الإجراء نهائي. سيتم مسح جميع حجوزاتك،\nوإحصائياتك، وبياناتك الشخصية\nإلى الأبد.',
+  'Account Security': 'أمان الحساب',
+  'CONFIRM WITH PASSWORD': 'التأكيد بكلمة المرور',
+  'Keep My Account': 'الاحتفاظ بحسابي',
 };
 

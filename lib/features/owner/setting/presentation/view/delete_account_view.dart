@@ -144,10 +144,10 @@ class _DeleteAccountBodyState extends State<_DeleteAccountBody>
                       const SizedBox(height: 28),
 
                       // ── Title ──
-                      const Text(
-                        'Are you sure you want\nto delete your\naccount?',
+                      Text(
+                        'Are you sure you want\nto delete your\naccount?'.tr,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 26,
                           fontWeight: FontWeight.w800,
@@ -158,7 +158,7 @@ class _DeleteAccountBodyState extends State<_DeleteAccountBody>
 
                       // ── Subtitle ──
                       Text(
-                        'This action is permanent. All your bookings,\nstats, and personal data will be erased\nforever.',
+                        'This action is permanent. All your bookings,\nstats, and personal data will be erased\nforever.'.tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.45),
@@ -235,9 +235,9 @@ class _DeleteAccountBodyState extends State<_DeleteAccountBody>
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: const Text(
-        'Account Security',
-        style: TextStyle(
+      title: Text(
+        'Account Security'.tr,
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.w700,
