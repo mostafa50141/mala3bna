@@ -23,6 +23,7 @@ class ConfirmedBookingPage extends StatelessWidget {
           court: court,
           selectedDate: selectedDate,
           selectedTime: selectedTime,
+          bookingId: bookingId,
         ),
       ),
     );

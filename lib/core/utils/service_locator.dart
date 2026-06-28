@@ -15,6 +15,9 @@ import 'package:mala3bna/features/player/courts_booking/data/repos/booking_repo.
 import 'package:mala3bna/features/player/courts_booking/data/repos/booking_repo_impl.dart';
 import 'package:mala3bna/features/player/profile/data/repos/user_profile_repo.dart';
 import 'package:mala3bna/features/player/profile/data/repos/user_profile_repo_impl.dart';
+import 'package:mala3bna/features/player/courts_booking/data/repos/review_repo.dart';
+import 'package:mala3bna/features/player/courts_booking/data/repos/review_repo_impl.dart';
+
 
 final getIt = GetIt.instance;
 
@@ -59,4 +62,8 @@ void setupServiceLocator() {
   getIt.registerSingleton<LocationService>(LocationService());
   // user profile repo
   getIt.registerSingleton<UserProfileRepo>(UserProfileRepoImpl());
+  // review repo
+  getIt.registerSingleton<ReviewRepo>(
+    ReviewRepoImpl(apiService: getIt.get<ApiService>()),
+  );
 }

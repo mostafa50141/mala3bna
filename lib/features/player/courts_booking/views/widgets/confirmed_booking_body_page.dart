@@ -17,12 +17,14 @@ class ConfirmedBookingBodyPage extends StatefulWidget {
   final CourtModel court;
   final DateTime? selectedDate;
   final String? selectedTime;
+  final int? bookingId;
 
   const ConfirmedBookingBodyPage({
     super.key,
     required this.court,
     this.selectedDate,
     this.selectedTime,
+    this.bookingId,
   });
 
   @override
@@ -44,7 +46,8 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
 
   Future<void> _saveBooking() async {
     final booking = BookingModel(
-      id: int.parse('${widget.court.id}-${DateTime.now().millisecondsSinceEpoch}'),
+      id: widget.bookingId ?? widget.court.id,
+      fieldId: widget.court.id,
       courtName: widget.court.name,
       courtLocation: widget.court.location,
       courtImage: widget.court.imageUrl,
