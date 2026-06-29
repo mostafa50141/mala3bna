@@ -68,9 +68,9 @@ class _Divider extends StatelessWidget {
   const _Divider();
 
   @override
-  Widget build(BuildContext context) => const Padding(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Divider(color: Colors.white10, height: 1),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Divider(color: Colors.grey.withValues(alpha: 0.2), height: 1),
       );
 }
 
@@ -120,8 +120,8 @@ class _PriceInput extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
                 ),
@@ -141,8 +141,8 @@ class _PriceInput extends StatelessWidget {
           width: 110,
           child: TextFormField(
             controller: controller,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
@@ -153,7 +153,7 @@ class _PriceInput extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(
-                color: Colors.white.withValues(alpha: 0.25),
+                color: Colors.grey.withValues(alpha: 0.5),
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
               ),
@@ -164,7 +164,7 @@ class _PriceInput extends StatelessWidget {
                 fontSize: 12,
               ),
               filled: true,
-              fillColor: Colors.white.withValues(alpha: 0.05),
+              fillColor: Colors.grey.withValues(alpha: 0.1),
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               border: OutlineInputBorder(
@@ -174,7 +174,7 @@ class _PriceInput extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    BorderSide(color: Colors.white.withValues(alpha: 0.08)),
+                    BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

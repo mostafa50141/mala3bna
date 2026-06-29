@@ -20,8 +20,8 @@ class EditCourtSectionTitle extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.titleLarge?.color ?? Colors.black87,
             fontSize: 16,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.3,

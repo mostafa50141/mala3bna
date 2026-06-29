@@ -11,7 +11,7 @@ class DashedAddPhoto extends StatelessWidget {
       height: 130,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: Colors.white.withValues(alpha: 0.03),
+        color: Theme.of(context).cardColor,
         border: Border.all(
           color: AppColors.primaryColor.withValues(alpha: 0.35),
           width: 1.5,

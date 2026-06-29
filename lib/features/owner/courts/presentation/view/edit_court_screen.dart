@@ -118,15 +118,15 @@ class _EditCourtScreenState extends State<EditCourtScreen>
     final result = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.colorBtnAndCard,
+        backgroundColor: Theme.of(context).dialogBackgroundColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Discard changes?'.tr,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
         ),
         content: Text(
           'You have unsaved changes. Are you sure?'.tr,
-          style: const TextStyle(color: Colors.white70),
+          style: const TextStyle(color: Colors.grey),
         ),
         actions: [
           TextButton(
@@ -202,7 +202,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
           if (!didPop) await _handleBack();
         },
         child: Scaffold(
-          backgroundColor: AppColors.backgroundColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: _buildAppBar(),
           body: SafeArea(
             child: BlocConsumer<EditCourtCubit, EditCourtState>(
@@ -236,28 +236,28 @@ class _EditCourtScreenState extends State<EditCourtScreen>
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: Colors.grey.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new,
             size: 18,
-            color: Colors.white,
+            color: Theme.of(context).iconTheme.color,
           ),
         ),
         onPressed: _handleBack,
       ),
       title: Text(
         'Edit Court'.tr,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: Theme.of(context).textTheme.titleLarge?.color,
           fontSize: 18,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.3,
@@ -373,8 +373,8 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColors.backgroundColor.withValues(alpha: 0.0),
-                    AppColors.backgroundColor,
+                    Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.0),
+                    Theme.of(context).scaffoldBackgroundColor,
                   ],
                 ),
               ),
@@ -407,8 +407,8 @@ class _EditCourtScreenState extends State<EditCourtScreen>
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Theme.of(context).textTheme.titleLarge?.color,
                 fontSize: 22,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 0.2,
@@ -445,12 +445,12 @@ class _EditCourtScreenState extends State<EditCourtScreen>
             decoration: BoxDecoration(
               color: selected
                   ? AppColors.primaryColor.withValues(alpha: 0.18)
-                  : Colors.white.withValues(alpha: 0.05),
+                  : Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: selected
                     ? AppColors.primaryColor
-                    : Colors.white.withValues(alpha: 0.12),
+                    : Colors.grey.withValues(alpha: 0.2),
                 width: selected ? 1.5 : 1,
               ),
             ),
@@ -460,13 +460,13 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                 Icon(
                   type['icon'] as IconData,
                   size: 20,
-                  color: selected ? AppColors.primaryColor : Colors.white60,
+                  color: selected ? AppColors.primaryColor : Colors.grey,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   type['label'] as String,
                   style: TextStyle(
-                    color: selected ? Colors.white : Colors.white60,
+                    color: selected ? Theme.of(context).textTheme.bodyMedium?.color : Colors.grey,
                     fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                     fontSize: 14,
                   ),

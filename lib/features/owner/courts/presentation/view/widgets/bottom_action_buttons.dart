@@ -24,9 +24,9 @@ class BottomActionButtons extends StatelessWidget {
             child: OutlinedButton(
               onPressed: isSaving ? null : onCancel,
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.white.withValues(alpha: 0.05),
+                backgroundColor: Colors.grey.withValues(alpha: 0.1),
                 side: BorderSide(
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: Colors.grey.withValues(alpha: 0.2),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
@@ -36,7 +36,7 @@ class BottomActionButtons extends StatelessWidget {
               child: Text(
                 'Cancel'.tr,
                 style: TextStyle(
-                  color: Colors.white70,
+                  color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
                   fontWeight: FontWeight.w500,
                   fontSize: 15,
                 ),

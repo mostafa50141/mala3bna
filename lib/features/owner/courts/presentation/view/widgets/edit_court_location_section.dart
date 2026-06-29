@@ -22,14 +22,14 @@ class EditCourtLocationSection extends StatelessWidget {
           TextFormField(
             controller: controller,
             onChanged: (_) => onChanged(),
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
               fontWeight: FontWeight.w600,
             ),
             decoration: InputDecoration(
               hintText: 'Enter court address (e.g. 123 Main St)',
               hintStyle: TextStyle(
-                color: Colors.white.withValues(alpha: 0.3),
+                color: Colors.grey.withValues(alpha: 0.5),
                 fontWeight: FontWeight.normal,
               ),
               prefixIcon: Icon(
@@ -37,17 +37,17 @@ class EditCourtLocationSection extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
               filled: true,
-              fillColor: Colors.white.withValues(alpha: 0.05),
+              fillColor: Colors.grey.withValues(alpha: 0.05),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Colors.grey.withValues(alpha: 0.2),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(
-                  color: Colors.white.withValues(alpha: 0.1),
+                  color: Colors.grey.withValues(alpha: 0.2),
                 ),
               ),
               focusedBorder: OutlineInputBorder(

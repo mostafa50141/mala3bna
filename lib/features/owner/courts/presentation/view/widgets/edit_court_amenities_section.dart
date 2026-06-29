@@ -52,12 +52,12 @@ class EditCourtAmenitiesSection extends StatelessWidget {
             decoration: BoxDecoration(
               color: selected
                   ? AppColors.primaryColor.withValues(alpha: 0.18)
-                  : Colors.white.withValues(alpha: 0.05),
+                  : Colors.grey.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: selected
                     ? AppColors.primaryColor
-                    : Colors.white.withValues(alpha: 0.12),
+                    : Colors.grey.withValues(alpha: 0.2),
                 width: selected ? 1.5 : 1,
               ),
             ),
@@ -70,14 +70,14 @@ class EditCourtAmenitiesSection extends StatelessWidget {
                     selected ? Icons.check_circle : opt.icon,
                     key: ValueKey(selected),
                     size: 18,
-                    color: selected ? AppColors.primaryColor : Colors.white38,
+                    color: selected ? AppColors.primaryColor : Colors.grey,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   opt.label.tr,
                   style: TextStyle(
-                    color: selected ? Colors.white : Colors.white60,
+                    color: selected ? Theme.of(context).textTheme.bodyMedium?.color : Colors.grey,
                     fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                     fontSize: 13,
                   ),

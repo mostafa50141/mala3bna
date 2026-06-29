@@ -77,7 +77,7 @@ class _UploadingPlaceholder extends StatelessWidget {
       height: 130,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         border:
             Border.all(color: AppColors.primaryColor.withValues(alpha: 0.4)),
       ),
@@ -132,7 +132,7 @@ class _ImageTile extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            _buildImage(),
+            _buildImage(context),
             Positioned(
               top: 0,
               right: 0,
@@ -163,13 +163,13 @@ class _ImageTile extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(BuildContext context) {
     if (_isNetwork) {
       return CachedNetworkImage(
         imageUrl: url,
         fit: BoxFit.cover,
         placeholder: (_, __) => Container(
-          color: AppColors.colorBtnAndCard,
+          color: Theme.of(context).cardColor,
           child: const Center(
             child: SizedBox(
               width: 20,
@@ -179,7 +179,7 @@ class _ImageTile extends StatelessWidget {
           ),
         ),
         errorWidget: (_, __, ___) => Container(
-          color: AppColors.colorBtnAndCard,
+          color: Theme.of(context).cardColor,
           child:
               const Icon(Icons.broken_image, color: Colors.white38, size: 32),
         ),
@@ -189,7 +189,7 @@ class _ImageTile extends StatelessWidget {
       url,
       fit: BoxFit.cover,
       errorBuilder: (_, __, ___) => Container(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         child: const Icon(Icons.broken_image, color: Colors.white38, size: 32),
       ),
     );
@@ -200,17 +200,17 @@ class _ImageTile extends StatelessWidget {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.colorBtnAndCard,
+        backgroundColor: Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Remove Photo?',
-            style: TextStyle(color: Colors.white, fontSize: 17)),
+        title: Text('Remove Photo?',
+            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color ?? Colors.black87, fontSize: 17)),
         content: const Text('This action cannot be undone.',
-            style: TextStyle(color: Colors.white60)),
+            style: TextStyle(color: Colors.grey)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
             child:
-                const Text('Cancel', style: TextStyle(color: Colors.white54)),
+                const Text('Cancel', style: TextStyle(color: Colors.grey)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
