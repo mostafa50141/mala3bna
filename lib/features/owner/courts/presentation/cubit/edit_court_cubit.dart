@@ -93,6 +93,7 @@ class EditCourtCubit extends Cubit<EditCourtState> {
     required String membershipDiscount,
     required List<String> amenityIds,
     required String address,
+    required String sportType,
   }) async {
     if (_court == null) return;
     final parsedPeak = double.tryParse(peakRate) ?? 0.0;
@@ -115,6 +116,7 @@ class EditCourtCubit extends Cubit<EditCourtState> {
       membershipDiscount: parsedDiscount,
       address: address,
       amenityIds: amenityIds,
+      sportType: sportType,
     );
 
     result.fold(
@@ -124,6 +126,7 @@ class EditCourtCubit extends Cubit<EditCourtState> {
           offPeakRate: parsedOffPeak,
           peakRate: parsedPeak,
           membershipDiscount: parsedDiscount,
+          sportType: sportType,
         );
         emit(EditCourtSuccess());
         emit(EditCourtLoaded(court: _court!));

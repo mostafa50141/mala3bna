@@ -15,14 +15,17 @@ class UpdateFieldUseCase {
     double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
-  }) =>
-      _repo.updateField(
-        id: id,
-        title: title,
-        hourlyRate: hourlyRate,
-        offPeakRate: offPeakRate,
-        membershipDiscount: membershipDiscount,
-        address: address,
-        amenityIds: amenityIds,
-      );
+    String? sportType,
+  }) async {
+    return await _repo.updateField(
+      id: id,
+      title: title,
+      hourlyRate: hourlyRate,
+      offPeakRate: offPeakRate,
+      membershipDiscount: membershipDiscount,
+      address: address,
+      amenityIds: amenityIds,
+      sportType: sportType,
+    );
+  }
 }

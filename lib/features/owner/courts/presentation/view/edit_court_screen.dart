@@ -34,6 +34,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
   final _discountController = TextEditingController();
   final _addressController = TextEditingController();
   final _selectedAmenities = <String>{};
+  String? _selectedSportType;
 
   bool _initialized = false;
   bool _hasUnsavedChanges = false;
@@ -180,6 +181,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
       if (_addressController.text != c.address) {
         _addressController.text = c.address;
       }
+      _selectedSportType = c.sportType;
       _selectedAmenities.addAll(c.amenities.map((e) => e.id));
       _fadeController.forward();
     }
@@ -301,6 +303,15 @@ class _EditCourtScreenState extends State<EditCourtScreen>
                   ),
                   const SizedBox(height: 24),
 
+                  // Sport Type
+                  EditCourtSectionTitle(
+                    title: 'Select Sport Type'.tr,
+                    icon: Icons.sports_volleyball_outlined,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildSportTypeSelector(),
+                  const SizedBox(height: 24),
+
                   // Pricing
                   EditCourtSectionTitle(
                     title: 'Pricing'.tr,
@@ -409,6 +420,65 @@ class _EditCourtScreenState extends State<EditCourtScreen>
     );
   }
 
+  Widget _buildSportTypeSelector() {
+    final types = [
+      {'id': 'football', 'label': 'Football'.tr, 'icon': Icons.sports_soccer},
+      {'id': 'padel', 'label': 'Padel'.tr, 'icon': Icons.sports_tennis},
+      {'id': 'tennis', 'label': 'Tennis'.tr, 'icon': Icons.sports_tennis_rounded},
+    ];
+
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: types.map((type) {
+        final id = type['id'] as String;
+        final selected = _selectedSportType == id;
+        return GestureDetector(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            _markDirty();
+            setState(() => _selectedSportType = id);
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: selected
+                  ? AppColors.primaryColor.withValues(alpha: 0.18)
+                  : Colors.white.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: selected
+                    ? AppColors.primaryColor
+                    : Colors.white.withValues(alpha: 0.12),
+                width: selected ? 1.5 : 1,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  type['icon'] as IconData,
+                  size: 20,
+                  color: selected ? AppColors.primaryColor : Colors.white60,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  type['label'] as String,
+                  style: TextStyle(
+                    color: selected ? Colors.white : Colors.white60,
+                    fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   Future<void> _onSave(BuildContext context, CourtEntity court) async {
     FocusScope.of(context).unfocus();
     HapticFeedback.mediumImpact();
@@ -419,6 +489,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
           membershipDiscount: _discountController.text,
           amenityIds: amenityIds,
           address: _addressController.text,
+          sportType: _selectedSportType ?? '',
         );
   }
 }

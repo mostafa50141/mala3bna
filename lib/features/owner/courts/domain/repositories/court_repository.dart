@@ -28,6 +28,7 @@ abstract class CourtRepository {
     double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
+    String? sportType,
   });
 
   /// POST /api/v1/fields/{id}/toggle-status/

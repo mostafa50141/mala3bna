@@ -21,6 +21,7 @@ abstract class CourtRemoteDataSource {
     double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
+    String? sportType,
   });
   Future<bool> toggleFieldStatus(
     String id, {
@@ -102,6 +103,7 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
     double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
+    String? sportType,
   }) async {
     final Map<String, dynamic> data = {};
     if (title != null) data['name'] = title;
@@ -109,6 +111,7 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
     if (offPeakRate != null) data['off_peak_price'] = offPeakRate;
     if (membershipDiscount != null) data['membership_discount'] = membershipDiscount;
     if (address != null) data['address'] = address;
+    if (sportType != null) data['sport_type'] = sportType;
 
     // Backend uses boolean flags, not a list of amenity IDs
     if (amenityIds != null) {

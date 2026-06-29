@@ -22,6 +22,7 @@ class CourtModel extends Equatable {
   final String? offPeakEndTime;
   final String? peakStartTime;
   final String? peakEndTime;
+  final String? sportType;
 
   const CourtModel({
     required this.id,
@@ -42,6 +43,7 @@ class CourtModel extends Equatable {
     this.offPeakEndTime,
     this.peakStartTime,
     this.peakEndTime,
+    this.sportType,
   });
 
   CourtModel copyWith({
@@ -63,6 +65,7 @@ class CourtModel extends Equatable {
     String? offPeakEndTime,
     String? peakStartTime,
     String? peakEndTime,
+    String? sportType,
   }) {
     return CourtModel(
       id: id ?? this.id,
@@ -83,6 +86,7 @@ class CourtModel extends Equatable {
       offPeakEndTime: offPeakEndTime ?? this.offPeakEndTime,
       peakStartTime: peakStartTime ?? this.peakStartTime,
       peakEndTime: peakEndTime ?? this.peakEndTime,
+      sportType: sportType ?? this.sportType,
     );
   }
 
@@ -171,6 +175,7 @@ class CourtModel extends Equatable {
       offPeakEndTime: json['off_peak_end_time']?.toString(),
       peakStartTime: json['peak_start_time']?.toString(),
       peakEndTime: json['peak_end_time']?.toString(),
+      sportType: json['sport_type']?.toString(),
     );
 
     print('[CourtModel] Parsed → id=${model.id}, title=${model.title}, '
@@ -198,6 +203,7 @@ class CourtModel extends Equatable {
         'off_peak_end_time': offPeakEndTime,
         'peak_start_time': peakStartTime,
         'peak_end_time': peakEndTime,
+        'sport_type': sportType,
       };
 
   CourtEntity toEntity() {
@@ -220,6 +226,7 @@ class CourtModel extends Equatable {
       offPeakEndTime: offPeakEndTime,
       peakStartTime: peakStartTime,
       peakEndTime: peakEndTime,
+      sportType: sportType,
     );
   }
 
@@ -243,5 +250,6 @@ class CourtModel extends Equatable {
         offPeakEndTime,
         peakStartTime,
         peakEndTime,
+        sportType,
       ];
 }

@@ -172,6 +172,10 @@ class _DetailsTab extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (vm.sportType != null && vm.sportType!.isNotEmpty) ...[
+          _buildSportTypeBanner(),
+          const SizedBox(height: 16),
+        ],
         const PricingSection(),
         const SizedBox(height: 16),
         AmenitiesSectionCourtProfile(vm: vm),
@@ -180,6 +184,84 @@ class _DetailsTab extends StatelessWidget {
         const SizedBox(height: 16),
         const ReviewsList(reviews: []),
       ],
+    );
+  }
+
+  Widget _buildSportTypeBanner() {
+    IconData icon;
+    String labelKey;
+    switch (vm.sportType) {
+      case 'padel':
+        icon = Icons.sports_tennis;
+        labelKey = 'Padel';
+        break;
+      case 'tennis':
+        icon = Icons.sports_tennis_rounded;
+        labelKey = 'Tennis';
+        break;
+      case 'football':
+      default:
+        icon = Icons.sports_soccer;
+        labelKey = 'Football';
+        break;
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.primaryColor.withValues(alpha: 0.15),
+            AppColors.primaryColor.withValues(alpha: 0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.primaryColor.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: AppColors.primaryColor, size: 28),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sport Type'.tr,
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  labelKey.tr,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.verified, color: AppColors.primaryColor, size: 24),
+        ],
+      ),
     );
   }
 }

@@ -64,6 +64,7 @@ class CourtRepositoryImpl implements CourtRepository {
     double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
+    String? sportType,
   }) async {
     try {
       final model = await remoteDataSource.updateField(
@@ -74,6 +75,7 @@ class CourtRepositoryImpl implements CourtRepository {
         membershipDiscount: membershipDiscount,
         address: address,
         amenityIds: amenityIds,
+        sportType: sportType,
       );
       return Right(model.toEntity());
     } on Failure catch (f) {
