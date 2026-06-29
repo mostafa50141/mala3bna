@@ -108,102 +108,96 @@ class _AddCourtViewState extends State<AddCourtView> {
           final isSubmitting = state is AddCourtSubmitting;
 
           return Scaffold(
-            backgroundColor: AppColors.backgroundColor,
-            body: Column(
-              children: [
-                // ── Custom header ─────────────────────────────────────────
-                _buildHeader(context),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(kToolbarHeight),
+              child: _buildHeader(context),
+            ),
+            body: SafeArea(
+              top: false,
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    BasicDetailsSection(nameController: _nameController),
+                    const SizedBox(height: 20),
+                    LocationSection(addressController: _addressController),
+                    const SizedBox(height: 20),
+                    PricingAndPhotoSection(priceController: _priceController),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      height: 220,
+                      child: ImageUploadSection(controller: _imageController),
+                    ),
+                    const SizedBox(height: 20),
+                    AmenitiesSection(
+                      onAmenitiesChanged: (selected) {
+                        _selectedAmenities = selected;
+                      },
+                    ),
+                    const SizedBox(height: 28),
 
-                // ── Scrollable form body ──────────────────────────────────
-                Expanded(
-                  child: SafeArea(
-                    top: false,
-                    child: Form(
-                      key: _formKey,
-                      child: ListView(
-                        padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          BasicDetailsSection(nameController: _nameController),
-                          const SizedBox(height: 20),
-                          LocationSection(addressController: _addressController),
-                          const SizedBox(height: 20),
-                          PricingAndPhotoSection(priceController: _priceController),
-                          const SizedBox(height: 8),
-                          SizedBox(
-                            height: 220,
-                            child: ImageUploadSection(controller: _imageController),
+                    // Save button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: isSubmitting ? null : () => _submit(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
                           ),
-                          const SizedBox(height: 20),
-                          AmenitiesSection(
-                            onAmenitiesChanged: (selected) {
-                              _selectedAmenities = selected;
-                            },
-                          ),
-                          const SizedBox(height: 28),
-
-                          // Save button
-                          SizedBox(
-                            width: double.infinity,
-                            height: 52,
-                            child: ElevatedButton(
-                              onPressed: isSubmitting ? null : () => _submit(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: isSubmitting
+                            ? const SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2.5,
+                                ),
+                              )
+                            : Text(
+                                'Save Court'.tr,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
                                 ),
                               ),
-                              child: isSubmitting
-                                  ? const SizedBox(
-                                      height: 24,
-                                      width: 24,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2.5,
-                                      ),
-                                    )
-                                  : Text(
-                                      'Save Court'.tr,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 0.5,
-                                      ),
-                                    ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          // Cancel button
-                          SizedBox(
-                            width: double.infinity,
-                            height: 52,
-                            child: OutlinedButton(
-                              onPressed: isSubmitting ? null : () => Navigator.maybePop(context),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: Colors.white70,
-                                side: BorderSide(color: Colors.white.withOpacity(0.15), width: 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14),
-                                ),
-                              ),
-                              child: Text(
-                                'Cancel'.tr,
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                        ],
                       ),
                     ),
-                  ),
+
+                    const SizedBox(height: 10),
+
+                    // Cancel button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: OutlinedButton(
+                        onPressed: isSubmitting ? null : () => Navigator.maybePop(context),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Theme.of(context).textTheme.bodyMedium?.color,
+                          side: BorderSide(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.15) ?? Colors.white12, width: 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        child: Text(
+                          'Cancel'.tr,
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                 ),
-              ],
+              ),
             ),
           );
         },
@@ -214,7 +208,7 @@ class _AddCourtViewState extends State<AddCourtView> {
   Widget _buildHeader(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: AppColors.primaryColor.withOpacity(0.08),

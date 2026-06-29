@@ -50,11 +50,11 @@ class _OwnerSettingsBodyState extends State<OwnerSettingsBody>
         content: Row(children: [
           Icon(
             isError ? Icons.error_outline : Icons.check_circle_outline,
-            color: Colors.white,
+            color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
             size: 18,
           ),
           const SizedBox(width: 8),
-          Expanded(child: Text(message)),
+          Expanded(child: Text(message, style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white))),
         ]),
         backgroundColor: isError ? Colors.redAccent : AppColors.primaryColor,
         behavior: SnackBarBehavior.floating,

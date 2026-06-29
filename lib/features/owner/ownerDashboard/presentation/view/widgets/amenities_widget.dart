@@ -85,7 +85,7 @@ class _AmenityItem extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
-          color: AppColors.colorBtnAndCard,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: amenity.isSelected
@@ -130,8 +130,8 @@ class _AmenityItem extends StatelessWidget {
               amenity.label.tr,
               style: TextStyle(
                 color: amenity.isSelected
-                    ? Colors.white
-                    : const Color.fromARGB(124, 255, 255, 255),
+                    ? Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white
+                    : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5) ?? const Color.fromARGB(124, 255, 255, 255),
                 fontSize: 14,
                 fontWeight: amenity.isSelected
                     ? FontWeight.w500

@@ -6,6 +6,9 @@ class OwnerSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: OwnerSettingsBody());
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: const OwnerSettingsBody(),
+    );
   }
 }

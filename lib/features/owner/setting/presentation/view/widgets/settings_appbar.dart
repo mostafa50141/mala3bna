@@ -17,7 +17,7 @@ class SettingAppBar extends StatelessWidget {
       context: context,
       barrierDismissible: true,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.colorBtnAndCard,
+        backgroundColor: Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         icon: Container(
           width: 56,
@@ -39,8 +39,8 @@ class SettingAppBar extends StatelessWidget {
         title: Text(
           'Log Out'.tr,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -49,7 +49,7 @@ class SettingAppBar extends StatelessWidget {
           'Are you sure you want to log out\nof your account?'.tr,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.6),
+            color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.6) ?? Colors.white.withValues(alpha: 0.6),
             fontSize: 14,
             height: 1.5,
           ),
@@ -64,9 +64,9 @@ class SettingAppBar extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: () => Navigator.of(ctx).pop(false),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white70,
+                    foregroundColor: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.7) ?? Colors.white70,
                     side: BorderSide(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.2) ?? Colors.white.withValues(alpha: 0.2),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 13),
                     shape: RoundedRectangleBorder(
@@ -144,8 +144,8 @@ class SettingAppBar extends StatelessWidget {
           children: [
             Text(
               'Profile & Settings'.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                 fontSize: 19,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.2,

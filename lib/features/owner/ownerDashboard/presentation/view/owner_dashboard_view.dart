@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/domain/repositories/dashboard_repository.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/cubit/owner_dashboard_cubit.dart';
@@ -17,7 +16,7 @@ class OwnerDashboardView extends StatelessWidget {
       create: (_) =>
           OwnerDashboardCubit(getIt<DashboardRepository>())..loadDashboard(),
       child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: Column(
             children: [

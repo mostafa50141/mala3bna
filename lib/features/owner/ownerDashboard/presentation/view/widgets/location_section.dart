@@ -31,7 +31,7 @@ class LocationSection extends StatelessWidget {
           height: 150,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            color: AppColors.colorBtnAndCard,
+            color: Theme.of(context).cardColor,
             border: Border.all(
               color: AppColors.primaryColor.withOpacity(0.25),
               width: 1,
@@ -44,7 +44,7 @@ class LocationSection extends StatelessWidget {
                 // Subtle grid lines to simulate a map
                 CustomPaint(
                   size: const Size(double.infinity, 150),
-                  painter: _MapGridPainter(),
+                  painter: _MapGridPainter(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.04) ?? Colors.white.withOpacity(0.04)),
                 ),
                 Center(
                   child: Column(
@@ -69,7 +69,7 @@ class LocationSection extends StatelessWidget {
                       Text(
                         'Tap to pin location'.tr,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5) ?? Colors.white.withOpacity(0.5),
                           fontSize: 13,
                         ),
                       ),
@@ -87,10 +87,13 @@ class LocationSection extends StatelessWidget {
 }
 
 class _MapGridPainter extends CustomPainter {
+  final Color color;
+  _MapGridPainter({required this.color});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.04)
+      ..color = color
       ..strokeWidth = 1;
 
     const step = 24.0;

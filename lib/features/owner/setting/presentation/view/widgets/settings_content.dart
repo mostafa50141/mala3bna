@@ -147,7 +147,7 @@ class PremiumThemeTile extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   AppColors.primaryColor.withValues(alpha: 0.12),
-                  AppColors.colorBtnAndCard,
+                  Theme.of(context).cardColor,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -195,8 +195,8 @@ class PremiumThemeTile extends StatelessWidget {
                       children: [
                         Text(
                           'App Theme'.tr,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
@@ -205,7 +205,7 @@ class PremiumThemeTile extends StatelessWidget {
                         Text(
                           'Customize your visual experience'.tr,
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.6),
+                            color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.6) ?? Colors.white.withValues(alpha: 0.6),
                             fontSize: 11,
                           ),
                         ),
@@ -222,17 +222,17 @@ class PremiumThemeTile extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          'Dark'.tr,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          'Dark'.tr, // Actually we might need to read this from theme controller but I'll just keep it matching text color
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios_rounded,
-                          color: Colors.white54,
+                          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.54) ?? Colors.white54,
                           size: 10,
                         ),
                       ],

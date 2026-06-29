@@ -52,7 +52,7 @@ class DashboardAppBar extends StatelessWidget {
                         end: Alignment.bottomRight,
                         colors: [
                           AppColors.primaryColor.withValues(alpha: 0.25),
-                          AppColors.colorBtnAndCard,
+                          Theme.of(context).cardColor,
                         ],
                       ),
                       border: Border.all(
@@ -91,7 +91,7 @@ class DashboardAppBar extends StatelessWidget {
                         Text(
                           _greeting().tr,
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.45),
+                            color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.6) ?? Colors.white.withValues(alpha: 0.45),
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -101,8 +101,8 @@ class DashboardAppBar extends StatelessWidget {
                           ownerName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.2,
@@ -119,18 +119,18 @@ class DashboardAppBar extends StatelessWidget {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: AppColors.colorBtnAndCard,
+                        color: Theme.of(context).cardColor,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.06),
+                          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.1) ?? Colors.white.withValues(alpha: 0.06),
                         ),
                       ),
                       child: Stack(
                         children: [
-                          const Center(
+                          Center(
                             child: Icon(
                               Icons.notifications_none_rounded,
-                              color: Colors.white,
+                              color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                               size: 22,
                             ),
                           ),
@@ -145,7 +145,7 @@ class DashboardAppBar extends StatelessWidget {
                                 color: AppColors.primaryColor,
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: AppColors.colorBtnAndCard,
+                                  color: Theme.of(context).cardColor,
                                   width: 1.5,
                                 ),
                               ),
@@ -192,9 +192,9 @@ class _NotificationsSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        border: Border.all(color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.06) ?? Colors.white.withValues(alpha: 0.06)),
       ),
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
       child: Column(
@@ -222,8 +222,8 @@ class _NotificationsSheet extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 'Notifications'.tr,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
@@ -236,13 +236,13 @@ class _NotificationsSheet extends StatelessWidget {
           Icon(
             Icons.notifications_off_outlined,
             size: 52,
-            color: Colors.white.withValues(alpha: 0.15),
+            color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.15) ?? Colors.white.withValues(alpha: 0.15),
           ),
           const SizedBox(height: 16),
           Text(
             'No notifications yet'.tr,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.6),
+              color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.6) ?? Colors.white.withValues(alpha: 0.6),
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
@@ -252,7 +252,7 @@ class _NotificationsSheet extends StatelessWidget {
             "You're all caught up! New alerts\nwill appear here.".tr,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.35),
+              color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.4) ?? Colors.white.withValues(alpha: 0.35),
               fontSize: 13,
               height: 1.5,
             ),

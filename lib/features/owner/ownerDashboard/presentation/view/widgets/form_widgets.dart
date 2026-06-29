@@ -23,8 +23,8 @@ class AddCourtSectionHeader extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.2,
@@ -77,13 +77,13 @@ class AddCourtTextField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       maxLines: maxLines,
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white, fontSize: 14),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.white38, fontSize: 14),
+        hintStyle: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.38) ?? Colors.white38, fontSize: 14),
         prefixIcon: Icon(prefixIcon, color: AppColors.primaryColor, size: 20),
         filled: true,
-        fillColor: AppColors.colorBtnAndCard,
+        fillColor: Theme.of(context).cardColor,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         border: OutlineInputBorder(
@@ -93,7 +93,7 @@ class AddCourtTextField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide:
-              BorderSide(color: Colors.white.withOpacity(0.07), width: 1),
+              BorderSide(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.07) ?? Colors.white.withOpacity(0.07), width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

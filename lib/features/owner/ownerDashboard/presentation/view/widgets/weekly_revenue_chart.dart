@@ -17,12 +17,12 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.05) ?? Colors.white.withValues(alpha: 0.05)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.18),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -42,7 +42,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
                     Text(
                       'Weekly Revenue'.tr,
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.5),
+                        color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.5) ?? Colors.white.withValues(alpha: 0.5),
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                       ),
@@ -50,8 +50,8 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
                     const SizedBox(height: 6),
                     Text(
                       '${'EGP'.tr} ${data.weeklyEarnings.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                         fontSize: 28,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.5,
@@ -110,14 +110,14 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
           Text(
             'Last 7 days'.tr,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.3),
+              color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.3) ?? Colors.white.withValues(alpha: 0.3),
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 24),
 
           // ── Chart ──
-          SizedBox(height: 150, child: LineChart(_chartData())),
+          SizedBox(height: 150, child: LineChart(_chartData(context))),
         ],
       ),
     );
@@ -125,7 +125,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
 
   // ─── Chart configuration ────────────────────────────────────────────
 
-  LineChartData _chartData() {
+  LineChartData _chartData(BuildContext context) {
     final spots = data.weeklyRevenueChart
         .map((p) => FlSpot(p.dayIndex.toDouble(), p.revenue))
         .toList();
@@ -137,7 +137,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
         drawVerticalLine: false,
         horizontalInterval: 2000,
         getDrawingHorizontalLine: (_) => FlLine(
-          color: Colors.white.withValues(alpha: 0.04),
+          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.04) ?? Colors.white.withValues(alpha: 0.04),
           strokeWidth: 1,
         ),
       ),
@@ -156,14 +156,14 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 28,
-            getTitlesWidget: _bottomLabel,
+            getTitlesWidget: (value, meta) => _bottomLabel(value, meta, context),
           ),
         ),
       ),
       lineTouchData: LineTouchData(
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
-          getTooltipColor: (_) => AppColors.colorBtnAndCard,
+          getTooltipColor: (_) => Theme.of(context).cardColor,
           tooltipBorder: BorderSide(
             color: AppColors.primaryColor.withValues(alpha: 0.3),
           ),
@@ -191,7 +191,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
               radius: 3.5,
               color: AppColors.primaryColor,
               strokeWidth: 2,
-              strokeColor: AppColors.colorBtnAndCard,
+              strokeColor: Theme.of(context).cardColor,
             ),
           ),
           belowBarData: BarAreaData(
@@ -211,7 +211,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
     );
   }
 
-  Widget _bottomLabel(double value, TitleMeta meta) {
+  Widget _bottomLabel(double value, TitleMeta meta, BuildContext context) {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     final index = value.toInt();
     if (index < 0 || index >= days.length) return const SizedBox();
@@ -221,7 +221,7 @@ class OwnerWeeklyRevenueChart extends StatelessWidget {
       child: Text(
         days[index].tr,
         style: TextStyle(
-          color: Colors.white.withValues(alpha: 0.35),
+          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.35) ?? Colors.white.withValues(alpha: 0.35),
           fontSize: 11,
           fontWeight: FontWeight.w600,
         ),

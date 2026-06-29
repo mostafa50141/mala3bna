@@ -27,7 +27,7 @@ class ImageUploadSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: AppColors.primaryColor.withOpacity(0.25),
@@ -96,14 +96,14 @@ class ImageUploadSection extends StatelessWidget {
                     child: Icon(
                       Icons.cloud_upload_outlined,
                       size: 32,
-                      color: AppColors.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     'Tap to upload images'.tr,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
@@ -111,7 +111,7 @@ class ImageUploadSection extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     'PNG, JPG up to 5MB'.tr,
-                    style: const TextStyle(color: Colors.white38, fontSize: 12),
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.38) ?? Colors.white38, fontSize: 12),
                   ),
                 ],
               ),

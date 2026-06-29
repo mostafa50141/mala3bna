@@ -10,6 +10,7 @@ import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/splash/presentation/views/splash_screen.dart';
 import 'package:mala3bna/generated/l10n.dart';
+import 'package:mala3bna/core/controllers/theme_controller.dart';
 
 void main() async {
   setupServiceLocator();
@@ -17,6 +18,7 @@ void main() async {
   await GetStorage.init();
   Get.put(AuthController());
   Get.put(LocaleController());
+  Get.put(ThemeController());
   runApp(const MyApp());
 }
 
@@ -51,10 +53,28 @@ class MyApp extends StatelessWidget {
             }
             return const Locale('en');
           },
-          theme: ThemeData.dark().copyWith(
+          themeMode: Get.find<ThemeController>().themeMode,
+          darkTheme: ThemeData.dark().copyWith(
+            primaryColor: AppColors.primaryColor,
+            scaffoldBackgroundColor: AppColors.backgroundColor,
+            cardColor: AppColors.colorBtnAndCard,
             textTheme: GoogleFonts.cairoTextTheme(ThemeData.dark().textTheme),
             splashColor: Colors.transparent,
-            scaffoldBackgroundColor: AppColors.backgroundColor,
+            colorScheme: const ColorScheme.dark().copyWith(
+              primary: AppColors.primaryColor,
+              surface: AppColors.colorBtnAndCard,
+            ),
+          ),
+          theme: ThemeData.light().copyWith(
+            primaryColor: AppColors.primaryColor,
+            scaffoldBackgroundColor: const Color(0xFFF5F7F6), // Calm light background
+            cardColor: Colors.white,
+            textTheme: GoogleFonts.cairoTextTheme(ThemeData.light().textTheme),
+            splashColor: Colors.transparent,
+            colorScheme: const ColorScheme.light().copyWith(
+              primary: AppColors.primaryColor,
+              surface: Colors.white,
+            ),
           ),
           home: const SplashScreen(),
         );

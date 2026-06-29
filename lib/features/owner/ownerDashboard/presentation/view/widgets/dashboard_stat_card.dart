@@ -24,12 +24,12 @@ class DashboardStatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.05) ?? Colors.white.withValues(alpha: 0.05)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.18),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -57,8 +57,8 @@ class DashboardStatCard extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               value,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                 fontSize: 26,
                 fontWeight: FontWeight.w800,
                 letterSpacing: -0.5,
@@ -71,7 +71,7 @@ class DashboardStatCard extends StatelessWidget {
           Text(
             title.tr,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.45),
+              color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.45) ?? Colors.white.withValues(alpha: 0.45),
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

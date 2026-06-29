@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Animated shimmer skeleton displayed while the dashboard data is loading.
 class DashboardLoadingView extends StatefulWidget {
@@ -82,8 +81,11 @@ class _DashboardLoadingViewState extends State<DashboardLoadingView>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
           color: Color.lerp(
-            AppColors.colorBtnAndCard,
-            Colors.white.withValues(alpha: 0.06),
+            Theme.of(context).cardColor,
+            Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.color?.withValues(alpha: 0.06) ??
+                Colors.white.withValues(alpha: 0.06),
             _ctrl.value,
           ),
         ),

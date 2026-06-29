@@ -56,7 +56,7 @@ class UserInfoSection extends StatelessWidget {
             label: Text('Edit Profile'.tr,
                 style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white,
+              foregroundColor: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
               side: BorderSide(
                   color: AppColors.primaryColor.withValues(alpha: 0.7),
                   width: 1),

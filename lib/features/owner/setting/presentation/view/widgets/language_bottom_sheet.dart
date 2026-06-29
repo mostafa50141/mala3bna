@@ -14,7 +14,7 @@ class LanguageBottomSheet extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
           decoration: BoxDecoration(
-            color: AppColors.colorBtnAndCard,
+            color: Theme.of(context).cardColor,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Column(
@@ -26,7 +26,7 @@ class LanguageBottomSheet extends StatelessWidget {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
-                  color: Colors.white24,
+                  color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.24) ?? Colors.white24,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -49,8 +49,8 @@ class LanguageBottomSheet extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     'Select Language'.tr,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -120,10 +120,10 @@ class _LanguageOption extends StatelessWidget {
       decoration: BoxDecoration(
         color: isSelected
             ? AppColors.primaryColor.withValues(alpha: 0.12)
-            : AppColors.backgroundColor.withValues(alpha: 0.6),
+            : Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: isSelected ? AppColors.primaryColor : Colors.white12,
+          color: isSelected ? AppColors.primaryColor : (Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.12) ?? Colors.white12),
           width: isSelected ? 1.5 : 1,
         ),
       ),
@@ -151,7 +151,7 @@ class _LanguageOption extends StatelessWidget {
                         style: TextStyle(
                           color: isSelected
                               ? AppColors.primaryColor
-                              : Colors.white,
+                              : (Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white),
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
@@ -160,7 +160,7 @@ class _LanguageOption extends StatelessWidget {
                       Text(
                         name,
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.4),
+                          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.4) ?? Colors.white.withValues(alpha: 0.4),
                           fontSize: 12,
                         ),
                       ),
@@ -179,9 +179,9 @@ class _LanguageOption extends StatelessWidget {
                             color: AppColors.primaryColor,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.check_rounded,
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             size: 14,
                           ),
                         )
