@@ -12,4 +12,5 @@ abstract class UserProfileRepo {
     String? bio,
     File? profileImage,
   });
+  Future<Either<Failure, void>> deleteAccount({required String password});
 }

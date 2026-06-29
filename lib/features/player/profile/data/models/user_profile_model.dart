@@ -6,6 +6,9 @@ class UserProfileModel {
   final String? phoneNumber;
   final String? bio;
   final String? profileImage;
+  final String? instagramLink;
+  final String? tiktokLink;
+  final String? facebookLink;
 
   const UserProfileModel({
     required this.id,
@@ -15,6 +18,9 @@ class UserProfileModel {
     this.phoneNumber,
     this.bio,
     this.profileImage,
+    this.instagramLink,
+    this.tiktokLink,
+    this.facebookLink,
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
@@ -26,5 +32,8 @@ class UserProfileModel {
         phoneNumber: json['phone_number'] as String?,
         bio: json['bio'] as String?,
         profileImage: json['profile_image'] as String?,
+        instagramLink: json['instagram_link'] as String?,
+        tiktokLink: json['tiktok_link'] as String?,
+        facebookLink: json['facebook_link'] as String?,
       );
 }

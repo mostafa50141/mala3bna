@@ -17,3 +17,10 @@ final class UserProfileFailure extends UserProfileState {
   final String errorMessage;
   UserProfileFailure(this.errorMessage);
 }
+
+final class UserProfileDeleting extends UserProfileState {}
+final class UserProfileDeleted extends UserProfileState {}
+final class UserProfileDeleteFailure extends UserProfileState {
+  final String errorMessage;
+  UserProfileDeleteFailure(this.errorMessage);
+}

@@ -55,4 +55,19 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       },
     );
   }
+
+  Future<void> deleteAccount({required String password}) async {
+    emit(UserProfileDeleting());
+    var result = await repo.deleteAccount(password: password);
+    result.fold(
+      (failure) => emit(
+        UserProfileDeleteFailure(failure.errmessage ?? 'Failed to delete account'),
+      ),
+      (_) async {
+        await getIt.get<LocalStorageHelper>().deletetoken();
+        await getIt.get<LocalStorageHelper>().deleteUserData();
+        emit(UserProfileDeleted());
+      },
+    );
+  }
 }

@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,51 +16,52 @@ import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/features/player/profile/data/repos/user_profile_repo.dart';
 import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_cubit.dart';
 import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_state.dart';
 
-class EditProfileBody extends StatefulWidget {
+// ── Outer wrapper: owns BlocProvider ────────────────────────────────────────
+class EditProfileBody extends StatelessWidget {
   const EditProfileBody({super.key});
 
   @override
-  State<EditProfileBody> createState() => _EditProfileBodyState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) =>
+          UserProfileCubit(getIt.get<UserProfileRepo>())..getProfile(),
+      child: const _EditProfileContent(),
+    );
+  }
 }
 
-class _EditProfileBodyState extends State<EditProfileBody> {
-  bool _isLoading = true;
+// ── Inner content ────────────────────────────────────────────────────────────
+class _EditProfileContent extends StatefulWidget {
+  const _EditProfileContent();
+
+  @override
+  State<_EditProfileContent> createState() => _EditProfileContentState();
+}
+
+class _EditProfileContentState extends State<_EditProfileContent> {
   final _fullNameController = TextEditingController();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _birthDateController = TextEditingController(text: '22 Apr 2004');
+  final _bioController = TextEditingController();
 
   File? _selectedImage;
-  String? _savedImagePath;
+  String? _networkImageUrl; // profile_image from API
+
   final ImagePicker _picker = ImagePicker();
 
   @override
-  void initState() {
-    super.initState();
-    _loadUserData();
+  void dispose() {
+    _fullNameController.dispose();
+    _usernameController.dispose();
+    _phoneController.dispose();
+    _bioController.dispose();
+    super.dispose();
   }
 
-  Future<void> _loadUserData() async {
-    final storage = getIt.get<LocalStorageHelper>();
-    final name = await storage.getUserName();
-    final email = await storage.getUserEmail();
-    final phone = await storage.getUserPhone();
-    final imagePath = await storage.getProfileImagePath();
-    setState(() {
-      _fullNameController.text = name;
-      _emailController.text = email;
-      _phoneController.text = phone;
-      _savedImagePath = imagePath;
-      _isLoading = false;
-    });
-  }
-
-  // this function to pick image from gallery and set it to _selectedImage
   Future<void> _pickImage() async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -66,46 +70,25 @@ class _EditProfileBodyState extends State<EditProfileBody> {
         maxWidth: 500,
         maxHeight: 500,
       );
-
       if (image == null) return;
 
-      // Get permanent directory
       final appDir = await getApplicationDocumentsDirectory();
       final fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final permanentPath = '${appDir.path}/$fileName';
-
-      // Copy file
       final permanentFile = await File(image.path).copy(permanentPath);
 
-      // Verify file exists
-      if (!await permanentFile.exists()) {
-        debugPrint('File copy failed');
-        return;
-      }
+      if (!await permanentFile.exists()) return;
 
-      // Save path to storage
-      await getIt.get<LocalStorageHelper>().saveProfileImagePath(
-        permanentFile.path,
-      );
+      await getIt
+          .get<LocalStorageHelper>()
+          .saveProfileImagePath(permanentFile.path);
 
       setState(() {
         _selectedImage = permanentFile;
-        _savedImagePath = permanentFile.path;
       });
-
-      debugPrint('Image saved to: ${permanentFile.path}');
     } catch (e) {
       debugPrint('Error picking image: $e');
     }
-  }
-
-  @override
-  void dispose() {
-    _fullNameController.dispose();
-    _emailController.dispose();
-    _phoneController.dispose();
-    _birthDateController.dispose();
-    super.dispose();
   }
 
   Widget _buildLabel(String text) {
@@ -118,185 +101,216 @@ class _EditProfileBodyState extends State<EditProfileBody> {
     );
   }
 
+  Widget _buildAvatar() {
+    if (_selectedImage != null) {
+      return CircleAvatar(
+        radius: 50,
+        backgroundColor: Colors.grey.shade800,
+        backgroundImage: FileImage(_selectedImage!),
+      );
+    }
+    if (_networkImageUrl != null && _networkImageUrl!.isNotEmpty) {
+      return CachedNetworkImage(
+        imageUrl: _networkImageUrl!,
+        imageBuilder: (ctx, imageProvider) => CircleAvatar(
+          radius: 50,
+          backgroundImage: imageProvider,
+        ),
+        placeholder: (ctx, url) => CircleAvatar(
+          radius: 50,
+          backgroundColor: Colors.grey.shade800,
+          child: const CustomeCircularLaoding(),
+        ),
+        errorWidget: (ctx, url, err) => CircleAvatar(
+          radius: 50,
+          backgroundColor: Colors.grey.shade800,
+          child: const Icon(Icons.person, size: 50, color: Colors.white),
+        ),
+      );
+    }
+    return CircleAvatar(
+      radius: 50,
+      backgroundColor: Colors.grey.shade800,
+      child: const Icon(Icons.person, size: 50, color: Colors.white),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Center(child: CustomeCircularLaoding());
-    }
-
     final border = OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.circular(24),
     );
 
-    return BlocProvider(
-      create: (context) => UserProfileCubit(getIt.get<UserProfileRepo>())..getProfile(),
-      child: BlocListener<UserProfileCubit, UserProfileState>(
-        listener: (context, state) {
-          if (state is UserProfileLoaded) {
-            _fullNameController.text = state.profile.fullName;
-            _emailController.text = state.profile.email;
-            _phoneController.text = state.profile.phoneNumber ?? '';
-          } else if (state is UserProfileUpdated) {
-            showAnimatedSnackDialog(
-              context,
-              message: "Profile updated successfully",
-              type: AnimatedSnackBarType.success,
-            );
-            Get.back();
-          } else if (state is UserProfileFailure) {
-            showAnimatedSnackDialog(
-              context,
-              message: state.errorMessage,
-              type: AnimatedSnackBarType.error,
-            );
-          }
-        },
-        child: SafeArea(
-          child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.grey.shade800,
-                        backgroundImage: _selectedImage != null
-                            ? FileImage(_selectedImage!) as ImageProvider
-                            : _savedImagePath != null &&
-                                  File(_savedImagePath!).existsSync()
-                            ? FileImage(File(_savedImagePath!)) as ImageProvider
-                            : null,
-                        child:
-                            (_selectedImage == null &&
-                                (_savedImagePath == null ||
-                                    !File(_savedImagePath!).existsSync()))
-                            ? const Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.white,
-                              )
-                            : null,
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: _pickImage,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppColors.backgroundColor,
-                                width: 2,
+    return BlocListener<UserProfileCubit, UserProfileState>(
+      listener: (context, state) {
+        if (state is UserProfileLoaded) {
+          _fullNameController.text = state.profile.fullName;
+          _usernameController.text = state.profile.username;
+          _phoneController.text = state.profile.phoneNumber ?? '';
+          _bioController.text = state.profile.bio ?? '';
+          setState(() => _networkImageUrl = state.profile.profileImage);
+        } else if (state is UserProfileUpdated) {
+          showAnimatedSnackDialog(
+            context,
+            message: 'Profile updated successfully!',
+            type: AnimatedSnackBarType.success,
+          );
+          Get.back();
+        } else if (state is UserProfileFailure) {
+          showAnimatedSnackDialog(
+            context,
+            message: state.errorMessage,
+            type: AnimatedSnackBarType.error,
+          );
+        }
+      },
+      child: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // ── Avatar section ──────────────────────────────────
+              Center(
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        _buildAvatar(),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: _pickImage,
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.backgroundColor,
+                                  width: 2,
+                                ),
                               ),
-                            ),
-                            child: const Icon(
-                              Icons.camera_alt,
-                              color: Colors.white,
-                              size: 18,
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 18,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Mostafa Ahmed',
-                    style: Style.textStyle20Bold.copyWith(color: Colors.white),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'mostafa@gmail.com',
-                    style: Style.textStyle14.copyWith(color: Colors.grey),
-                  ),
-                ],
+                      ],
+                    ),
+                    const Gap(12),
+                    // Show name from controller (populated by BlocListener)
+                    BlocBuilder<UserProfileCubit, UserProfileState>(
+                      builder: (context, state) {
+                        if (state is UserProfileLoading) {
+                          return const CustomeCircularLaoding();
+                        }
+                        return Column(
+                          children: [
+                            Text(
+                              _fullNameController.text.isNotEmpty
+                                  ? _fullNameController.text
+                                  : '—',
+                              style: Style.textStyle20Bold
+                                  .copyWith(color: Colors.white),
+                            ),
+                            const Gap(4),
+                            Text(
+                              _usernameController.text.isNotEmpty
+                                  ? '@${_usernameController.text}'
+                                  : '',
+                              style: Style.textStyle14
+                                  .copyWith(color: Colors.grey),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 32),
+              const Gap(32),
 
-            _buildLabel('Full Name'),
-            CustomTextfield(
-              controller: _fullNameController,
-              hintText: 'Enter your full name',
-              fillcolor: AppColors.colorBtnAndCard,
-              border: border,
-              prefixIcon: const Icon(Icons.person, color: Colors.white70),
-            ),
-
-            _buildLabel('Email'),
-            CustomTextfield(
-              controller: _emailController,
-              hintText: 'Enter your email',
-              fillcolor: AppColors.colorBtnAndCard,
-              border: border,
-              prefixIcon: const Icon(Icons.email, color: Colors.white70),
-            ),
-
-            _buildLabel('Phone Number'),
-            CustomTextfield(
-              controller: _phoneController,
-              hintText: 'Enter your phone number',
-              keyboardType: TextInputType.phone,
-              fillcolor: AppColors.colorBtnAndCard,
-              border: border,
-              prefixIcon: const Icon(Icons.phone, color: Colors.white70),
-            ),
-
-            _buildLabel('Date of Birth'),
-            CustomTextfield(
-              controller: _birthDateController,
-              hintText: 'Enter your date of birth',
-              fillcolor: AppColors.colorBtnAndCard,
-              border: border,
-              prefixIcon: const Icon(
-                Icons.calendar_today,
-                color: Colors.white70,
+              // ── Form fields ─────────────────────────────────────
+              _buildLabel('Full Name'),
+              CustomTextfield(
+                controller: _fullNameController,
+                hintText: 'Enter your full name',
+                fillcolor: AppColors.colorBtnAndCard,
+                border: border,
+                prefixIcon:
+                    const Icon(Icons.person, color: Colors.white70),
               ),
-              suffixIcon: const Icon(
-                Icons.calendar_today,
-                color: Colors.white70,
+
+              _buildLabel('Username'),
+              CustomTextfield(
+                controller: _usernameController,
+                hintText: 'Enter your username',
+                fillcolor: AppColors.colorBtnAndCard,
+                border: border,
+                prefixIcon: const Icon(Icons.alternate_email,
+                    color: Colors.white70),
               ),
-            ),
 
-            const SizedBox(height: 40),
+              _buildLabel('Phone Number'),
+              CustomTextfield(
+                controller: _phoneController,
+                hintText: 'Enter your phone number',
+                keyboardType: TextInputType.phone,
+                fillcolor: AppColors.colorBtnAndCard,
+                border: border,
+                prefixIcon:
+                    const Icon(Icons.phone, color: Colors.white70),
+              ),
 
-            BlocBuilder<UserProfileCubit, UserProfileState>(
-              builder: (context, state) {
-                if (state is UserProfileLoading) {
-                  return const Center(child: CustomeCircularLaoding());
-                }
-                return CustomBtn(
-                  text: "Save Changes",
-                  height: 55,
-                  width: double.infinity,
-                  radius: 30,
-                  color: AppColors.primaryColor,
-                  colorText: Colors.white,
-                  weightText: FontWeight.bold,
-                  onTap: () {
-                    context.read<UserProfileCubit>().updateProfile(
-                      fullName: _fullNameController.text.trim(),
-                      username: _fullNameController.text.trim().replaceAll(' ', '_').toLowerCase(),
-                      phoneNumber: _phoneController.text.trim(),
-                      profileImage: _selectedImage,
-                    );
-                  },
-                );
-              },
-            ),
-          ],
+              _buildLabel('Bio'),
+              CustomTextfield(
+                controller: _bioController,
+                hintText: 'Tell us about yourself',
+                fillcolor: AppColors.colorBtnAndCard,
+                border: border,
+                prefixIcon: const Icon(Icons.info_outline,
+                    color: Colors.white70),
+              ),
+
+              const Gap(40),
+
+              // ── Save button ─────────────────────────────────────
+              BlocBuilder<UserProfileCubit, UserProfileState>(
+                builder: (context, state) {
+                  if (state is UserProfileLoading) {
+                    return const Center(child: CustomeCircularLaoding());
+                  }
+                  return CustomBtn(
+                    text: 'Save Changes',
+                    height: 55,
+                    width: double.infinity,
+                    radius: 30,
+                    color: AppColors.primaryColor,
+                    colorText: Colors.white,
+                    weightText: FontWeight.bold,
+                    onTap: () {
+                      context.read<UserProfileCubit>().updateProfile(
+                            fullName: _fullNameController.text.trim(),
+                            username: _usernameController.text.trim(),
+                            phoneNumber: _phoneController.text.trim(),
+                            bio: _bioController.text.trim(),
+                            profileImage: _selectedImage,
+                          );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
-    )));
+    );
   }
 }
