@@ -45,19 +45,30 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
   }
 
   Future<void> _saveBooking() async {
+    // Parse selectedTime to derive startTime/endTime strings
+    final startTime = widget.selectedTime ?? '00:00';
+    final timeParts = startTime.split(':');
+    final startHour = int.tryParse(timeParts[0]) ?? 0;
+    final endHour = (startHour + 1) % 24;
+    final endTime =
+        '${endHour.toString().padLeft(2, '0')}:${timeParts.length > 1 ? timeParts[1] : '00'}:00';
+    final startTimeFmt =
+        '${timeParts[0].padLeft(2, '0')}:${timeParts.length > 1 ? timeParts[1] : '00'}:00';
+
     final booking = BookingModel(
-      id: widget.bookingId ?? widget.court.id,
+      id: widget.bookingId,
       fieldId: widget.court.id,
       courtName: widget.court.name,
-      courtLocation: widget.court.location,
       courtImage: widget.court.imageUrl,
       sport: widget.court.sport,
       date: widget.selectedDate != null
-          ? DateFormat('EEE, d MMM').format(widget.selectedDate!)
-          : 'Unknown',
-      time: widget.selectedTime ?? 'Unknown',
+          ? DateFormat('yyyy-MM-dd').format(widget.selectedDate!)
+          : '',
+      startTime: startTimeFmt,
+      endTime: endTime,
+      duration: 1.0,
       price: widget.court.pricePerHour,
-      status: 'upcoming',
+      status: 'pending',
     );
     await getIt.get<LocalStorageHelper>().saveBooking(booking);
   }

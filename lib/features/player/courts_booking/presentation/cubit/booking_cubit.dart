@@ -49,7 +49,10 @@ class BookingCubit extends Cubit<BookingState> {
     var result = await bookingRepo.cancelBooking(bookingId: bookingId);
     result.fold(
       (failure) => emit(BookingFailure(failure.errmessage ?? 'Cancel failed')),
-      (_) => emit(BookingCancelled()),
+      (_) {
+        emit(BookingCancelled());
+        getBookings(); // reload list after cancel
+      },
     );
   }
 }

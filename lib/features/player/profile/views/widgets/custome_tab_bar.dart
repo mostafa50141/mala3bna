@@ -1,60 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
-import 'package:mala3bna/features/player/courts_booking/data/models/booking_model.dart';
-import 'package:mala3bna/features/player/profile/views/widgets/booking_list_view.dart';
-import 'package:mala3bna/features/player/courts_booking/data/repos/booking_repo.dart';
 import 'package:mala3bna/features/player/courts_booking/presentation/cubit/booking_cubit.dart';
+import 'package:mala3bna/features/player/courts_booking/presentation/cubit/booking_state.dart';
+import 'package:mala3bna/features/player/profile/views/widgets/booking_list_view.dart';
 
-class CustomeTabBar extends StatefulWidget {
+class CustomeTabBar extends StatelessWidget {
   const CustomeTabBar({super.key});
 
   @override
-  State<CustomeTabBar> createState() => _CustomeTabBarState();
-}
-
-class _CustomeTabBarState extends State<CustomeTabBar> {
-  List<BookingModel> _upcomingBookings = [];
-  List<BookingModel> _pastBookings = [];
-  List<BookingModel> _cancelledBookings = [];
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadBookings();
-  }
-
-  Future<void> _loadBookings() async {
-    final cubit = BookingCubit(getIt.get<BookingRepo>());
-    final result = await cubit.bookingRepo.getBookings();
-    result.fold(
-      (failure) => setState(() => _isLoading = false),
-      (bookings) {
-        setState(() {
-          _upcomingBookings = bookings
-              .where((b) => b.status == 'pending' || b.status == 'confirmed')
-              .toList();
-          _pastBookings = bookings
-              .where((b) => b.status == 'confirmed' &&
-                  DateTime.tryParse(b.date)?.isBefore(DateTime.now()) == true)
-              .toList();
-          _cancelledBookings = bookings
-              .where((b) => b.status == 'cancelled')
-              .toList();
-          _isLoading = false;
-        });
-      },
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return const Center(child: CustomeCircularLaoding());
-    }
-
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -71,30 +27,54 @@ class _CustomeTabBarState extends State<CustomeTabBar> {
             ],
           ),
           Expanded(
-            child: TabBarView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: BookingListView(
-                    bookings: _upcomingBookings,
-                    onBookingCancelled: _loadBookings,
+            child: BlocBuilder<BookingCubit, BookingState>(
+              builder: (context, state) {
+                if (state is BookingLoading) {
+                  return const Center(child: CustomeCircularLaoding());
+                }
+
+                if (state is BookingFailure) {
+                  return Center(
+                    child: Text(
+                      state.errorMessage,
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  );
+                }
+
+                if (state is BookingCancelled) {
+                  // Rebuild will come from getBookings() triggered inside cubit
+                  return const Center(child: CustomeCircularLaoding());
+                }
+
+                if (state is BookingsLoaded) {
+                  final upcoming = state.bookings
+                      .where((b) => b.status == 'pending')
+                      .toList();
+                  final confirmed = state.bookings
+                      .where((b) => b.status == 'confirmed')
+                      .toList();
+                  final cancelled = state.bookings
+                      .where((b) => b.status == 'cancelled')
+                      .toList();
+
+                  return TabBarView(
+                    children: [
+                      BookingListView(bookings: upcoming, showCancel: true),
+                      BookingListView(bookings: confirmed, showCancel: false),
+                      BookingListView(bookings: cancelled, showCancel: false),
+                    ],
+                  );
+                }
+
+                // BookingInitial / fallback
+                return const Center(
+                  child: Text(
+                    'No bookings yet',
+                    style: TextStyle(color: Colors.grey),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: BookingListView(
-                    bookings: _pastBookings,
-                    onBookingCancelled: _loadBookings,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: BookingListView(
-                    bookings: _cancelledBookings,
-                    onBookingCancelled: _loadBookings,
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],

@@ -6,12 +6,12 @@ import 'package:mala3bna/features/player/profile/views/widgets/booking_card.dart
 
 class BookingListView extends StatelessWidget {
   final List<BookingModel> bookings;
-  final VoidCallback onBookingCancelled;
+  final bool showCancel;
 
   const BookingListView({
     super.key,
     required this.bookings,
-    required this.onBookingCancelled,
+    required this.showCancel,
   });
 
   @override
@@ -21,33 +21,31 @@ class BookingListView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.calendar_today_outlined,
-              color: Colors.grey,
-              size: 60,
+              color: Colors.grey.shade600,
+              size: 48,
             ),
             const Gap(16),
             Text(
-              'No bookings yet',
-              style: Style.textStyle16.copyWith(color: Colors.grey),
+              'No bookings here',
+              style: Style.textStyle14.copyWith(color: Colors.grey.shade500),
             ),
           ],
         ),
       );
     }
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(16),
+      physics: const BouncingScrollPhysics(),
       itemCount: bookings.length,
-      itemBuilder: (context, index) {
-        final booking = bookings[index];
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: BookingCard(
-            booking: booking,
-            onBookingCancelled: onBookingCancelled,
-          ),
-        );
-      },
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: BookingCard(
+          booking: bookings[index],
+          showCancel: showCancel,
+        ),
+      ),
     );
   }
 }

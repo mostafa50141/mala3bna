@@ -86,15 +86,17 @@ class LocalStorageHelper {
   Future<void> cancelBooking(String bookingId) async {
     final bookings = await getBookings();
     final updated = bookings.map((b) {
-      if (b.id == bookingId) {
+      if (b.id.toString() == bookingId) {
         return BookingModel(
           id: b.id,
+          fieldId: b.fieldId,
           courtName: b.courtName,
-          courtLocation: b.courtLocation,
           courtImage: b.courtImage,
           sport: b.sport,
           date: b.date,
-          time: b.time,
+          startTime: b.startTime,
+          endTime: b.endTime,
+          duration: b.duration,
           price: b.price,
           status: 'cancelled',
         );
