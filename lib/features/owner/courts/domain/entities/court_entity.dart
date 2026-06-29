@@ -44,6 +44,8 @@ class CourtEntity extends Equatable {
   final bool isActive;
   final double rating;
   final int reviewCount;
+  final String? maintenanceType;
+  final String? maintenanceDescription;
 
   const CourtEntity({
     required this.id,
@@ -58,6 +60,8 @@ class CourtEntity extends Equatable {
     this.isActive = true,
     this.rating = 0.0,
     this.reviewCount = 0,
+    this.maintenanceType,
+    this.maintenanceDescription,
   });
 
   CourtEntity copyWith({
@@ -73,6 +77,8 @@ class CourtEntity extends Equatable {
     bool? isActive,
     double? rating,
     int? reviewCount,
+    String? maintenanceType,
+    String? maintenanceDescription,
   }) {
     return CourtEntity(
       id: id ?? this.id,
@@ -87,6 +93,8 @@ class CourtEntity extends Equatable {
       isActive: isActive ?? this.isActive,
       rating: rating ?? this.rating,
       reviewCount: reviewCount ?? this.reviewCount,
+      maintenanceType: maintenanceType ?? this.maintenanceType,
+      maintenanceDescription: maintenanceDescription ?? this.maintenanceDescription,
     );
   }
 
@@ -104,5 +112,7 @@ class CourtEntity extends Equatable {
         isActive,
         rating,
         reviewCount,
+        maintenanceType,
+        maintenanceDescription,
       ];
 }

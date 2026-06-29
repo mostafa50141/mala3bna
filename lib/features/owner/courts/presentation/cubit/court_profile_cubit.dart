@@ -59,7 +59,10 @@ class CourtProfileCubit extends Cubit<CourtProfileState> {
   }
 
   /// Toggle the court's active/inactive status via the backend.
-  Future<void> toggleStatus() async {
+  Future<void> toggleStatus({
+    String? maintenanceType,
+    String? maintenanceDescription,
+  }) async {
     final currentState = state;
     // Extract the current court regardless of state variant
     final court = currentState is CourtProfileLoaded
@@ -88,7 +91,11 @@ class CourtProfileCubit extends Cubit<CourtProfileState> {
 
     emit(CourtProfileToggling(court));
 
-    final result = await _repository.toggleFieldStatus(court.id);
+    final result = await _repository.toggleFieldStatus(
+      court.id,
+      maintenanceType: maintenanceType,
+      maintenanceDescription: maintenanceDescription,
+    );
 
     result.fold(
       (failure) {

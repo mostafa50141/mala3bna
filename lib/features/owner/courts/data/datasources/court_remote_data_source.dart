@@ -20,7 +20,11 @@ abstract class CourtRemoteDataSource {
     String? address,
     List<String>? amenityIds,
   });
-  Future<bool> toggleFieldStatus(String id);
+  Future<bool> toggleFieldStatus(
+    String id, {
+    String? maintenanceType,
+    String? maintenanceDescription,
+  });
   Future<CourtImageModel> uploadFieldImage(String fieldId, String filePath);
   Future<void> deleteFieldImage(String imageId);
 }
@@ -123,8 +127,23 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
   }
 
   @override
-  Future<bool> toggleFieldStatus(String id) async {
-    final response = await _client.post(ApiEndpoints.fieldToggleStatus(id));
+  Future<bool> toggleFieldStatus(
+    String id, {
+    String? maintenanceType,
+    String? maintenanceDescription,
+  }) async {
+    final Map<String, dynamic> data = {};
+    if (maintenanceType != null) {
+      data['maintenance_type'] = maintenanceType;
+    }
+    if (maintenanceDescription != null) {
+      data['maintenance_description'] = maintenanceDescription;
+    }
+
+    final response = await _client.post(
+      ApiEndpoints.fieldToggleStatus(id),
+      data: data,
+    );
     if (response is Map<String, dynamic> && response.containsKey('is_active')) {
       return response['is_active'] == true;
     }

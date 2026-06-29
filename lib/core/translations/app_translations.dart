@@ -279,6 +279,19 @@ const Map<String, String> _en = {
   'Disable Court': 'Disable Court',
   'Enable Court': 'Enable Court',
 
+  // ── Maintenance ───────────────────────────────────────────────────────────────
+  'Maintenance Type': 'Maintenance Type',
+  'Lighting Issue': 'Lighting Issue',
+  'Turf Maintenance': 'Turf Maintenance',
+  'Facilities Maintenance': 'Facilities Maintenance',
+  'Periodic Maintenance': 'Periodic Maintenance',
+  'Other': 'Other',
+  'Details (Optional)': 'Details (Optional)',
+  'e.g. replacing LED lights...': 'e.g. replacing LED lights...',
+  'Confirm Disable': 'Confirm Disable',
+  'Court Closed for Maintenance': 'Court Closed for Maintenance',
+  'Reason: ': 'Reason: ',
+
   // ── Missing Translations ──────────────────────────────────────────────────────
   'Reviews & Ratings': 'Reviews & Ratings',
   'reviews': 'reviews',
@@ -577,6 +590,19 @@ const Map<String, String> _ar = {
   '/hr': '/س',
   'Disable Court': 'تعطيل الملعب',
   'Enable Court': 'تفعيل الملعب',
+
+  // ── Maintenance ───────────────────────────────────────────────────────────────
+  'Maintenance Type': 'نوع الصيانة',
+  'Lighting Issue': 'عطل في الإضاءة',
+  'Turf Maintenance': 'صيانة أرضية الملعب (النجيل)',
+  'Facilities Maintenance': 'صيانة في المرافق',
+  'Periodic Maintenance': 'صيانة دورية للملعب',
+  'Other': 'أسباب أخرى',
+  'Details (Optional)': 'التفاصيل (اختياري)',
+  'e.g. replacing LED lights...': 'مثال: تغيير كشافات ليد...',
+  'Confirm Disable': 'تأكيد الإيقاف',
+  'Court Closed for Maintenance': 'الملعب مغلق للصيانة',
+  'Reason: ': 'السبب: ',
 
   // ── Missing Translations ──────────────────────────────────────────────────────
   'Reviews & Ratings': 'التقييمات والمراجعات',

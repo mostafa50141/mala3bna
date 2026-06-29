@@ -16,6 +16,8 @@ class CourtModel extends Equatable {
   final bool isActive;
   final double rating;
   final int reviewCount;
+  final String? maintenanceType;
+  final String? maintenanceDescription;
 
   const CourtModel({
     required this.id,
@@ -30,6 +32,8 @@ class CourtModel extends Equatable {
     this.isActive = true,
     this.rating = 0.0,
     this.reviewCount = 0,
+    this.maintenanceType,
+    this.maintenanceDescription,
   });
 
   CourtModel copyWith({
@@ -45,6 +49,8 @@ class CourtModel extends Equatable {
     bool? isActive,
     double? rating,
     int? reviewCount,
+    String? maintenanceType,
+    String? maintenanceDescription,
   }) {
     return CourtModel(
       id: id ?? this.id,
@@ -59,6 +65,8 @@ class CourtModel extends Equatable {
       isActive: isActive ?? this.isActive,
       rating: rating ?? this.rating,
       reviewCount: reviewCount ?? this.reviewCount,
+      maintenanceType: maintenanceType ?? this.maintenanceType,
+      maintenanceDescription: maintenanceDescription ?? this.maintenanceDescription,
     );
   }
 
@@ -141,6 +149,8 @@ class CourtModel extends Equatable {
       isActive: _toBool(json['is_active']),
       rating: _toDouble(json['rating']),
       reviewCount: _toInt(json['review_count']),
+      maintenanceType: json['maintenance_type']?.toString(),
+      maintenanceDescription: json['maintenance_description']?.toString(),
     );
 
     print('[CourtModel] Parsed → id=${model.id}, title=${model.title}, '
@@ -162,6 +172,8 @@ class CourtModel extends Equatable {
         'is_active': isActive,
         'rating': rating,
         'review_count': reviewCount,
+        'maintenance_type': maintenanceType,
+        'maintenance_description': maintenanceDescription,
       };
 
   CourtEntity toEntity() {
@@ -178,6 +190,8 @@ class CourtModel extends Equatable {
       isActive: isActive,
       rating: rating,
       reviewCount: reviewCount,
+      maintenanceType: maintenanceType,
+      maintenanceDescription: maintenanceDescription,
     );
   }
 
@@ -195,5 +209,7 @@ class CourtModel extends Equatable {
         isActive,
         rating,
         reviewCount,
+        maintenanceType,
+        maintenanceDescription,
       ];
 }

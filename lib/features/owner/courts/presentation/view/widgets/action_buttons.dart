@@ -44,10 +44,145 @@ class _ActionButtonsState extends State<ActionButtons>
     await _scaleCtrl.forward();
   }
 
-  void _handleToggle(BuildContext context) {
-    HapticFeedback.mediumImpact();
-    _animateTap();
-    context.read<CourtProfileCubit>().toggleStatus();
+  void _handleToggle(BuildContext context, bool isActive) {
+    if (isActive) {
+      _showMaintenanceDialog(context);
+    } else {
+      HapticFeedback.mediumImpact();
+      _animateTap();
+      context.read<CourtProfileCubit>().toggleStatus();
+    }
+  }
+
+  void _showMaintenanceDialog(BuildContext context) {
+    final cubit = context.read<CourtProfileCubit>();
+    String selectedType = 'other';
+    final TextEditingController descriptionCtrl = TextEditingController();
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.colorBtnAndCard,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                left: 20,
+                right: 20,
+                top: 12,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 36,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Disable Court'.tr,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Maintenance Type'.tr,
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<String>(
+                    value: selectedType,
+                    dropdownColor: AppColors.colorBtnAndCard,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white.withValues(alpha: 0.05),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                    items: [
+                      DropdownMenuItem(value: 'lights', child: Text('Lighting Issue'.tr)),
+                      DropdownMenuItem(value: 'turf', child: Text('Turf Maintenance'.tr)),
+                      DropdownMenuItem(value: 'facilities', child: Text('Facilities Maintenance'.tr)),
+                      DropdownMenuItem(value: 'periodic', child: Text('Periodic Maintenance'.tr)),
+                      DropdownMenuItem(value: 'other', child: Text('Other'.tr)),
+                    ],
+                    onChanged: (val) {
+                      if (val != null) setState(() => selectedType = val);
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Details (Optional)'.tr,
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                  const SizedBox(height: 8),
+                  TextField(
+                    controller: descriptionCtrl,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      hintText: 'e.g. replacing LED lights...'.tr,
+                      hintStyle: const TextStyle(color: Colors.white38),
+                      filled: true,
+                      fillColor: Colors.white.withValues(alpha: 0.05),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        HapticFeedback.mediumImpact();
+                        _animateTap();
+                        cubit.toggleStatus(
+                          maintenanceType: selectedType,
+                          maintenanceDescription: descriptionCtrl.text.trim(),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.redAccent,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text('Confirm Disable'.tr,
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -119,7 +254,7 @@ class _ActionButtonsState extends State<ActionButtons>
                 child: _StatusToggleButton(
                   isActive: isActive,
                   isLoading: isToggling,
-                  onTap: isToggling ? null : () => _handleToggle(context),
+                  onTap: isToggling ? null : () => _handleToggle(context, isActive),
                 ),
               ),
             ),

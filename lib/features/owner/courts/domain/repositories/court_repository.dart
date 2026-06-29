@@ -29,7 +29,11 @@ abstract class CourtRepository {
   });
 
   /// POST /api/v1/fields/{id}/toggle-status/
-  Future<Either<Failure, bool>> toggleFieldStatus(String id);
+  Future<Either<Failure, bool>> toggleFieldStatus(
+    String id, {
+    String? maintenanceType,
+    String? maintenanceDescription,
+  });
 
   /// POST /api/v1/field_images/  (multipart)
   Future<Either<Failure, CourtImageEntity>> uploadFieldImage({

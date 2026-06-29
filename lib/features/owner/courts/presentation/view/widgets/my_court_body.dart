@@ -77,6 +77,59 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
                     padding: const EdgeInsets.fromLTRB(16, 20, 16, 40),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
+                        if (!vm.isActive)
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent.withValues(alpha: 0.1),
+                              border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 28),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Court Closed for Maintenance'.tr,
+                                        style: const TextStyle(
+                                          color: Colors.redAccent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      if (vm.maintenanceDescription?.isNotEmpty == true)
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            vm.maintenanceDescription!,
+                                            style: const TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        )
+                                      else if (vm.maintenanceType?.isNotEmpty == true && vm.maintenanceType != 'other')
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            'Reason: '.tr + (vm.maintenanceType ?? '').tr,
+                                            style: const TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ActionButtons(courtId: vm.id),
                         const SizedBox(height: 20),
                         TabsSection(
