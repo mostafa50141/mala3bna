@@ -17,13 +17,13 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
         children: [
           SectionHeader(title: 'Amenities'.tr),
           const SizedBox(height: 16),
-          _buildAmenitiesWrap(),
+          _buildAmenitiesWrap(context),
         ],
       ),
     );
   }
 
-  Widget _buildAmenitiesWrap() {
+  Widget _buildAmenitiesWrap(BuildContext context) {
     if (vm.amenities.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -37,11 +37,11 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
     return Wrap(
       spacing: 10,
       runSpacing: 10,
-      children: vm.amenities.map(_amenityChip).toList(),
+      children: vm.amenities.map((e) => _amenityChip(context, e)).toList(),
     );
   }
 
-  Widget _amenityChip(AmenityEntity item) {
+  Widget _amenityChip(BuildContext context, AmenityEntity item) {
     IconData icon;
     switch (item.id) {
       case 'lights':
@@ -77,8 +77,8 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             item.title.tr,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

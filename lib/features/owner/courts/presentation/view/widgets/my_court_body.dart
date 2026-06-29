@@ -48,7 +48,7 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: BlocBuilder<CourtProfileCubit, CourtProfileState>(
         builder: (context, state) {
           if (state is CourtProfileLoading) {
@@ -83,16 +83,23 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: Colors.redAccent.withValues(alpha: 0.1),
-                              border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
+                              border: Border.all(
+                                color: Colors.redAccent.withValues(alpha: 0.3),
+                              ),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.warning_amber_rounded, color: Colors.redAccent, size: 28),
+                                const Icon(
+                                  Icons.warning_amber_rounded,
+                                  color: Colors.redAccent,
+                                  size: 28,
+                                ),
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Court Closed for Maintenance'.tr,
@@ -102,9 +109,14 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
                                           fontSize: 15,
                                         ),
                                       ),
-                                      if (vm.maintenanceDescription?.isNotEmpty == true)
+                                      if (vm
+                                              .maintenanceDescription
+                                              ?.isNotEmpty ==
+                                          true)
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 4),
+                                          padding: const EdgeInsets.only(
+                                            top: 4,
+                                          ),
                                           child: Text(
                                             vm.maintenanceDescription!,
                                             style: const TextStyle(
@@ -113,11 +125,16 @@ class _CourtProfileBodyState extends State<CourtProfileBody>
                                             ),
                                           ),
                                         )
-                                      else if (vm.maintenanceType?.isNotEmpty == true && vm.maintenanceType != 'other')
+                                      else if (vm.maintenanceType?.isNotEmpty ==
+                                              true &&
+                                          vm.maintenanceType != 'other')
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 4),
+                                          padding: const EdgeInsets.only(
+                                            top: 4,
+                                          ),
                                           child: Text(
-                                            'Reason: '.tr + (vm.maintenanceType ?? '').tr,
+                                            'Reason: '.tr +
+                                                (vm.maintenanceType ?? '').tr,
                                             style: const TextStyle(
                                               color: Colors.white70,
                                               fontSize: 13,
@@ -241,7 +258,7 @@ class _DetailsTab extends StatelessWidget {
                 Text(
                   'Sport Type'.tr,
                   style: const TextStyle(
-                    color: Colors.white60,
+                    color: Colors.grey,
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
@@ -250,7 +267,6 @@ class _DetailsTab extends StatelessWidget {
                 Text(
                   labelKey.tr,
                   style: const TextStyle(
-                    color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.5,
@@ -283,28 +299,32 @@ class _BookingsTab extends StatelessWidget {
     final String? courtId = courtState is CourtProfileLoaded
         ? courtState.courtProfile.id
         : courtState is CourtProfileToggling
-            ? courtState.courtProfile.id
-            : null;
+        ? courtState.courtProfile.id
+        : null;
 
     // Get bookings from BookingCubit (provided by OwnerMainNavigation)
     final bookingState = context.watch<BookingCubit>().state;
 
     if (bookingState is BookingLoading) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
-        child: Center(child: CircularProgressIndicator()),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 48),
+        child: Center(
+          child: CircularProgressIndicator(color: AppColors.primaryColor),
+        ),
       );
     }
 
     if (bookingState is! BookingLoaded) {
-      return _emptySchedule();
+      return _emptySchedule(context);
     }
 
     // Filter to this court only, with approved status
     final List<BookingEntity> courtBookings = bookingState.allBookings
-        .where((b) =>
-            (courtId == null || b.fieldId == courtId) &&
-            b.status != BookingStatus.declined)
+        .where(
+          (b) =>
+              (courtId == null || b.fieldId == courtId) &&
+              b.status != BookingStatus.declined,
+        )
         .toList();
 
     // Build a lookup: weekdayIndex (0=Mon) → hour → list of bookings
@@ -326,8 +346,7 @@ class _BookingsTab extends StatelessWidget {
       grid[dayIdx]!.putIfAbsent(hour, () => []).add(b);
     }
 
-    final bool hasAnyBooking =
-        grid.values.any((dayMap) => dayMap.isNotEmpty);
+    final bool hasAnyBooking = grid.values.any((dayMap) => dayMap.isNotEmpty);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -337,8 +356,11 @@ class _BookingsTab extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 12),
           child: Row(
             children: [
-              const Icon(Icons.calendar_view_week_rounded,
-                  size: 16, color: Colors.grey),
+              const Icon(
+                Icons.calendar_view_week_rounded,
+                size: 16,
+                color: Colors.grey,
+              ),
               const SizedBox(width: 6),
               Text(
                 '${'Week of'.tr} ${_formatDate(weekStart)} – ${_formatDate(weekStart.add(const Duration(days: 6)))}',
@@ -348,8 +370,8 @@ class _BookingsTab extends StatelessWidget {
           ),
         ),
 
-        if (!hasAnyBooking) _emptySchedule(),
-        if (hasAnyBooking) _buildGrid(grid),
+        if (!hasAnyBooking) _emptySchedule(context),
+        if (hasAnyBooking) _buildGrid(context, grid),
 
         const SizedBox(height: 16),
         // ── Legend ───────────────────────────────────────────────────
@@ -364,16 +386,25 @@ class _BookingsTab extends StatelessWidget {
     );
   }
 
-  Widget _buildGrid(Map<int, Map<int, List<BookingEntity>>> grid) {
+  Widget _buildGrid(
+    BuildContext context,
+    Map<int, Map<int, List<BookingEntity>>> grid,
+  ) {
     const double hourRowHeight = 52;
     const double hourLabelWidth = 44;
     const double dayColWidth = 48;
 
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+        border: Border.all(
+          color:
+              Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withOpacity(0.06) ??
+              Colors.white.withOpacity(0.06),
+        ),
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -424,7 +455,9 @@ class _BookingsTab extends StatelessWidget {
                             child: Text(
                               _formatHour(hour),
                               style: const TextStyle(
-                                  color: Colors.grey, fontSize: 10),
+                                color: Colors.grey,
+                                fontSize: 10,
+                              ),
                             ),
                           ),
                         ),
@@ -439,19 +472,18 @@ class _BookingsTab extends StatelessWidget {
                               child: bookingsHere.isEmpty
                                   ? Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white
-                                            .withValues(alpha: 0.03),
-                                        borderRadius:
-                                            BorderRadius.circular(6),
+                                        color: Colors.white.withValues(
+                                          alpha: 0.03,
+                                        ),
+                                        borderRadius: BorderRadius.circular(6),
                                         border: Border.all(
-                                          color: Colors.white
-                                              .withValues(alpha: 0.05),
+                                          color: Colors.white.withValues(
+                                            alpha: 0.05,
+                                          ),
                                         ),
                                       ),
                                     )
-                                  : _BookedCell(
-                                      bookings: bookingsHere,
-                                    ),
+                                  : _BookedCell(bookings: bookingsHere),
                             ),
                           );
                         }),
@@ -459,8 +491,7 @@ class _BookingsTab extends StatelessWidget {
                     ),
                   ),
                   if (i < _endHour - _startHour - 1)
-                    const Divider(
-                        color: Colors.white10, height: 1, indent: 44),
+                    const Divider(color: Colors.white10, height: 1, indent: 44),
                 ],
               );
             }),
@@ -470,7 +501,7 @@ class _BookingsTab extends StatelessWidget {
     );
   }
 
-  Widget _emptySchedule() {
+  Widget _emptySchedule(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 48),
@@ -497,8 +528,10 @@ class _BookingsTab extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               'No bookings this week'.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color:
+                    Theme.of(context).textTheme.bodyMedium?.color ??
+                    Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -507,8 +540,11 @@ class _BookingsTab extends StatelessWidget {
             Text(
               'Approved and pending reservations\nwill appear here.'.tr,
               textAlign: TextAlign.center,
-              style:
-                  const TextStyle(color: Colors.grey, fontSize: 13, height: 1.5),
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 13,
+                height: 1.5,
+              ),
             ),
           ],
         ),
@@ -535,8 +571,7 @@ class _BookedCell extends StatelessWidget {
   Widget build(BuildContext context) {
     final first = bookings.first;
     final isPending = first.status == BookingStatus.pending;
-    final color =
-        isPending ? Colors.orange : AppColors.primaryColor;
+    final color = isPending ? Colors.orange : AppColors.primaryColor;
 
     return GestureDetector(
       onTap: () => _showDetail(context),
@@ -561,9 +596,10 @@ class _BookedCell extends StatelessWidget {
               Text(
                 '+${bookings.length}',
                 style: TextStyle(
-                    color: color,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold),
+                  color: color,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
           ],
         ),
@@ -574,7 +610,7 @@ class _BookedCell extends StatelessWidget {
   void _showDetail(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.colorBtnAndCard,
+      backgroundColor: Theme.of(context).cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -648,35 +684,39 @@ class _DetailRow extends StatelessWidget {
               children: [
                 Text(
                   booking.playerName,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14),
+                  style: TextStyle(
+                    color:
+                        Theme.of(context).textTheme.bodyMedium?.color ??
+                        Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   '${booking.dateTime}  •  ${booking.duration}',
-                  style:
-                      const TextStyle(color: Colors.grey, fontSize: 12),
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               ],
             ),
           ),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: statusColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: statusColor.withValues(alpha: 0.45), width: 1),
+                color: statusColor.withValues(alpha: 0.45),
+                width: 1,
+              ),
             ),
             child: Text(
               statusLabel,
               style: TextStyle(
-                  color: statusColor,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600),
+                color: statusColor,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -702,14 +742,11 @@ class _LegendDot extends StatelessWidget {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 5),
-        Text(label,
-            style: const TextStyle(color: Colors.grey, fontSize: 11)),
+        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 11)),
       ],
     );
   }
 }
-
-
 
 // ─── Skeleton Loading ──────────────────────────────────────────────────────────
 class _CourtProfileSkeleton extends StatefulWidget {
@@ -816,7 +853,7 @@ class _SkeletonBox extends StatelessWidget {
       height: height,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: opacity),
+        color: Colors.grey.withValues(alpha: opacity),
         borderRadius: BorderRadius.circular(radius),
       ),
     );
@@ -883,7 +920,10 @@ class _ErrorState extends StatelessWidget {
                 icon: const Icon(Icons.refresh_rounded, size: 18),
                 label: Text(
                   'Try Again'.tr,
-                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryColor,

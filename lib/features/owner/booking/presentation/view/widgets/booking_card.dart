@@ -47,7 +47,7 @@ class BookingCard extends StatelessWidget {
       duration: const Duration(milliseconds: 350),
       margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: _statusColor.withValues(alpha: 0.18),
@@ -95,7 +95,7 @@ class BookingCard extends StatelessWidget {
 
                 const SizedBox(height: 10),
                 Divider(
-                    color: Colors.white.withValues(alpha: 0.07),
+                    color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.07) ?? Colors.white.withValues(alpha: 0.07),
                     height: 1),
                 const SizedBox(height: 10),
 

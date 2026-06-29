@@ -53,8 +53,8 @@ class _EmptyReviews extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'No reviews yet'.tr,
-              style: const TextStyle(
-                color: Colors.white70,
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),

@@ -56,7 +56,7 @@ class PricingSection extends StatelessWidget {
                     ? '${_formatTimeStr(court!.offPeakStartTime!)} – ${_formatTimeStr(court.offPeakEndTime!)}'
                     : '11 am – 5 pm'.tr,
                 price: offPeak > 0 ? '${offPeak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
-                priceColor: Colors.white,
+                priceColor: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
               ),
               _divider(),
               _PriceRow(
@@ -67,7 +67,7 @@ class PricingSection extends StatelessWidget {
                     ? '${_formatTimeStr(court!.peakStartTime!)} – ${_formatTimeStr(court.peakEndTime!)}'
                     : '5 pm – 10 pm'.tr,
                 price: peak > 0 ? '${peak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
-                priceColor: Colors.white,
+                priceColor: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
               ),
               _divider(),
               _PriceRow(
@@ -85,9 +85,9 @@ class PricingSection extends StatelessWidget {
     );
   }
 
-  Widget _divider() => const Padding(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Divider(color: Colors.white10, height: 1),
+  Widget _divider() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Divider(color: Colors.grey.withValues(alpha: 0.2), height: 1),
       );
 
   String _formatTimeStr(String t) {
@@ -153,8 +153,8 @@ class _PriceRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(label,
-                  style: const TextStyle(
-                      color: Colors.white,
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
                       fontSize: 13,
                       fontWeight: FontWeight.w500)),
               const SizedBox(height: 2),

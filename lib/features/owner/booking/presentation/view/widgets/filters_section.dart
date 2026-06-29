@@ -88,10 +88,10 @@ class _FilterChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isActive
               ? activeColor.withOpacity(0.15)
-              : const Color(0xFF1C1F26),
+              : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: isActive ? activeColor : Colors.white.withOpacity(0.08),
+            color: isActive ? activeColor : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.08) ?? Colors.white.withOpacity(0.08),
             width: 1,
           ),
         ),
@@ -102,13 +102,13 @@ class _FilterChip extends StatelessWidget {
             Icon(
               icon,
               size: 15,
-              color: isActive ? activeColor : Colors.white54,
+              color: isActive ? activeColor : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.54) ?? Colors.white54,
             ),
             const SizedBox(width: 6),
             Text(
               label,
               style: TextStyle(
-                color: isActive ? activeColor : Colors.white54,
+                color: isActive ? activeColor : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.54) ?? Colors.white54,
                 fontSize: 13,
                 fontWeight:
                     isActive ? FontWeight.w600 : FontWeight.w400,

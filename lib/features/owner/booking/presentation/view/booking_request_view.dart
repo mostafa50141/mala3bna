@@ -13,7 +13,7 @@ class BookingRequestView extends StatelessWidget {
   Widget build(BuildContext context) {
     // BookingCubit is provided by OwnerMainNavigation — no new BlocProvider needed.
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           _BookingHeader(),
@@ -29,7 +29,7 @@ class _BookingHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: AppColors.primaryColor.withOpacity(0.08),
@@ -53,8 +53,8 @@ class _BookingHeader extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Booking Requests'.tr,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.3,

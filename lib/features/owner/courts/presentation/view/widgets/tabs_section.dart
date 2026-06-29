@@ -21,8 +21,9 @@ class _TabsSectionState extends State<TabsSection> {
     return Container(
       height: 46,
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
       ),
       padding: const EdgeInsets.all(4),
       child: Row(
@@ -62,7 +63,7 @@ class _TabsSectionState extends State<TabsSection> {
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 250),
             style: GoogleFonts.cairo(
-              color: active ? Colors.white : Colors.grey,
+              color: active ? Colors.white : Colors.grey.shade600,
               fontWeight: active ? FontWeight.w600 : FontWeight.w400,
               fontSize: 14,
             ),

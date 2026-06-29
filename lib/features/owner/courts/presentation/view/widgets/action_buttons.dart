@@ -62,7 +62,7 @@ class _ActionButtonsState extends State<ActionButtons>
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.colorBtnAndCard,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -86,7 +86,7 @@ class _ActionButtonsState extends State<ActionButtons>
                       height: 4,
                       margin: const EdgeInsets.only(bottom: 16),
                       decoration: BoxDecoration(
-                        color: Colors.white24,
+                        color: Colors.grey.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -94,7 +94,6 @@ class _ActionButtonsState extends State<ActionButtons>
                   Text(
                     'Disable Court'.tr,
                     style: const TextStyle(
-                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -102,21 +101,19 @@ class _ActionButtonsState extends State<ActionButtons>
                   const SizedBox(height: 16),
                   Text(
                     'Maintenance Type'.tr,
-                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                    style: const TextStyle(color: Colors.grey, fontSize: 14),
                   ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
                     value: selectedType,
-                    dropdownColor: AppColors.colorBtnAndCard,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white.withValues(alpha: 0.05),
+                      fillColor: Colors.grey.withValues(alpha: 0.1),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: const TextStyle(color: Colors.white),
                     items: [
                       DropdownMenuItem(value: 'lights', child: Text('Lighting Issue'.tr)),
                       DropdownMenuItem(value: 'turf', child: Text('Turf Maintenance'.tr)),
@@ -131,17 +128,16 @@ class _ActionButtonsState extends State<ActionButtons>
                   const SizedBox(height: 16),
                   Text(
                     'Details (Optional)'.tr,
-                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                    style: const TextStyle(color: Colors.grey, fontSize: 14),
                   ),
                   const SizedBox(height: 8),
                   TextField(
                     controller: descriptionCtrl,
-                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: 'e.g. replacing LED lights...'.tr,
-                      hintStyle: const TextStyle(color: Colors.white38),
+                      hintStyle: const TextStyle(color: Colors.grey),
                       filled: true,
-                      fillColor: Colors.white.withValues(alpha: 0.05),
+                      fillColor: Colors.grey.withValues(alpha: 0.1),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,

@@ -38,7 +38,6 @@ class RatingsSection extends StatelessWidget {
                   Text(
                     vm.rating.toStringAsFixed(1),
                     style: const TextStyle(
-                      color: Colors.white,
                       fontSize: 44,
                       fontWeight: FontWeight.bold,
                       height: 1.0,
