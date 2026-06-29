@@ -215,14 +215,17 @@ class PremiumThemeTile extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.black26,
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.black26 : Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white12, width: 1),
+                      border: Border.all(
+                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white12 : Colors.black12, 
+                        width: 1,
+                      ),
                     ),
                     child: Row(
                       children: [
                         Text(
-                          'Dark'.tr, // Actually we might need to read this from theme controller but I'll just keep it matching text color
+                          Theme.of(context).brightness == Brightness.dark ? 'Dark'.tr : 'Light'.tr,
                           style: TextStyle(
                             color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                             fontSize: 11,

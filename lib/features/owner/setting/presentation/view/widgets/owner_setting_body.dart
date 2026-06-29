@@ -243,11 +243,13 @@ class _Box extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color baseColor = isDark ? Colors.white : Colors.black;
     return Container(
       width: w,
       height: h,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: op),
+        color: baseColor.withValues(alpha: op),
         borderRadius: BorderRadius.circular(r),
       ),
     );

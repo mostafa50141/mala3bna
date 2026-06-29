@@ -189,6 +189,8 @@ const Map<String, String> _en = {
   'Dark Mode': 'Dark Mode',
   'Light Mode': 'Light Mode',
   'System Default': 'System Default',
+  'Dark': 'Dark',
+  'Light': 'Light',
 
   // ── Booking Requests ──────────────────────────────────────────────────────────
   'Booking Requests': 'Booking Requests',
@@ -500,6 +502,8 @@ const Map<String, String> _ar = {
   'Dark Mode': 'الوضع الداكن',
   'Light Mode': 'الوضع الفاتح',
   'System Default': 'إعداد النظام',
+  'Dark': 'داكن',
+  'Light': 'فاتح',
 
   // ── Booking Requests ──────────────────────────────────────────────────────────
   'Booking Requests': 'طلبات الحجز',
