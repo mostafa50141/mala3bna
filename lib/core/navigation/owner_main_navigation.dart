@@ -11,6 +11,8 @@ import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_
 import 'package:mala3bna/features/owner/courts/presentation/view/court_profile_view.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/owner_dashboard_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/owner_settings_view.dart';
+import 'package:mala3bna/features/owner/setting/domain/repositories/setting_repository.dart';
+import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 
 class OwnerMainNavigation extends StatefulWidget {
   const OwnerMainNavigation({super.key});
@@ -29,6 +31,8 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
   /// Lifted to this level so the nav bar badge can read pendingCount.
   late final BookingCubit _bookingCubit;
 
+  late final OwnerProfileCubit _ownerProfileCubit;
+
   @override
   void initState() {
     super.initState();
@@ -36,12 +40,15 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
       ..loadCourtProfile();
     _bookingCubit = BookingCubit(getIt<BookingRepository>())
       ..loadBookings();
+    _ownerProfileCubit = OwnerProfileCubit(getIt<SettingRepository>())
+      ..loadProfile();
   }
 
   @override
   void dispose() {
     _courtProfileCubit.close();
     _bookingCubit.close();
+    _ownerProfileCubit.close();
     super.dispose();
   }
 
@@ -83,34 +90,37 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
       builder: (context, bookingState) {
         final pendingCount =
             bookingState is BookingLoaded ? bookingState.pendingCount : 0;
-        return Scaffold(
-          body: IndexedStack(index: _currentIndex, children: pages),
-          bottomNavigationBar: CustomBottomNav(
-            currentIndex: _currentIndex,
-            onTap: (index) => setState(() => _currentIndex = index),
-            badges: [0, pendingCount, 0, 0],
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard_outlined),
-                activeIcon: Icon(Icons.dashboard),
-                label: 'Dashboard',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_month_outlined),
-                activeIcon: Icon(Icons.calendar_month),
-                label: 'Booking',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.stadium_outlined),
-                activeIcon: Icon(Icons.stadium),
-                label: 'Courts',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined),
-                activeIcon: Icon(Icons.settings),
-                label: 'Profile',
-              ),
-            ],
+        return BlocProvider.value(
+          value: _ownerProfileCubit,
+          child: Scaffold(
+            body: IndexedStack(index: _currentIndex, children: pages),
+            bottomNavigationBar: CustomBottomNav(
+              currentIndex: _currentIndex,
+              onTap: (index) => setState(() => _currentIndex = index),
+              badges: [0, pendingCount, 0, 0],
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard_outlined),
+                  activeIcon: Icon(Icons.dashboard),
+                  label: 'Dashboard',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_month_outlined),
+                  activeIcon: Icon(Icons.calendar_month),
+                  label: 'Booking',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.stadium_outlined),
+                  activeIcon: Icon(Icons.stadium),
+                  label: 'Courts',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings_outlined),
+                  activeIcon: Icon(Icons.settings),
+                  label: 'Profile',
+                ),
+              ],
+            ),
           ),
         );
       },

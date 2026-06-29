@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/cubit/owner_dashboard_cubit.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/cubit/owner_dashboard_state.dart';
+import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
+import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_state.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Top app bar showing the owner's greeting, avatar, and notification bell.
 class DashboardAppBar extends StatelessWidget {
@@ -11,119 +14,151 @@ class DashboardAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OwnerDashboardCubit, OwnerDashboardState>(
-      builder: (context, state) {
-        String ownerName = '...';
-        if (state is OwnerDashboardLoaded) {
-          ownerName = state.dashboardData.ownerName;
-        }
+    return BlocBuilder<OwnerProfileCubit, OwnerProfileState>(
+      builder: (context, profileState) {
+        return BlocBuilder<OwnerDashboardCubit, OwnerDashboardState>(
+          builder: (context, dashboardState) {
+            String ownerName = '...';
+            String? profileImage;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-          child: Row(
-            children: [
-              // ── Avatar ──
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      AppColors.primaryColor.withValues(alpha: 0.25),
-                      AppColors.colorBtnAndCard,
-                    ],
-                  ),
-                  border: Border.all(
-                    color: AppColors.primaryColor.withValues(alpha: 0.3),
-                    width: 1.5,
-                  ),
-                ),
-                child: Icon(
-                  Icons.person_rounded,
-                  color: AppColors.primaryColor,
-                  size: 22,
-                ),
-              ),
-              const SizedBox(width: 14),
+            if (profileState is OwnerProfileLoaded) {
+              ownerName = profileState.profile.name;
+              profileImage = profileState.profile.imageUrl;
+            } else if (profileState is OwnerProfileUpdating) {
+              ownerName = profileState.profile.name;
+              profileImage = profileState.profile.imageUrl;
+            } else if (profileState is OwnerProfileUpdateError) {
+              ownerName = profileState.profile.name;
+              profileImage = profileState.profile.imageUrl;
+            } else if (profileState is OwnerProfileUpdateSuccess) {
+              ownerName = profileState.profile.name;
+              profileImage = profileState.profile.imageUrl;
+            } else if (dashboardState is OwnerDashboardLoaded) {
+              ownerName = dashboardState.dashboardData.ownerName;
+            }
 
-              // ── Greeting ──
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      _greeting().tr,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.45),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+              child: Row(
+                children: [
+                  // ── Avatar ──
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          AppColors.primaryColor.withValues(alpha: 0.25),
+                          AppColors.colorBtnAndCard,
+                        ],
+                      ),
+                      border: Border.all(
+                        color: AppColors.primaryColor.withValues(alpha: 0.3),
+                        width: 1.5,
                       ),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      ownerName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // ── Notification Bell ──
-              GestureDetector(
-                onTap: () => _showNotificationsSheet(context),
-                child: Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: AppColors.colorBtnAndCard,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.06),
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      const Center(
-                        child: Icon(
-                          Icons.notifications_none_rounded,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                      ),
-                      // Live indicator dot
-                      Positioned(
-                        top: 10,
-                        right: 11,
-                        child: Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.colorBtnAndCard,
-                              width: 1.5,
+                    clipBehavior: Clip.antiAlias,
+                    child: profileImage != null && profileImage.isNotEmpty
+                        ? CachedNetworkImage(
+                            imageUrl: profileImage,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(strokeWidth: 2),
                             ),
+                            errorWidget: (context, url, error) => Icon(
+                              Icons.person_rounded,
+                              color: AppColors.primaryColor,
+                              size: 22,
+                            ),
+                          )
+                        : Icon(
+                            Icons.person_rounded,
+                            color: AppColors.primaryColor,
+                            size: 22,
+                          ),
+                  ),
+                  const SizedBox(width: 14),
+
+                  // ── Greeting ──
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          _greeting().tr,
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.45),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 2),
+                        Text(
+                          ownerName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+
+                  // ── Notification Bell ──
+                  GestureDetector(
+                    onTap: () => _showNotificationsSheet(context),
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: AppColors.colorBtnAndCard,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.06),
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          const Center(
+                            child: Icon(
+                              Icons.notifications_none_rounded,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                          // Live indicator dot
+                          Positioned(
+                            top: 10,
+                            right: 11,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.colorBtnAndCard,
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
