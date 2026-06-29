@@ -24,6 +24,8 @@ abstract class CourtRepository {
     required String id,
     String? title,
     double? hourlyRate,
+    double? offPeakRate,
+    double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
   });

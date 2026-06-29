@@ -412,10 +412,7 @@ class _EditCourtScreenState extends State<EditCourtScreen>
   Future<void> _onSave(BuildContext context, CourtEntity court) async {
     FocusScope.of(context).unfocus();
     HapticFeedback.mediumImpact();
-    final amenityIds = court.amenities
-        .where((a) => _selectedAmenities.contains(a.id))
-        .map((e) => e.id)
-        .toList();
+    final amenityIds = _selectedAmenities.toList();
     await context.read<EditCourtCubit>().saveChanges(
           peakRate: _peakController.text,
           offPeakRate: _offPeakController.text,

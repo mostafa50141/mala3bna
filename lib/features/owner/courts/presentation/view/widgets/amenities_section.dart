@@ -42,6 +42,24 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
   }
 
   Widget _amenityChip(AmenityEntity item) {
+    IconData icon;
+    switch (item.id) {
+      case 'lights':
+        icon = Icons.lightbulb_outline;
+        break;
+      case 'showers':
+        icon = Icons.shower_outlined;
+        break;
+      case 'cafe':
+        icon = Icons.local_cafe_outlined;
+        break;
+      case 'equipment':
+        icon = Icons.sports_soccer_outlined;
+        break;
+      default:
+        icon = Icons.check_circle_outline;
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -55,7 +73,7 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check_circle_outline, color: AppColors.primaryColor, size: 16),
+          Icon(icon, color: AppColors.primaryColor, size: 16),
           const SizedBox(width: 6),
           Text(
             item.title.tr,

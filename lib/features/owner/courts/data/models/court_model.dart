@@ -18,6 +18,10 @@ class CourtModel extends Equatable {
   final int reviewCount;
   final String? maintenanceType;
   final String? maintenanceDescription;
+  final String? offPeakStartTime;
+  final String? offPeakEndTime;
+  final String? peakStartTime;
+  final String? peakEndTime;
 
   const CourtModel({
     required this.id,
@@ -34,6 +38,10 @@ class CourtModel extends Equatable {
     this.reviewCount = 0,
     this.maintenanceType,
     this.maintenanceDescription,
+    this.offPeakStartTime,
+    this.offPeakEndTime,
+    this.peakStartTime,
+    this.peakEndTime,
   });
 
   CourtModel copyWith({
@@ -51,6 +59,10 @@ class CourtModel extends Equatable {
     int? reviewCount,
     String? maintenanceType,
     String? maintenanceDescription,
+    String? offPeakStartTime,
+    String? offPeakEndTime,
+    String? peakStartTime,
+    String? peakEndTime,
   }) {
     return CourtModel(
       id: id ?? this.id,
@@ -67,6 +79,10 @@ class CourtModel extends Equatable {
       reviewCount: reviewCount ?? this.reviewCount,
       maintenanceType: maintenanceType ?? this.maintenanceType,
       maintenanceDescription: maintenanceDescription ?? this.maintenanceDescription,
+      offPeakStartTime: offPeakStartTime ?? this.offPeakStartTime,
+      offPeakEndTime: offPeakEndTime ?? this.offPeakEndTime,
+      peakStartTime: peakStartTime ?? this.peakStartTime,
+      peakEndTime: peakEndTime ?? this.peakEndTime,
     );
   }
 
@@ -138,8 +154,8 @@ class CourtModel extends Equatable {
       id: parsedId,
       title: (json['name'] ?? json['title'])?.toString() ?? '',
       hourlyRate: _toDouble(json['price_per_hour'] ?? json['hourly_rate']),
-      offPeakRate: _toDouble(json['off_peak_rate']),
-      peakRate: _toDouble(json['peak_rate'] ?? json['price_per_hour'] ?? json['hourly_rate']),
+      offPeakRate: _toDouble(json['off_peak_price'] ?? json['off_peak_rate']),
+      peakRate: _toDouble(json['peak_price'] ?? json['peak_rate'] ?? json['price_per_hour'] ?? json['hourly_rate']),
       membershipDiscount: _toDouble(json['membership_discount']),
       images: rawImages
           .map((e) => CourtImageModel.fromJson(e as Map<String, dynamic>))
@@ -148,9 +164,13 @@ class CourtModel extends Equatable {
       address: json['address']?.toString() ?? '',
       isActive: _toBool(json['is_active']),
       rating: _toDouble(json['rating']),
-      reviewCount: _toInt(json['review_count']),
+      reviewCount: _toInt(json['review_count'] ?? json['reviews_count']),
       maintenanceType: json['maintenance_type']?.toString(),
       maintenanceDescription: json['maintenance_description']?.toString(),
+      offPeakStartTime: json['off_peak_start_time']?.toString(),
+      offPeakEndTime: json['off_peak_end_time']?.toString(),
+      peakStartTime: json['peak_start_time']?.toString(),
+      peakEndTime: json['peak_end_time']?.toString(),
     );
 
     print('[CourtModel] Parsed → id=${model.id}, title=${model.title}, '
@@ -174,6 +194,10 @@ class CourtModel extends Equatable {
         'review_count': reviewCount,
         'maintenance_type': maintenanceType,
         'maintenance_description': maintenanceDescription,
+        'off_peak_start_time': offPeakStartTime,
+        'off_peak_end_time': offPeakEndTime,
+        'peak_start_time': peakStartTime,
+        'peak_end_time': peakEndTime,
       };
 
   CourtEntity toEntity() {
@@ -192,6 +216,10 @@ class CourtModel extends Equatable {
       reviewCount: reviewCount,
       maintenanceType: maintenanceType,
       maintenanceDescription: maintenanceDescription,
+      offPeakStartTime: offPeakStartTime,
+      offPeakEndTime: offPeakEndTime,
+      peakStartTime: peakStartTime,
+      peakEndTime: peakEndTime,
     );
   }
 
@@ -211,5 +239,9 @@ class CourtModel extends Equatable {
         reviewCount,
         maintenanceType,
         maintenanceDescription,
+        offPeakStartTime,
+        offPeakEndTime,
+        peakStartTime,
+        peakEndTime,
       ];
 }

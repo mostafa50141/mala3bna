@@ -17,6 +17,8 @@ abstract class CourtRemoteDataSource {
     required String id,
     String? title,
     double? hourlyRate,
+    double? offPeakRate,
+    double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
   });
@@ -96,12 +98,16 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
     required String id,
     String? title,
     double? hourlyRate,
+    double? offPeakRate,
+    double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
   }) async {
     final Map<String, dynamic> data = {};
     if (title != null) data['name'] = title;
     if (hourlyRate != null) data['price_per_hour'] = hourlyRate;
+    if (offPeakRate != null) data['off_peak_price'] = offPeakRate;
+    if (membershipDiscount != null) data['membership_discount'] = membershipDiscount;
     if (address != null) data['address'] = address;
 
     // Backend uses boolean flags, not a list of amenity IDs
@@ -112,12 +118,11 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
       data['has_equipment'] = amenityIds.contains('equipment');
     }
 
-    print('[UpdateField] Sending PATCH (form-urlencoded) to ${ApiEndpoints.fieldDetail(id)}');
+    print('[UpdateField] Sending PATCH to ${ApiEndpoints.fieldDetail(id)}');
     print('[UpdateField] Body: $data');
 
-    // Use form-urlencoded (lighter than multipart, no file overhead)
-    // Django accepts this via FormParser alongside MultiPartParser
-    final rawResponse = await _client.patchForm(
+    // Use JSON patch to properly encode booleans (has_lights, etc.)
+    final rawResponse = await _client.patch(
       ApiEndpoints.fieldDetail(id),
       data: data,
     );

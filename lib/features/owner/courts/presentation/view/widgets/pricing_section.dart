@@ -52,7 +52,9 @@ class PricingSection extends StatelessWidget {
                 icon: Icons.wb_sunny_outlined,
                 iconColor: Colors.amber.shade300,
                 label: 'Off-Peak Hours'.tr,
-                subtitle: '11 am – 5 pm'.tr,
+                subtitle: court?.offPeakStartTime != null && court?.offPeakEndTime != null
+                    ? '${_formatTimeStr(court!.offPeakStartTime!)} – ${_formatTimeStr(court.offPeakEndTime!)}'
+                    : '11 am – 5 pm'.tr,
                 price: offPeak > 0 ? '${offPeak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
                 priceColor: Colors.white,
               ),
@@ -61,7 +63,9 @@ class PricingSection extends StatelessWidget {
                 icon: Icons.nightlight_outlined,
                 iconColor: const Color(0xFFB39DDB),
                 label: 'Peak Hours'.tr,
-                subtitle: '5 pm – 10 pm'.tr,
+                subtitle: court?.peakStartTime != null && court?.peakEndTime != null
+                    ? '${_formatTimeStr(court!.peakStartTime!)} – ${_formatTimeStr(court.peakEndTime!)}'
+                    : '5 pm – 10 pm'.tr,
                 price: peak > 0 ? '${peak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
                 priceColor: Colors.white,
               ),
@@ -85,6 +89,32 @@ class PricingSection extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Divider(color: Colors.white10, height: 1),
       );
+
+  String _formatTimeStr(String t) {
+    try {
+      if (t.contains('T') || (t.length >= 10 && t[4] == '-')) {
+        final dt = DateTime.parse(t).toLocal();
+        return _formatDt(dt.hour, dt.minute);
+      }
+      String timePart = t;
+      if (timePart.endsWith('Z')) timePart = timePart.substring(0, timePart.length - 1);
+      final parts = timePart.split(':');
+      if (parts.length >= 2) {
+        return _formatDt(int.parse(parts[0]), int.parse(parts[1]));
+      }
+      return t;
+    } catch (_) {
+      return t;
+    }
+  }
+
+  String _formatDt(int h, int m) {
+    final amPm = h >= 12 ? 'pm' : 'am';
+    h = h % 12;
+    if (h == 0) h = 12;
+    if (m == 0) return '$h $amPm';
+    return '$h:${m.toString().padLeft(2, '0')} $amPm';
+  }
 }
 
 class _PriceRow extends StatelessWidget {

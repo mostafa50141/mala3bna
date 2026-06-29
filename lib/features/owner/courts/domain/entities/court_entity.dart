@@ -46,6 +46,10 @@ class CourtEntity extends Equatable {
   final int reviewCount;
   final String? maintenanceType;
   final String? maintenanceDescription;
+  final String? offPeakStartTime;
+  final String? offPeakEndTime;
+  final String? peakStartTime;
+  final String? peakEndTime;
 
   const CourtEntity({
     required this.id,
@@ -62,6 +66,10 @@ class CourtEntity extends Equatable {
     this.reviewCount = 0,
     this.maintenanceType,
     this.maintenanceDescription,
+    this.offPeakStartTime,
+    this.offPeakEndTime,
+    this.peakStartTime,
+    this.peakEndTime,
   });
 
   CourtEntity copyWith({
@@ -79,6 +87,10 @@ class CourtEntity extends Equatable {
     int? reviewCount,
     String? maintenanceType,
     String? maintenanceDescription,
+    String? offPeakStartTime,
+    String? offPeakEndTime,
+    String? peakStartTime,
+    String? peakEndTime,
   }) {
     return CourtEntity(
       id: id ?? this.id,
@@ -95,6 +107,10 @@ class CourtEntity extends Equatable {
       reviewCount: reviewCount ?? this.reviewCount,
       maintenanceType: maintenanceType ?? this.maintenanceType,
       maintenanceDescription: maintenanceDescription ?? this.maintenanceDescription,
+      offPeakStartTime: offPeakStartTime ?? this.offPeakStartTime,
+      offPeakEndTime: offPeakEndTime ?? this.offPeakEndTime,
+      peakStartTime: peakStartTime ?? this.peakStartTime,
+      peakEndTime: peakEndTime ?? this.peakEndTime,
     );
   }
 
@@ -114,5 +130,9 @@ class CourtEntity extends Equatable {
         reviewCount,
         maintenanceType,
         maintenanceDescription,
+        offPeakStartTime,
+        offPeakEndTime,
+        peakStartTime,
+        peakEndTime,
       ];
 }

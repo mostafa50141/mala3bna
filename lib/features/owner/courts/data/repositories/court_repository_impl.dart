@@ -60,6 +60,8 @@ class CourtRepositoryImpl implements CourtRepository {
     required String id,
     String? title,
     double? hourlyRate,
+    double? offPeakRate,
+    double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
   }) async {
@@ -68,6 +70,8 @@ class CourtRepositoryImpl implements CourtRepository {
         id: id,
         title: title,
         hourlyRate: hourlyRate,
+        offPeakRate: offPeakRate,
+        membershipDiscount: membershipDiscount,
         address: address,
         amenityIds: amenityIds,
       );

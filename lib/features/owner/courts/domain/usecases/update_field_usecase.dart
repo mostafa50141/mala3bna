@@ -11,6 +11,8 @@ class UpdateFieldUseCase {
     required String id,
     String? title,
     double? hourlyRate,
+    double? offPeakRate,
+    double? membershipDiscount,
     String? address,
     List<String>? amenityIds,
   }) =>
@@ -18,6 +20,8 @@ class UpdateFieldUseCase {
         id: id,
         title: title,
         hourlyRate: hourlyRate,
+        offPeakRate: offPeakRate,
+        membershipDiscount: membershipDiscount,
         address: address,
         amenityIds: amenityIds,
       );

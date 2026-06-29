@@ -111,6 +111,8 @@ class EditCourtCubit extends Cubit<EditCourtState> {
     final result = await updateUseCase(
       id: _court!.id,
       hourlyRate: parsedPeak, // peak is the main price sent to API
+      offPeakRate: parsedOffPeak,
+      membershipDiscount: parsedDiscount,
       address: address,
       amenityIds: amenityIds,
     );
