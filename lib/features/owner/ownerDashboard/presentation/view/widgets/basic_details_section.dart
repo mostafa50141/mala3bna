@@ -5,7 +5,9 @@ import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets
 
 class BasicDetailsSection extends StatelessWidget {
   final TextEditingController nameController;
-  const BasicDetailsSection({super.key, required this.nameController});
+  final ValueChanged<String?> onSportTypeChanged;
+  
+  const BasicDetailsSection({super.key, required this.nameController, required this.onSportTypeChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,9 @@ class BasicDetailsSection extends StatelessWidget {
               (v == null || v.isEmpty) ? 'Court name is required'.tr : null,
         ),
         const SizedBox(height: 12),
-        DropdownBtnField(),
+        DropdownBtnField(
+          onChanged: onSportTypeChanged,
+        ),
       ],
     );
   }

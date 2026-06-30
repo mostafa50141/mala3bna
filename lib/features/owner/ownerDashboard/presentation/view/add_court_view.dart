@@ -31,6 +31,7 @@ class _AddCourtViewState extends State<AddCourtView> {
   late final MultiImagePickerController _imageController;
   
   List<String> _selectedAmenities = [];
+  String? _selectedSportType;
 
   @override
   void initState() {
@@ -68,6 +69,7 @@ class _AddCourtViewState extends State<AddCourtView> {
       title: _nameController.text.trim(),
       hourlyRate: _priceController.text.trim(),
       address: _addressController.text.trim(),
+      sportType: _selectedSportType ?? 'Football',
       amenityIds: _selectedAmenities,
       imagePaths: imagePaths,
     );
@@ -121,7 +123,12 @@ class _AddCourtViewState extends State<AddCourtView> {
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    BasicDetailsSection(nameController: _nameController),
+                    BasicDetailsSection(
+                      nameController: _nameController,
+                      onSportTypeChanged: (val) {
+                        _selectedSportType = val;
+                      },
+                    ),
                     const SizedBox(height: 20),
                     LocationSection(addressController: _addressController),
                     const SizedBox(height: 20),

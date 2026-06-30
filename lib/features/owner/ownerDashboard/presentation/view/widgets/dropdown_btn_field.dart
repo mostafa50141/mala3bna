@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 
 class DropdownBtnField extends StatelessWidget {
-  DropdownBtnField({super.key});
-  final sportTypes = ['Football', 'Basketball', 'Tennis', 'Padel'];
+  DropdownBtnField({super.key, this.onChanged});
+  final sportTypes = ['Football', 'Padel', 'Tennis'];
+  final ValueChanged<String?>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +48,7 @@ class DropdownBtnField extends StatelessWidget {
             ),
           )
           .toList(),
-      onChanged: (value) {
-        debugPrint('Selected sport type: $value');
-      },
+      onChanged: onChanged,
       validator: (value) =>
           value == null ? 'Please select a sport type'.tr : null,
     );

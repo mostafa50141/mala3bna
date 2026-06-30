@@ -38,6 +38,7 @@ class CourtRepositoryImpl implements CourtRepository {
     required String title,
     required double hourlyRate,
     required String address,
+    required String sportType,
     required List<String> amenityIds,
   }) async {
     try {
@@ -45,6 +46,7 @@ class CourtRepositoryImpl implements CourtRepository {
         title: title,
         hourlyRate: hourlyRate,
         address: address,
+        sportType: sportType,
         amenityIds: amenityIds,
       );
       return Right(model.toEntity());

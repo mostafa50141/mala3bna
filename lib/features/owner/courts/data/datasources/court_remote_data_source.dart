@@ -11,6 +11,7 @@ abstract class CourtRemoteDataSource {
     required String title,
     required double hourlyRate,
     required String address,
+    required String sportType,
     required List<String> amenityIds,
   });
   Future<CourtModel> updateField({
@@ -80,15 +81,20 @@ class CourtRemoteDataSourceImpl implements CourtRemoteDataSource {
     required String title,
     required double hourlyRate,
     required String address,
+    required String sportType,
     required List<String> amenityIds,
   }) async {
     final response = await _client.post(
       ApiEndpoints.fields,
       data: {
-        'title': title,
-        'hourly_rate': hourlyRate,
+        'name': title,
+        'price_per_hour': hourlyRate,
         'address': address,
-        'amenities': amenityIds,
+        'sport_type': sportType,
+        'has_lights': amenityIds.contains('lights'),
+        'has_showers': amenityIds.contains('showers'),
+        'has_cafe': amenityIds.contains('cafe'),
+        'has_equipment': amenityIds.contains('equipment'),
       },
     );
     return CourtModel.fromJson(response);

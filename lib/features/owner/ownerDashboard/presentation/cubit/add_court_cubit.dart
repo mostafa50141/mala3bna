@@ -11,6 +11,7 @@ class AddCourtCubit extends Cubit<AddCourtState> {
     required String title,
     required String hourlyRate,
     required String address,
+    required String sportType,
     required List<String> amenityIds,
     required List<String> imagePaths,
   }) async {
@@ -42,6 +43,7 @@ class AddCourtCubit extends Cubit<AddCourtState> {
       title: title,
       hourlyRate: double.parse(hourlyRate),
       address: address,
+      sportType: sportType,
       amenityIds: amenityIds,
     );
 

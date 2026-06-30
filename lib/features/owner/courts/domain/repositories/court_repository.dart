@@ -16,6 +16,7 @@ abstract class CourtRepository {
     required String title,
     required double hourlyRate,
     required String address,
+    required String sportType,
     required List<String> amenityIds,
   });
 
