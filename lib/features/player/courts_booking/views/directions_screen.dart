@@ -30,10 +30,17 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
   List<LatLng> _routePoints = [];
   final MapController _mapController = MapController();
 
+  bool get _hasCourtCoordinates =>
+      widget.court.lat != 0.0 && widget.court.lng != 0.0;
+
   @override
   void initState() {
     super.initState();
-    _initDirections();
+    if (_hasCourtCoordinates) {
+      _initDirections();
+    } else {
+      _isLoading = false;
+    }
   }
 
   Future<void> _initDirections() async {
@@ -44,14 +51,7 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
     });
 
     try {
-      // 1. Validate court coordinates
-      if (widget.court.lat == 0.0 && widget.court.lng == 0.0) {
-        throw Exception(
-          'Invalid court coordinates. Cannot calculate directions.',
-        );
-      }
-
-      // 2. Check location services & permissions via LocationService
+      // 1. Check location services & permissions via LocationService
       setState(() => _loadingMessage = 'Getting your location...');
       final locationService = getIt.get<LocationService>();
       final locationResult = await locationService.getUserLocation();
@@ -143,6 +143,15 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
   }
 
   Widget _buildBody() {
+    if (!_hasCourtCoordinates) {
+      return Center(
+        child: Text(
+          'Location not available for this court',
+          style: Style.textStyle14.copyWith(color: Colors.grey),
+        ),
+      );
+    }
+
     if (_isLoading) {
       return Center(
         child: Column(
@@ -226,7 +235,8 @@ class _DirectionsScreenState extends State<DirectionsScreen> {
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
-            initialCenter: _userLocation ?? const LatLng(30.0444, 31.2357),
+            initialCenter:
+                _userLocation ?? LatLng(widget.court.lat, widget.court.lng),
             initialZoom: 14.0,
           ),
           children: [

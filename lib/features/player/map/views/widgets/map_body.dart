@@ -22,7 +22,9 @@ class MapBody extends StatefulWidget {
 }
 
 class _MapBodyState extends State<MapBody> {
-  LatLng _userLocation = const LatLng(30.0444, 31.2357);
+  static const LatLng _defaultCenter = LatLng(29.3084, 30.8428);
+
+  LatLng _userLocation = _defaultCenter;
   bool _isLoading = true;
   bool _permissionDenied = false;
   CourtModel? _selectedCourt;
@@ -44,6 +46,14 @@ class _MapBodyState extends State<MapBody> {
       }
       _isLoading = false;
     });
+    if (result.isSuccess) {
+      _mapController.move(_userLocation, 14.0);
+    }
+  }
+
+  void _onCourtTapped(CourtModel court) {
+    setState(() => _selectedCourt = court);
+    _mapController.move(LatLng(court.lat, court.lng), 14.0);
   }
 
   @override
@@ -58,6 +68,9 @@ class _MapBodyState extends State<MapBody> {
               final courts = state is CourtsSuccess
                   ? state.courts
                   : <CourtModel>[];
+              final validCourts = courts
+                  .where((c) => c.lat != 0.0 && c.lng != 0.0)
+                  .toList();
               return FlutterMap(
                 mapController: _mapController,
                 options: MapOptions(
@@ -93,14 +106,14 @@ class _MapBodyState extends State<MapBody> {
                           ),
                         ),
                       ),
-                      ...courts.map(
+                      ...validCourts.map(
                         (court) => Marker(
                           point: LatLng(court.lat, court.lng),
                           width: 44,
                           height: 44,
                           child: CourtMapMarker(
                             court: court,
-                            onTap: () => setState(() => _selectedCourt = court),
+                            onTap: () => _onCourtTapped(court),
                           ),
                         ),
                       ),
