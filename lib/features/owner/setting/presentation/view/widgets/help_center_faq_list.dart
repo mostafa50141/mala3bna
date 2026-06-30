@@ -30,6 +30,7 @@ class HelpCenterFaqList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,8 +39,8 @@ class HelpCenterFaqList extends StatelessWidget {
           children: [
             Text(
               'Popular Questions'.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -83,6 +84,7 @@ class _FaqTileState extends State<_FaqTile>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Material(
@@ -94,13 +96,13 @@ class _FaqTileState extends State<_FaqTile>
             });
           },
           borderRadius: BorderRadius.circular(16),
-          splashColor: Colors.white.withValues(alpha: 0.05),
+          splashColor: AppColors.primaryColor.withValues(alpha: 0.1),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
-              color: AppColors.colorBtnAndCard,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: _isExpanded
@@ -119,7 +121,7 @@ class _FaqTileState extends State<_FaqTile>
                         style: TextStyle(
                           color: _isExpanded
                               ? AppColors.primaryColor
-                              : Colors.white.withValues(alpha: 0.8),
+                              : (isDark ? Colors.white.withValues(alpha: 0.8) : Colors.black.withValues(alpha: 0.8)),
                           fontSize: 14,
                           fontWeight:
                               _isExpanded ? FontWeight.w600 : FontWeight.w500,
@@ -133,7 +135,7 @@ class _FaqTileState extends State<_FaqTile>
                         Icons.arrow_forward_ios_rounded,
                         color: _isExpanded
                             ? AppColors.primaryColor
-                            : Colors.white.withValues(alpha: 0.3),
+                            : (isDark ? Colors.white.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.3)),
                         size: 14,
                       ),
                     ),
@@ -150,7 +152,7 @@ class _FaqTileState extends State<_FaqTile>
                             child: Text(
                               widget.answer,
                               style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.5),
+                                color: isDark ? Colors.white.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.5),
                                 fontSize: 13,
                                 height: 1.5,
                               ),

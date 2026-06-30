@@ -7,10 +7,11 @@ class HelpCenterDirectSupport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.15)),
       ),
@@ -49,7 +50,7 @@ class HelpCenterDirectSupport extends StatelessWidget {
           Text(
             'Chat with our athletic support\nteam'.tr,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.6),
+              color: isDark ? Colors.white.withValues(alpha: 0.6) : Colors.black.withValues(alpha: 0.6),
               fontSize: 13,
               height: 1.4,
             ),

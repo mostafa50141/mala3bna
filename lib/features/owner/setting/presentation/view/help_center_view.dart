@@ -44,9 +44,10 @@ class _HelpCenterViewState extends State<HelpCenterView>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: _buildAppBar(context),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: _buildAppBar(context, isDark),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SafeArea(
@@ -63,8 +64,8 @@ class _HelpCenterViewState extends State<HelpCenterView>
                     // Heading
                     Text(
                       'How can we help?'.tr,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black87,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -96,7 +97,7 @@ class _HelpCenterViewState extends State<HelpCenterView>
                       child: Text(
                         'MALA3BNA V2.4.0',
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.2),
+                          color: isDark ? Colors.white.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.2),
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.5,
@@ -113,9 +114,9 @@ class _HelpCenterViewState extends State<HelpCenterView>
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar(BuildContext context, bool isDark) {
     return AppBar(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       leadingWidth: 70,
@@ -148,8 +149,8 @@ class _HelpCenterViewState extends State<HelpCenterView>
           ),
           Text(
             'Help Center'.tr,
-            style: const TextStyle(
-              color: Colors.white54,
+            style: TextStyle(
+              color: isDark ? Colors.white54 : Colors.black54,
               fontSize: 12,
               fontWeight: FontWeight.w400,
             ),

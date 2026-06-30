@@ -6,9 +6,10 @@ class HelpCenterCategories extends StatelessWidget {
   const HelpCenterCategories({super.key});
 
   void _showPaymentsSheet(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.colorBtnAndCard,
+      backgroundColor: Theme.of(context).cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -21,7 +22,7 @@ class HelpCenterCategories extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.white24,
+                color: isDark ? Colors.white24 : Colors.black26,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -30,17 +31,17 @@ class HelpCenterCategories extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Vodafone Cash'.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 12),
-            const Text(
+            Text(
               '01020177158',
               style: TextStyle(
-                color: Colors.white70,
+                color: isDark ? Colors.white70 : Colors.black54,
                 fontSize: 20,
                 letterSpacing: 2.0,
                 fontWeight: FontWeight.w600,
@@ -71,9 +72,10 @@ class HelpCenterCategories extends StatelessWidget {
   }
 
   void _showFacilitiesSheet(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.colorBtnAndCard,
+      backgroundColor: Theme.of(context).cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -88,7 +90,7 @@ class HelpCenterCategories extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white24,
+                  color: isDark ? Colors.white24 : Colors.black26,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -96,8 +98,8 @@ class HelpCenterCategories extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               'Select Sport Type'.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -107,10 +109,10 @@ class HelpCenterCategories extends StatelessWidget {
               spacing: 12,
               runSpacing: 12,
               children: [
-                _buildSportChip('Football'.tr, Icons.sports_soccer),
-                _buildSportChip('Basketball'.tr, Icons.sports_basketball),
-                _buildSportChip('Tennis'.tr, Icons.sports_tennis),
-                _buildSportChip('Padel'.tr, Icons.sports_tennis),
+                _buildSportChip(context, 'Football'.tr, Icons.sports_soccer),
+                _buildSportChip(context, 'Basketball'.tr, Icons.sports_basketball),
+                _buildSportChip(context, 'Tennis'.tr, Icons.sports_tennis),
+                _buildSportChip(context, 'Padel'.tr, Icons.sports_tennis),
               ],
             ),
             const SizedBox(height: 24),
@@ -120,11 +122,12 @@ class HelpCenterCategories extends StatelessWidget {
     );
   }
 
-  Widget _buildSportChip(String label, IconData icon) {
+  Widget _buildSportChip(BuildContext context, String label, IconData icon) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.primaryColor.withValues(alpha: 0.3)),
       ),
@@ -133,7 +136,7 @@ class HelpCenterCategories extends StatelessWidget {
         children: [
           Icon(icon, color: AppColors.primaryColor, size: 18),
           const SizedBox(width: 8),
-          Text(label, style: const TextStyle(color: Colors.white, fontSize: 14)),
+          Text(label, style: TextStyle(color: isDark ? Colors.white : Colors.black87, fontSize: 14)),
         ],
       ),
     );
@@ -191,6 +194,7 @@ class _CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -200,9 +204,11 @@ class _CategoryCard extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.colorBtnAndCard,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+            border: Border.all(
+              color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,8 +218,8 @@ class _CategoryCard extends StatelessWidget {
               const Spacer(),
               Text(
                 title,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black87,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -222,7 +228,7 @@ class _CategoryCard extends StatelessWidget {
               Text(
                 subtitle,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.4),
+                  color: isDark ? Colors.white.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.4),
                   fontSize: 11,
                 ),
               ),
