@@ -93,7 +93,7 @@ class _TermsBodyState extends State<_TermsBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: _buildAppBar(context),
       body: BlocListener<TermsCubit, TermsState>(
         listener: _onStateChanged,
@@ -141,29 +141,32 @@ class _TermsBodyState extends State<_TermsBody> {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppBar(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.08)
+                : Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new,
             size: 18,
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black,
           ),
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
-      title: const Text(
+      title: Text(
         'Terms & Conditions',
         style: TextStyle(
-          color: Colors.white,
+          color: isDark ? Colors.white : Colors.black,
           fontSize: 18,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.3,
@@ -177,7 +180,9 @@ class _TermsBodyState extends State<_TermsBody> {
           },
           icon: Icon(
             Icons.share_outlined,
-            color: Colors.white.withValues(alpha: 0.5),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.5)
+                : Colors.black.withValues(alpha: 0.5),
             size: 20,
           ),
         ),
@@ -196,6 +201,7 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         Container(
@@ -210,7 +216,9 @@ class _SectionLabel extends StatelessWidget {
         Text(
           'SECTIONS',
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.4),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.4)
+                : Colors.black.withValues(alpha: 0.4),
             fontSize: 11,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.3,

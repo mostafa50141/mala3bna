@@ -8,6 +8,7 @@ class TermsHeaderBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
@@ -17,12 +18,14 @@ class TermsHeaderBanner extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             AppColors.primaryColor.withValues(alpha: 0.25),
-            AppColors.colorBtnAndCard,
+            Theme.of(context).cardColor,
           ],
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.primaryColor.withValues(alpha: 0.2),
+          color: isDark
+              ? AppColors.primaryColor.withValues(alpha: 0.2)
+              : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: Column(
@@ -64,8 +67,8 @@ class TermsHeaderBanner extends StatelessWidget {
           // Title
           Text(
             'Neon Athletics\nTerms'.tr,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black,
               fontSize: 28,
               fontWeight: FontWeight.w800,
               height: 1.15,
@@ -79,13 +82,17 @@ class TermsHeaderBanner extends StatelessWidget {
               Icon(
                 Icons.calendar_today_outlined,
                 size: 13,
-                color: Colors.white.withValues(alpha: 0.4),
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.4)
+                    : Colors.black.withValues(alpha: 0.4),
               ),
               const SizedBox(width: 6),
               Text(
                 'Last updated: January 2025'.tr,
                 style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.4),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.4)
+                      : Colors.black.withValues(alpha: 0.4),
                   fontSize: 12,
                 ),
               ),

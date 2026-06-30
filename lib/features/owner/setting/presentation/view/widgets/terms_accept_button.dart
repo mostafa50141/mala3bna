@@ -18,12 +18,17 @@ class TermsAcceptButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: Theme.of(context).scaffoldBackgroundColor,
         border: Border(
-          top: BorderSide(color: Colors.white.withValues(alpha: 0.06)),
+          top: BorderSide(
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.06)
+                : Colors.black.withValues(alpha: 0.06),
+          ),
         ),
       ),
       child: Column(
@@ -39,13 +44,17 @@ class TermsAcceptButton extends StatelessWidget {
                   Icon(
                     Icons.arrow_downward_rounded,
                     size: 13,
-                    color: Colors.white.withValues(alpha: 0.3),
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.3)
+                        : Colors.black.withValues(alpha: 0.3),
                   ),
                   const SizedBox(width: 5),
                   Text(
                     'Scroll to the bottom to accept'.tr,
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.3),
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.3)
+                          : Colors.black.withValues(alpha: 0.3),
                       fontSize: 12,
                     ),
                   ),
@@ -112,7 +121,9 @@ class TermsAcceptButton extends StatelessWidget {
                             style: TextStyle(
                               color: canAccept
                                   ? Colors.white
-                                  : Colors.white.withValues(alpha: 0.3),
+                                  : (isDark
+                                      ? Colors.white.withValues(alpha: 0.3)
+                                      : AppColors.primaryColor.withValues(alpha: 0.5)),
                               fontSize: 15,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 1.0,

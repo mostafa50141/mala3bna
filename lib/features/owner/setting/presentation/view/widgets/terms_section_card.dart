@@ -54,15 +54,18 @@ class _TermsSectionCardState extends State<TermsSectionCard>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: _isExpanded
               ? AppColors.primaryColor.withValues(alpha: 0.25)
-              : Colors.white.withValues(alpha: 0.05),
+              : (isDark
+                  ? Colors.white.withValues(alpha: 0.05)
+                  : Colors.black.withValues(alpha: 0.05)),
         ),
       ),
       child: Material(
@@ -105,8 +108,8 @@ class _TermsSectionCardState extends State<TermsSectionCard>
                     Expanded(
                       child: Text(
                         widget.section.title,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
@@ -119,7 +122,7 @@ class _TermsSectionCardState extends State<TermsSectionCard>
                         Icons.keyboard_arrow_down_rounded,
                         color: _isExpanded
                             ? AppColors.primaryColor
-                            : Colors.white38,
+                            : (isDark ? Colors.white38 : Colors.black38),
                         size: 22,
                       ),
                     ),
@@ -136,7 +139,7 @@ class _TermsSectionCardState extends State<TermsSectionCard>
                     alignment: Alignment.topCenter,
                     child: child,
                   ),
-                  child: _buildPoints(),
+                  child: _buildPoints(context, isDark),
                 ),
               ),
             ],
@@ -146,14 +149,19 @@ class _TermsSectionCardState extends State<TermsSectionCard>
     );
   }
 
-  Widget _buildPoints() {
+  Widget _buildPoints(BuildContext context, bool isDark) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(color: Colors.white.withValues(alpha: 0.07), height: 1),
+          Divider(
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.07)
+                : Colors.black.withValues(alpha: 0.07),
+            height: 1,
+          ),
           const SizedBox(height: 12),
           ...widget.section.points.map(
             (point) => Padding(
@@ -174,7 +182,9 @@ class _TermsSectionCardState extends State<TermsSectionCard>
                     child: Text(
                       point,
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.6),
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.6)
+                            : Colors.black.withValues(alpha: 0.6),
                         fontSize: 13,
                         height: 1.55,
                       ),
