@@ -30,7 +30,9 @@ class StatsGrid extends StatelessWidget {
             Text(
               'OVERVIEW'.tr,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.4),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white.withValues(alpha: 0.4)
+                    : Colors.black.withValues(alpha: 0.4),
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.3,
