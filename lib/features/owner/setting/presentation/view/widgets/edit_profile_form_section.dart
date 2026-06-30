@@ -136,21 +136,24 @@ class _ProfileTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black87;
+
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
       onChanged: onChanged,
-      style: const TextStyle(color: Colors.white, fontSize: 15),
+      style: TextStyle(color: textColor, fontSize: 15),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(
-          color: Colors.white.withValues(alpha: 0.25),
+          color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.black.withValues(alpha: 0.3),
           fontSize: 14,
         ),
-        prefixIcon: Icon(icon, color: Colors.white38, size: 20),
+        prefixIcon: Icon(icon, color: isDark ? Colors.white38 : Colors.black38, size: 20),
         filled: true,
-        fillColor: AppColors.colorBtnAndCard,
+        fillColor: Theme.of(context).cardColor,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 16,
@@ -162,7 +165,7 @@ class _ProfileTextField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: Colors.white.withValues(alpha: 0.07),
+            color: isDark ? Colors.white.withValues(alpha: 0.07) : Colors.black.withValues(alpha: 0.07),
           ),
         ),
         focusedBorder: OutlineInputBorder(

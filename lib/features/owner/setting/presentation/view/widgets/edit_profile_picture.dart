@@ -58,66 +58,69 @@ class _EditProfilePictureState extends State<EditProfilePicture> {
   void _showPickerSheet() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.colorBtnAndCard,
+      backgroundColor: Theme.of(context).cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white24,
-                  borderRadius: BorderRadius.circular(2),
+      builder: (ctx) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Handle bar
+                Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white24 : Colors.black26,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-              ),
 
-              Text(
-                'Change Profile Picture'.tr,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                Text(
+                  'Change Profile Picture'.tr,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // Gallery
-              _SheetOption(
-                icon: Icons.photo_library_rounded,
-                label: 'Choose from Gallery'.tr,
-                onTap: () => _pickImage(ImageSource.gallery),
-              ),
+                // Gallery
+                _SheetOption(
+                  icon: Icons.photo_library_rounded,
+                  label: 'Choose from Gallery'.tr,
+                  onTap: () => _pickImage(ImageSource.gallery),
+                ),
 
-              const Divider(color: Colors.white10, height: 1),
+                Divider(color: isDark ? Colors.white10 : Colors.black12, height: 1),
 
-              // Camera
-              _SheetOption(
-                icon: Icons.camera_alt_rounded,
-                label: 'Take a Photo'.tr,
-                onTap: () => _pickImage(ImageSource.camera),
-              ),
+                // Camera
+                _SheetOption(
+                  icon: Icons.camera_alt_rounded,
+                  label: 'Take a Photo'.tr,
+                  onTap: () => _pickImage(ImageSource.camera),
+                ),
 
-              const Divider(color: Colors.white10, height: 1),
+                Divider(color: isDark ? Colors.white10 : Colors.black12, height: 1),
 
-              // Cancel
-              _SheetOption(
-                icon: Icons.close_rounded,
-                label: 'Cancel'.tr,
-                color: Colors.redAccent,
-                onTap: () => Navigator.pop(context),
-              ),
-            ],
+                // Cancel
+                _SheetOption(
+                  icon: Icons.close_rounded,
+                  label: 'Cancel'.tr,
+                  color: Colors.redAccent,
+                  onTap: () => Navigator.pop(context),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -221,7 +224,8 @@ class _SheetOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = color ?? Colors.white;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final c = color ?? (isDark ? Colors.white : Colors.black87);
     return InkWell(
       onTap: onTap,
       child: Padding(

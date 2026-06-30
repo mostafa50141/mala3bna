@@ -145,30 +145,33 @@ class _EditProfileViewState extends State<EditProfileView>
     if (!_hasChanges) return true;
     final result = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.colorBtnAndCard,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          'Discard changes?'.tr,
-          style: const TextStyle(color: Colors.white),
-        ),
-        content: Text(
-          'You have unsaved changes. Are you sure?'.tr,
-          style: const TextStyle(color: Colors.white70),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text('Keep Editing'.tr,
-                style: TextStyle(color: AppColors.primaryColor)),
+      builder: (ctx) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        return AlertDialog(
+          backgroundColor: Theme.of(ctx).cardColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
+            'Discard changes?'.tr,
+            style: TextStyle(color: isDark ? Colors.white : Colors.black87),
           ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text('Discard'.tr,
-                style: const TextStyle(color: Colors.redAccent)),
+          content: Text(
+            'You have unsaved changes. Are you sure?'.tr,
+            style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
           ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text('Keep Editing'.tr,
+                  style: TextStyle(color: AppColors.primaryColor)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text('Discard'.tr,
+                  style: const TextStyle(color: Colors.redAccent)),
+            ),
+          ],
+        );
+      },
     );
     return result ?? false;
   }
@@ -180,13 +183,12 @@ class _EditProfileViewState extends State<EditProfileView>
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (context, child) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         return Theme(
-          data: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
+          data: Theme.of(context).copyWith(
+            colorScheme: (isDark ? const ColorScheme.dark() : const ColorScheme.light()).copyWith(
               primary: AppColors.primaryColor,
-              onPrimary: Colors.white,
-              surface: AppColors.colorBtnAndCard,
-              onSurface: Colors.white,
+              surface: Theme.of(context).cardColor,
             ),
           ),
           child: child!,
@@ -226,7 +228,7 @@ class _EditProfileViewState extends State<EditProfileView>
         if (shouldPop && context.mounted) Navigator.of(context).pop();
       },
       child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: _buildAppBar(),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -240,21 +242,22 @@ class _EditProfileViewState extends State<EditProfileView>
   }
 
   PreferredSizeWidget _buildAppBar() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppBar(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new,
             size: 18,
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black87,
           ),
         ),
         onPressed: () async {
@@ -268,8 +271,8 @@ class _EditProfileViewState extends State<EditProfileView>
       ),
       title: Text(
         'Edit Profile'.tr,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: isDark ? Colors.white : Colors.black87,
           fontSize: 18,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.3,
@@ -293,6 +296,9 @@ class _EditProfileViewState extends State<EditProfileView>
   // ─── Body ───────────────────────────────────────────────────────────
 
   Widget _buildBody(BuildContext context, OwnerProfileState state) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black87;
+
     // Loading
     if (state is OwnerProfileLoading || state is OwnerProfileInitial) {
       return Center(
@@ -336,8 +342,8 @@ class _EditProfileViewState extends State<EditProfileView>
                   _fullNameController.text.isNotEmpty
                       ? _fullNameController.text
                       : 'Your Name',
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: textColor,
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),
@@ -346,7 +352,7 @@ class _EditProfileViewState extends State<EditProfileView>
                 Text(
                   '@$_username',
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.4),
+                    color: isDark ? Colors.white.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.4),
                     fontSize: 14,
                   ),
                 ),
@@ -372,7 +378,7 @@ class _EditProfileViewState extends State<EditProfileView>
 
                 // Divider
                 Divider(
-                  color: Colors.white.withValues(alpha: 0.06),
+                  color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
                   height: 1,
                 ),
                 const SizedBox(height: 24),
@@ -411,7 +417,12 @@ class _EditProfileViewState extends State<EditProfileView>
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white70, fontSize: 15),
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white70
+                    : Colors.black87,
+                fontSize: 15,
+              ),
             ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
