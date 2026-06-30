@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// Password confirmation field for the delete account flow.
 /// Shows a "CONFIRM WITH PASSWORD" label, red focused border, and visibility toggle.
@@ -22,13 +21,18 @@ class DeleteAccountPasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black87;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'CONFIRM WITH PASSWORD'.tr,
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.45),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.45)
+                : Colors.black.withValues(alpha: 0.45),
             fontSize: 11,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.3,
@@ -40,11 +44,13 @@ class DeleteAccountPasswordField extends StatelessWidget {
           obscureText: !isVisible,
           enabled: isEnabled,
           onChanged: onChanged,
-          style: const TextStyle(color: Colors.white, fontSize: 15),
+          style: TextStyle(color: textColor, fontSize: 15),
           decoration: InputDecoration(
             hintText: 'Enter current password'.tr,
             hintStyle: TextStyle(
-              color: Colors.white.withValues(alpha: 0.22),
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.22)
+                  : Colors.black.withValues(alpha: 0.3),
               fontSize: 14,
             ),
             suffixIcon: IconButton(
@@ -52,13 +58,13 @@ class DeleteAccountPasswordField extends StatelessWidget {
                 isVisible
                     ? Icons.visibility_off_outlined
                     : Icons.visibility_outlined,
-                color: Colors.white38,
+                color: isDark ? Colors.white38 : Colors.black38,
                 size: 20,
               ),
               onPressed: onToggleVisibility,
             ),
             filled: true,
-            fillColor: AppColors.colorBtnAndCard,
+            fillColor: Theme.of(context).cardColor,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 18,
               vertical: 18,
@@ -70,7 +76,9 @@ class DeleteAccountPasswordField extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide(
-                color: Colors.white.withValues(alpha: 0.07),
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.07)
+                    : Colors.black.withValues(alpha: 0.07),
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -83,7 +91,9 @@ class DeleteAccountPasswordField extends StatelessWidget {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide(
-                color: Colors.white.withValues(alpha: 0.04),
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.04)
+                    : Colors.black.withValues(alpha: 0.04),
               ),
             ),
           ),

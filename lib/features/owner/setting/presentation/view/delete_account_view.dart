@@ -117,9 +117,10 @@ class _DeleteAccountBodyState extends State<_DeleteAccountBody>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: _buildAppBar(context),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: _buildAppBar(context, isDark),
       body: BlocListener<DeleteAccountCubit, DeleteAccountState>(
         listener: _onStateChanged,
         child: GestureDetector(
@@ -147,8 +148,8 @@ class _DeleteAccountBodyState extends State<_DeleteAccountBody>
                       Text(
                         'Are you sure you want\nto delete your\naccount?'.tr,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: isDark ? Colors.white : Colors.black87,
                           fontSize: 26,
                           fontWeight: FontWeight.w800,
                           height: 1.2,
@@ -161,7 +162,7 @@ class _DeleteAccountBodyState extends State<_DeleteAccountBody>
                         'This action is permanent. All your bookings,\nstats, and personal data will be erased\nforever.'.tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.45),
+                          color: isDark ? Colors.white.withValues(alpha: 0.45) : Colors.black.withValues(alpha: 0.45),
                           fontSize: 14,
                           height: 1.6,
                         ),
@@ -215,30 +216,30 @@ class _DeleteAccountBodyState extends State<_DeleteAccountBody>
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar(BuildContext context, bool isDark) {
     return AppBar(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new,
             size: 18,
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black87,
           ),
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(
         'Account Security'.tr,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: isDark ? Colors.white : Colors.black87,
           fontSize: 18,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.3,
