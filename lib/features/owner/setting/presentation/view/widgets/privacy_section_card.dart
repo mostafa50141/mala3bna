@@ -10,13 +10,14 @@ class PrivacySectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,8 +45,8 @@ class PrivacySectionCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   section.title,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                     height: 1.2,
@@ -81,14 +82,14 @@ class PrivacySectionCard extends StatelessWidget {
           const SizedBox(height: 14),
 
           // ── Divider ──
-          Divider(color: Colors.white.withValues(alpha: 0.06), height: 1),
+          Divider(color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06), height: 1),
           const SizedBox(height: 12),
 
           // ── Body text ──
           Text(
             section.body,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.55),
+              color: isDark ? Colors.white.withValues(alpha: 0.55) : Colors.black.withValues(alpha: 0.55),
               fontSize: 13,
               height: 1.65,
             ),

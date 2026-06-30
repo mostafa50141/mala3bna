@@ -9,6 +9,7 @@ class PrivacyHeaderBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
@@ -18,7 +19,7 @@ class PrivacyHeaderBanner extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: [
             AppColors.primaryColor.withValues(alpha: 0.22),
-            AppColors.colorBtnAndCard,
+            Theme.of(context).cardColor,
           ],
         ),
         borderRadius: BorderRadius.circular(20),
@@ -55,7 +56,7 @@ class PrivacyHeaderBanner extends StatelessWidget {
               children: [
                 TextSpan(
                   text: 'Your Data,\n'.tr,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: isDark ? Colors.white : Colors.black87),
                 ),
                 TextSpan(
                   text: 'Protected.'.tr,
@@ -70,7 +71,7 @@ class PrivacyHeaderBanner extends StatelessWidget {
           Text(
             'At Mala3bna, we prioritize your privacy as much as your performance. Learn how we handle your information to provide the best sports facility experience.'.tr,
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.5),
+              color: isDark ? Colors.white.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.5),
               fontSize: 13,
               height: 1.6,
             ),

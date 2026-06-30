@@ -28,17 +28,18 @@ class _PrivacyBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: _buildAppBar(context),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: _buildAppBar(context, isDark),
       body: BlocBuilder<PrivacyCubit, PrivacyState>(
         builder: (context, state) {
           return switch (state.status) {
             PrivacyStatus.loading => const _LoadingView(),
             PrivacyStatus.error => _ErrorView(
-                message: state.errorMessage ?? 'Something went wrong.',
-                onRetry: () => context.read<PrivacyCubit>().loadPolicy(),
-              ),
+              message: state.errorMessage ?? 'Something went wrong.',
+              onRetry: () => context.read<PrivacyCubit>().loadPolicy(),
+            ),
             PrivacyStatus.loaded => const _ContentView(),
           };
         },
@@ -46,30 +47,32 @@ class _PrivacyBody extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
+  PreferredSizeWidget _buildAppBar(BuildContext context, bool isDark) {
     return AppBar(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       leading: IconButton(
         icon: Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.08)
+                : Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back_ios_new,
             size: 18,
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black87,
           ),
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(
         'Privacy Policy'.tr,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: isDark ? Colors.white : Colors.black87,
           fontSize: 18,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.3,
@@ -87,8 +90,6 @@ class _PrivacyBody extends StatelessWidget {
 class _ContentView extends StatelessWidget {
   const _ContentView();
 
-  static const String _lastUpdated = 'OCTOBER 24, 2023';
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -102,22 +103,17 @@ class _ContentView extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Section label
-          _sectionLabel(),
+          _sectionLabel(context),
           const SizedBox(height: 16),
 
           // Policy section cards
           const PrivacySectionList(),
-          const SizedBox(height: 24),
-
-          // Last updated footer
-          _LastUpdatedFooter(date: _lastUpdated),
-          const SizedBox(height: 8),
         ],
       ),
     );
   }
 
-  Widget _sectionLabel() {
+  Widget _sectionLabel(BuildContext context) {
     return Row(
       children: [
         Container(
@@ -132,7 +128,9 @@ class _ContentView extends StatelessWidget {
         Text(
           'POLICY SECTIONS'.tr,
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.4),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white.withValues(alpha: 0.4)
+                : Colors.black.withValues(alpha: 0.4),
             fontSize: 11,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.3,
@@ -193,6 +191,7 @@ class _LoadingViewState extends State<_LoadingView>
   }
 
   Widget _shimmerBox({required double height, required double radius}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AnimatedBuilder(
       animation: _shimmerCtrl,
       builder: (_, __) => Container(
@@ -200,8 +199,10 @@ class _LoadingViewState extends State<_LoadingView>
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
           color: Color.lerp(
-            AppColors.colorBtnAndCard,
-            Colors.white.withValues(alpha: 0.06),
+            Theme.of(context).cardColor,
+            isDark
+                ? Colors.white.withValues(alpha: 0.06)
+                : Colors.black.withValues(alpha: 0.06),
             _shimmerCtrl.value,
           ),
         ),
@@ -222,6 +223,7 @@ class _ErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -231,14 +233,18 @@ class _ErrorView extends StatelessWidget {
             Icon(
               Icons.cloud_off_outlined,
               size: 56,
-              color: Colors.white.withValues(alpha: 0.2),
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.2)
+                  : Colors.black.withValues(alpha: 0.2),
             ),
             const SizedBox(height: 20),
             Text(
               message,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.5),
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.5)
+                    : Colors.black.withValues(alpha: 0.5),
                 fontSize: 14,
                 height: 1.6,
               ),
@@ -271,6 +277,7 @@ class _ErrorView extends StatelessWidget {
 // Last updated footer
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ignore: unused_element
 class _LastUpdatedFooter extends StatelessWidget {
   final String date;
 
@@ -278,26 +285,35 @@ class _LastUpdatedFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.black.withValues(alpha: 0.05),
+        ),
       ),
       child: Row(
         children: [
           Icon(
             Icons.history_rounded,
             size: 15,
-            color: Colors.white.withValues(alpha: 0.3),
+            color: isDark
+                ? Colors.white.withValues(alpha: 0.3)
+                : Colors.black.withValues(alpha: 0.3),
           ),
           const SizedBox(width: 8),
           Text(
             'LAST UPDATED: $date',
             style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.3),
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.3)
+                  : Colors.black.withValues(alpha: 0.3),
               fontSize: 11,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.8,
