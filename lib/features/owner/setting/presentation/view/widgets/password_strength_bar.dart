@@ -35,9 +35,10 @@ class PasswordStrengthBar extends StatelessWidget {
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeOut,
               builder: (_, value, __) {
+                final isDark = Theme.of(context).brightness == Brightness.dark;
                 return LinearProgressIndicator(
                   value: value,
-                  backgroundColor: Colors.white.withValues(alpha: 0.08),
+                  backgroundColor: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.08),
                   valueColor: AlwaysStoppedAnimation(_color),
                 );
               },
@@ -52,7 +53,9 @@ class PasswordStrengthBar extends StatelessWidget {
             Text(
               'Password strength: '.tr,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.4),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white.withValues(alpha: 0.4)
+                    : Colors.black.withValues(alpha: 0.4),
                 fontSize: 12,
               ),
             ),

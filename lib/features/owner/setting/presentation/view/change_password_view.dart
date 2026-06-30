@@ -89,28 +89,29 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.08),
+              color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.arrow_back_ios_new,
-                size: 18, color: Colors.white),
+            child: Icon(Icons.arrow_back_ios_new,
+                size: 18, color: isDark ? Colors.white : Colors.black87),
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Change Password'.tr,
           style: TextStyle(
-            color: Colors.white,
+            color: isDark ? Colors.white : Colors.black87,
             fontSize: 18,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.3,
@@ -175,6 +176,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
         final cubit = context.read<ChangePasswordCubit>();
         final isSubmitting =
             state.status == ChangePasswordStatus.submitting;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,8 +184,8 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             // ── Header ──
             Text(
               'Secure Your Account'.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
                 letterSpacing: 0.2,
@@ -193,7 +195,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             Text(
               'Ensure you\'re using a long, random password\nto stay secure.'.tr,
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.5),
+                color: isDark ? Colors.white.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.5),
                 fontSize: 14,
                 height: 1.5,
               ),
@@ -201,7 +203,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             const SizedBox(height: 32),
 
             // ── Current Password ──
-            _fieldLabel('Current Password'.tr),
+            _fieldLabel(context, 'Current Password'.tr),
             const SizedBox(height: 8),
             ChangePasswordField(
               hint: 'Enter current password'.tr,
@@ -214,7 +216,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             const SizedBox(height: 24),
 
             // ── New Password ──
-            _fieldLabel('New Password'.tr),
+            _fieldLabel(context, 'New Password'.tr),
             const SizedBox(height: 8),
             ChangePasswordField(
               hint: 'Enter new password'.tr,
@@ -235,7 +237,7 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
             const SizedBox(height: 24),
 
             // ── Confirm Password ──
-            _fieldLabel('Confirm New Password'.tr),
+            _fieldLabel(context, 'Confirm New Password'.tr),
             const SizedBox(height: 8),
             ChangePasswordField(
               hint: 'Repeat new password'.tr,
@@ -269,12 +271,12 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
                 children: [
                   Icon(Icons.lock_rounded,
                       size: 14,
-                      color: Colors.white.withValues(alpha: 0.25)),
+                      color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.black.withValues(alpha: 0.25)),
                   const SizedBox(width: 6),
                   Text(
                     'Encrypted end-to-end'.tr,
                     style: TextStyle(
-                      color: Colors.white.withValues(alpha: 0.25),
+                      color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.black.withValues(alpha: 0.25),
                       fontSize: 12,
                     ),
                   ),
@@ -287,11 +289,12 @@ class _ChangePasswordBodyState extends State<_ChangePasswordBody>
     );
   }
 
-  Widget _fieldLabel(String label) {
+  Widget _fieldLabel(BuildContext context, String label) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Text(
       label,
       style: TextStyle(
-        color: Colors.white.withValues(alpha: 0.7),
+        color: isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black.withValues(alpha: 0.7),
         fontSize: 13,
         fontWeight: FontWeight.w600,
         letterSpacing: 0.3,

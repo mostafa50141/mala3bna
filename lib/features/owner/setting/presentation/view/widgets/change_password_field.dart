@@ -26,18 +26,21 @@ class ChangePasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black87;
+
     return TextFormField(
       obscureText: !isVisible,
       enabled: enabled,
       onChanged: onChanged,
-      style: const TextStyle(color: Colors.white, fontSize: 15),
+      style: TextStyle(color: textColor, fontSize: 15),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
-          color: Colors.white.withValues(alpha: 0.25),
+          color: isDark ? Colors.white.withValues(alpha: 0.25) : Colors.black.withValues(alpha: 0.3),
           fontSize: 14,
         ),
-        prefixIcon: Icon(icon, color: Colors.white38, size: 20),
+        prefixIcon: Icon(icon, color: isDark ? Colors.white38 : Colors.black38, size: 20),
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -57,7 +60,7 @@ class ChangePasswordField extends StatelessWidget {
                 isVisible
                     ? Icons.visibility_off_outlined
                     : Icons.visibility_outlined,
-                color: Colors.white38,
+                color: isDark ? Colors.white38 : Colors.black38,
                 size: 20,
               ),
               onPressed: onToggleVisibility,
@@ -65,7 +68,7 @@ class ChangePasswordField extends StatelessWidget {
           ],
         ),
         filled: true,
-        fillColor: AppColors.colorBtnAndCard,
+        fillColor: Theme.of(context).cardColor,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
@@ -75,7 +78,7 @@ class ChangePasswordField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: Colors.white.withValues(alpha: 0.07),
+            color: isDark ? Colors.white.withValues(alpha: 0.07) : Colors.black.withValues(alpha: 0.07),
           ),
         ),
         focusedBorder: OutlineInputBorder(
@@ -88,7 +91,7 @@ class ChangePasswordField extends StatelessWidget {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: Colors.white.withValues(alpha: 0.04),
+            color: isDark ? Colors.white.withValues(alpha: 0.04) : Colors.black.withValues(alpha: 0.04),
           ),
         ),
       ),

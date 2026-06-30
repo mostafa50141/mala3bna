@@ -19,6 +19,7 @@ class PasswordRequirements extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
@@ -27,10 +28,10 @@ class PasswordRequirements extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.colorBtnAndCard.withValues(alpha: 0.7),
+                color: Theme.of(context).cardColor.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.05),
+                  color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.black.withValues(alpha: 0.05),
                 ),
               ),
               child: Column(
@@ -44,7 +45,7 @@ class PasswordRequirements extends StatelessWidget {
                       Text(
                         'PASSWORD REQUIREMENTS'.tr,
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.5),
+                          color: isDark ? Colors.white.withValues(alpha: 0.5) : Colors.black.withValues(alpha: 0.5),
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 1.2,
@@ -83,6 +84,7 @@ class _RequirementRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       children: [
         AnimatedSwitcher(
@@ -93,7 +95,7 @@ class _RequirementRow extends StatelessWidget {
             size: 16,
             color: isMet
                 ? AppColors.primaryColor
-                : Colors.white.withValues(alpha: 0.25),
+                : (isDark ? Colors.white.withValues(alpha: 0.25) : Colors.black.withValues(alpha: 0.25)),
           ),
         ),
         const SizedBox(width: 8),
@@ -101,8 +103,8 @@ class _RequirementRow extends StatelessWidget {
           duration: const Duration(milliseconds: 250),
           style: TextStyle(
             color: isMet
-                ? Colors.white.withValues(alpha: 0.7)
-                : Colors.white.withValues(alpha: 0.35),
+                ? (isDark ? Colors.white.withValues(alpha: 0.7) : Colors.black.withValues(alpha: 0.7))
+                : (isDark ? Colors.white.withValues(alpha: 0.35) : Colors.black.withValues(alpha: 0.35)),
             fontSize: 13,
             fontWeight: isMet ? FontWeight.w500 : FontWeight.w400,
           ),
