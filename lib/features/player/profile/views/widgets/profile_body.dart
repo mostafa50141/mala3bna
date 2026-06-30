@@ -7,7 +7,7 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/core/widgets/section_title.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/player/help/views/help_view.dart';
@@ -61,8 +61,9 @@ class _ProfileBodyContent extends StatelessWidget {
                     const Gap(12),
                     Text(
                       'Loading...',
-                      style:
-                          Style.textStyle20Bold.copyWith(color: Colors.white),
+                      style: Style.textStyle20Bold.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 );
@@ -86,9 +87,9 @@ class _ProfileBodyContent extends StatelessWidget {
                               imageUrl: profile.profileImage!,
                               imageBuilder: (ctx, imageProvider) =>
                                   CircleAvatar(
-                                radius: 40,
-                                backgroundImage: imageProvider,
-                              ),
+                                    radius: 40,
+                                    backgroundImage: imageProvider,
+                                  ),
                               placeholder: (ctx, url) => CircleAvatar(
                                 radius: 40,
                                 backgroundColor: Colors.grey.shade800,
@@ -119,8 +120,9 @@ class _ProfileBodyContent extends StatelessWidget {
                       profile.fullName.isNotEmpty
                           ? profile.fullName
                           : profile.username,
-                      style:
-                          Style.textStyle20Bold.copyWith(color: Colors.white),
+                      style: Style.textStyle20Bold.copyWith(
+                        color: Colors.white,
+                      ),
                     ),
                     const Gap(4),
                     Text(
@@ -132,8 +134,7 @@ class _ProfileBodyContent extends StatelessWidget {
                       const Gap(4),
                       Text(
                         profile.phoneNumber!,
-                        style:
-                            Style.textStyle12.copyWith(color: Colors.grey),
+                        style: Style.textStyle12.copyWith(color: Colors.grey),
                       ),
                     ],
                   ],
@@ -196,8 +197,7 @@ class _ProfileBodyContent extends StatelessWidget {
                   backgroundColor: AppColors.colorBtnAndCard,
                   title: Text(
                     'Logout',
-                    style:
-                        Style.textStyle18Bold.copyWith(color: Colors.white),
+                    style: Style.textStyle18Bold.copyWith(color: Colors.white),
                   ),
                   content: Text(
                     'Are you sure you want to logout?',
@@ -208,8 +208,9 @@ class _ProfileBodyContent extends StatelessWidget {
                       onPressed: () => Navigator.pop(dialogContext),
                       child: Text(
                         'Cancel',
-                        style: Style.textStyle14Bold
-                            .copyWith(color: Colors.grey),
+                        style: Style.textStyle14Bold.copyWith(
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                     TextButton(
@@ -217,18 +218,15 @@ class _ProfileBodyContent extends StatelessWidget {
                         Navigator.pop(dialogContext);
                         final authController = Get.find<AuthController>();
                         authController.logout();
-                        await getIt
-                            .get<LocalStorageHelper>()
-                            .deletetoken();
-                        await getIt
-                            .get<LocalStorageHelper>()
-                            .deleteUserData();
+                        await getIt.get<LocalStorageHelper>().deletetoken();
+                        await getIt.get<LocalStorageHelper>().deleteUserData();
                         Get.offAll(() => const WelcomeScreen());
                       },
                       child: Text(
                         'Logout',
-                        style: Style.textStyle14Bold
-                            .copyWith(color: Colors.red),
+                        style: Style.textStyle14Bold.copyWith(
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                   ],
@@ -262,7 +260,11 @@ class _LocalProfileFallbackState extends State<_LocalProfileFallback> {
     final storage = getIt.get<LocalStorageHelper>();
     final name = await storage.getUserName();
     final email = await storage.getUserEmail();
-    if (mounted) setState(() { _name = name; _email = email; });
+    if (mounted)
+      setState(() {
+        _name = name;
+        _email = email;
+      });
   }
 
   @override

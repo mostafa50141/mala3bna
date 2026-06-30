@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
+import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_state.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
 
 class PricingSection extends StatelessWidget {
@@ -7,67 +12,109 @@ class PricingSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SectionCard(
-      accentLeft: BorderSide(color: AppColors.primaryColor, width: 3),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SectionHeader(
-            title: 'Pricing',
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: AppColors.primaryColor.withValues(alpha: 0.35)),
-              ),
-              child: Text(
-                'Per Hour',
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
+    return BlocBuilder<CourtProfileCubit, CourtProfileState>(
+      builder: (context, state) {
+        CourtEntity? court;
+        if (state is CourtProfileLoaded) court = state.courtProfile;
+
+        final offPeak = court?.offPeakRate ?? 0.0;
+        final peak = court?.peakRate ?? court?.hourlyRate ?? 0.0;
+        final discount = court?.membershipDiscount ?? 0.0;
+
+        return SectionCard(
+          accentLeft: BorderSide(color: AppColors.primaryColor, width: 3),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SectionHeader(
+                title: 'Pricing'.tr,
+                trailing: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                        color: AppColors.primaryColor.withValues(alpha: 0.35)),
+                  ),
+                  child: Text(
+                    'Per Hour'.tr,
+                    style: TextStyle(
+                      color: AppColors.primaryColor,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 16),
+              _PriceRow(
+                icon: Icons.wb_sunny_outlined,
+                iconColor: Colors.amber.shade300,
+                label: 'Off-Peak Hours'.tr,
+                subtitle: court?.offPeakStartTime != null && court?.offPeakEndTime != null
+                    ? '${_formatTimeStr(court!.offPeakStartTime!)} – ${_formatTimeStr(court.offPeakEndTime!)}'
+                    : '11 am – 5 pm'.tr,
+                price: offPeak > 0 ? '${offPeak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
+                priceColor: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
+              ),
+              _divider(),
+              _PriceRow(
+                icon: Icons.nightlight_outlined,
+                iconColor: const Color(0xFFB39DDB),
+                label: 'Peak Hours'.tr,
+                subtitle: court?.peakStartTime != null && court?.peakEndTime != null
+                    ? '${_formatTimeStr(court!.peakStartTime!)} – ${_formatTimeStr(court.peakEndTime!)}'
+                    : '5 pm – 10 pm'.tr,
+                price: peak > 0 ? '${peak.toStringAsFixed(0)} ${'EGP'.tr}${'/hr'.tr}' : '—',
+                priceColor: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.black87,
+              ),
+              _divider(),
+              _PriceRow(
+                icon: Icons.local_offer_outlined,
+                iconColor: AppColors.primaryColor,
+                label: 'Membership Discount'.tr,
+                subtitle: 'For registered members'.tr,
+                price: discount > 0 ? '−${discount.toStringAsFixed(0)}%' : '—',
+                priceColor: AppColors.primaryColor,
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          _PriceRow(
-            icon: Icons.wb_sunny_outlined,
-            iconColor: Colors.amber.shade300,
-            label: 'Off-Peak Hours',
-            subtitle: '11 am – 5 pm',
-            price: 'EGP 300/hr',
-            priceColor: Colors.white,
-          ),
-          _divider(),
-          _PriceRow(
-            icon: Icons.nightlight_outlined,
-            iconColor: const Color(0xFFB39DDB),
-            label: 'Peak Hours',
-            subtitle: '5 pm – 10 pm',
-            price: 'EGP 460/hr',
-            priceColor: Colors.white,
-          ),
-          _divider(),
-          _PriceRow(
-            icon: Icons.local_offer_outlined,
-            iconColor: AppColors.primaryColor,
-            label: 'Membership Discount',
-            subtitle: 'For registered members',
-            price: '−15%',
-            priceColor: AppColors.primaryColor,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _divider() => const Padding(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Divider(color: Colors.white10, height: 1),
+  Widget _divider() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Divider(color: Colors.grey.withValues(alpha: 0.2), height: 1),
       );
+
+  String _formatTimeStr(String t) {
+    try {
+      if (t.contains('T') || (t.length >= 10 && t[4] == '-')) {
+        final dt = DateTime.parse(t).toLocal();
+        return _formatDt(dt.hour, dt.minute);
+      }
+      String timePart = t;
+      if (timePart.endsWith('Z')) timePart = timePart.substring(0, timePart.length - 1);
+      final parts = timePart.split(':');
+      if (parts.length >= 2) {
+        return _formatDt(int.parse(parts[0]), int.parse(parts[1]));
+      }
+      return t;
+    } catch (_) {
+      return t;
+    }
+  }
+
+  String _formatDt(int h, int m) {
+    final amPm = h >= 12 ? 'pm' : 'am';
+    h = h % 12;
+    if (h == 0) h = 12;
+    if (m == 0) return '$h $amPm';
+    return '$h:${m.toString().padLeft(2, '0')} $amPm';
+  }
 }
 
 class _PriceRow extends StatelessWidget {
@@ -106,8 +153,8 @@ class _PriceRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(label,
-                  style: const TextStyle(
-                      color: Colors.white,
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
                       fontSize: 13,
                       fontWeight: FontWeight.w500)),
               const SizedBox(height: 2),

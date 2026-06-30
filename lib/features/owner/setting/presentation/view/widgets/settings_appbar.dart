@@ -7,6 +7,7 @@ import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/welcome_screen/presentation/views/welcome_screen.dart';
+import 'package:flutter/services.dart';
 
 class SettingAppBar extends StatelessWidget {
   const SettingAppBar({super.key});
@@ -36,19 +37,21 @@ class SettingAppBar extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Profile & Settings',
+            Text(
+              'Profile & Settings'.tr,
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 17,
+                color:
+                    Theme.of(context).textTheme.bodyMedium?.color ??
+                    Colors.white,
+                fontSize: 19,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.2,
               ),
             ),
             const SizedBox(height: 2),
             Text(
-              'Manage your account',
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+              'Manage your account'.tr,
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
             ),
           ],
         ),
@@ -99,6 +102,7 @@ class SettingAppBar extends StatelessWidget {
                 ),
               );
             },
+            //onTap: () => _confirmLogout(context),
             borderRadius: BorderRadius.circular(24),
             child: Container(
               width: 40,

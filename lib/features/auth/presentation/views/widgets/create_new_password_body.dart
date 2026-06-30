@@ -7,7 +7,7 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
@@ -131,7 +131,8 @@ class _CreateNewPasswordBodyState extends State<CreateNewPasswordBody> {
                             colorText: Colors.white,
                             onTap: () {
                               if (_formKey.currentState!.validate()) {
-                                if (_newPasswordController.text != _confirmPasswordController.text) {
+                                if (_newPasswordController.text !=
+                                    _confirmPasswordController.text) {
                                   showAnimatedSnackDialog(
                                     context,
                                     message: "Passwords do not match",
@@ -139,9 +140,12 @@ class _CreateNewPasswordBodyState extends State<CreateNewPasswordBody> {
                                   );
                                   return;
                                 }
-                                context.read<ResetPasswordCubit>().resetPassword(
-                                  newPassword: _newPasswordController.text.trim(),
-                                );
+                                context
+                                    .read<ResetPasswordCubit>()
+                                    .resetPassword(
+                                      newPassword: _newPasswordController.text
+                                          .trim(),
+                                    );
                               }
                             },
                           ),

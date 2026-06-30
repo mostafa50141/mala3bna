@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 
 class HeaderSection extends StatefulWidget {
-  final CourtProfileModel vm;
+  final CourtEntity vm;
 
   const HeaderSection({super.key, required this.vm});
 
@@ -16,9 +17,31 @@ class HeaderSection extends StatefulWidget {
 class _HeaderSectionState extends State<HeaderSection> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+  Timer? _autoPlayTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoPlay();
+  }
+
+  void _startAutoPlay() {
+    final count = widget.vm.images.length;
+    if (count <= 1) return;
+    _autoPlayTimer = Timer.periodic(const Duration(seconds: 3), (_) {
+      if (!mounted) return;
+      final next = (_currentPage + 1) % count;
+      _pageController.animateToPage(
+        next,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
 
   @override
   void dispose() {
+    _autoPlayTimer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -35,34 +58,49 @@ class _HeaderSectionState extends State<HeaderSection> {
           // ── Hero Image ─────────────────────────────────────────────
           PageView.builder(
             controller: _pageController,
-            itemCount: 1,
+            itemCount: widget.vm.images.isEmpty ? 1 : widget.vm.images.length,
             onPageChanged: (i) => setState(() => _currentPage = i),
-            itemBuilder: (_, __) => Image.network(
-              widget.vm.image,
-              fit: BoxFit.cover,
-              loadingBuilder: (_, child, progress) {
-                if (progress == null) return child;
+            itemBuilder: (_, index) {
+              if (widget.vm.images.isEmpty) {
                 return Container(
                   color: const Color(0xFF0D1F1A),
                   child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryColor,
-                      strokeWidth: 2,
+                    child: Icon(
+                      Icons.sports_soccer,
+                      color: AppColors.primaryColor.withValues(alpha: 0.3),
+                      size: 60,
                     ),
                   ),
                 );
-              },
-              errorBuilder: (_, __, ___) => Container(
-                color: const Color(0xFF0D1F1A),
-                child: Center(
-                  child: Icon(
-                    Icons.sports_soccer,
-                    color: AppColors.primaryColor.withValues(alpha: 0.3),
-                    size: 60,
+              }
+              final url = widget.vm.images[index].url;
+              return Image.network(
+                url,
+                fit: BoxFit.cover,
+                loadingBuilder: (_, child, progress) {
+                  if (progress == null) return child;
+                  return Container(
+                    color: const Color(0xFF0D1F1A),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryColor,
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  );
+                },
+                errorBuilder: (_, __, ___) => Container(
+                  color: const Color(0xFF0D1F1A),
+                  child: Center(
+                    child: Icon(
+                      Icons.broken_image,
+                      color: AppColors.primaryColor.withValues(alpha: 0.3),
+                      size: 60,
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
 
           // ── Dark gradient overlay ──────────────────────────────────
@@ -87,14 +125,12 @@ class _HeaderSectionState extends State<HeaderSection> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
-                    _GlassIconButton(
-                      icon: Icons.arrow_back_ios_new,
-                      onPressed: () => Navigator.maybePop(context),
-                    ),
                     const Spacer(),
                     _GlassIconButton(
                       icon: Icons.more_horiz,
@@ -120,7 +156,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        widget.vm.name,
+                        widget.vm.title,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -134,14 +170,19 @@ class _HeaderSectionState extends State<HeaderSection> {
                       const SizedBox(height: 5),
                       Row(
                         children: [
-                          const Icon(Icons.location_on_outlined,
-                              color: Colors.white70, size: 13),
+                          const Icon(
+                            Icons.location_on_outlined,
+                            color: Colors.white70,
+                            size: 13,
+                          ),
                           const SizedBox(width: 3),
                           Flexible(
                             child: Text(
-                              widget.vm.location,
+                              widget.vm.address,
                               style: const TextStyle(
-                                  color: Colors.white70, fontSize: 13),
+                                color: Colors.white70,
+                                fontSize: 13,
+                              ),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -153,8 +194,10 @@ class _HeaderSectionState extends State<HeaderSection> {
                 const SizedBox(width: 12),
                 // Rating badge
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(20),
@@ -169,8 +212,11 @@ class _HeaderSectionState extends State<HeaderSection> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.star_rounded,
-                          color: Colors.white, size: 14),
+                      const Icon(
+                        Icons.star_rounded,
+                        color: Colors.white,
+                        size: 14,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         widget.vm.rating.toStringAsFixed(1),
@@ -188,13 +234,14 @@ class _HeaderSectionState extends State<HeaderSection> {
           ),
 
           // ── Carousel dots ──────────────────────────────────────────
+          if (widget.vm.images.length > 1)
           Positioned(
             bottom: 8,
             left: 0,
             right: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(1, (i) {
+              children: List.generate(widget.vm.images.length, (i) {
                 final active = _currentPage == i;
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
@@ -275,8 +322,7 @@ class _GlassIconButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.2)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
             ),
             alignment: Alignment.center,
             child: Icon(icon, color: Colors.white, size: 16),
@@ -293,15 +339,20 @@ class _OptionTile extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _OptionTile(
-      {required this.icon, required this.label, required this.onTap});
+  const _OptionTile({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(icon, color: Colors.white70),
-      title: Text(label,
-          style: const TextStyle(color: Colors.white, fontSize: 14)),
+      title: Text(
+        label,
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+      ),
       onTap: onTap,
       contentPadding: EdgeInsets.zero,
     );

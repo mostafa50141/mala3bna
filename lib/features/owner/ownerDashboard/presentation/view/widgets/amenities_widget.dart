@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/data/amenity_of_add_court.dart';
+
+class Amenity {
+  final String id;
+  final String label;
+  bool isSelected;
+
+  Amenity({required this.id, required this.label, this.isSelected = false});
+}
 
 class AmenitiesWidget extends StatefulWidget {
   final List<Amenity>? amenities;
@@ -77,7 +85,7 @@ class _AmenityItem extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
-          color: AppColors.colorBtnAndCard,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: amenity.isSelected
@@ -87,7 +95,7 @@ class _AmenityItem extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -119,11 +127,11 @@ class _AmenityItem extends StatelessWidget {
             const SizedBox(width: 10),
             // Label
             Text(
-              amenity.label,
+              amenity.label.tr,
               style: TextStyle(
                 color: amenity.isSelected
-                    ? Colors.white
-                    : const Color.fromARGB(124, 255, 255, 255),
+                    ? Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white
+                    : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5) ?? const Color.fromARGB(124, 255, 255, 255),
                 fontSize: 14,
                 fontWeight: amenity.isSelected
                     ? FontWeight.w500

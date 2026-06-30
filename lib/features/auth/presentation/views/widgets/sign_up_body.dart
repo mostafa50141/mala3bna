@@ -8,7 +8,7 @@ import 'package:mala3bna/core/navigation/player_main_navigation.dart';
 import 'package:mala3bna/core/navigation/owner_main_navigation.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/login_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';

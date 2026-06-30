@@ -8,7 +8,7 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/features/auth/presentation/views/create_new_password_screen.dart';
 import 'package:mala3bna/features/auth/presentation/views_model/cubit/reset_password_cubit.dart';
@@ -189,7 +189,9 @@ class _OTPVerificationBodyState extends State<OTPVerificationBody> {
                               );
                               return;
                             }
-                            context.read<ResetPasswordCubit>().verifyOtp(otp: otp);
+                            context.read<ResetPasswordCubit>().verifyOtp(
+                              otp: otp,
+                            );
                           },
                         ),
                   const Gap(30),

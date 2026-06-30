@@ -1,4 +1,4 @@
-import 'package:mala3bna/features/owner/booking/presentation/model/booking_request_model.dart';
+import 'package:mala3bna/features/owner/booking/domain/entities/booking_entity.dart';
 
 enum BookingFilter { all, pending, approved, declined }
 
@@ -9,7 +9,7 @@ class BookingInitial extends BookingState {}
 class BookingLoading extends BookingState {}
 
 class BookingLoaded extends BookingState {
-  final List<BookingRequest> allBookings;
+  final List<BookingEntity> allBookings;
   final BookingFilter activeFilter;
 
   /// IDs currently processing (accept/decline in progress)
@@ -21,7 +21,7 @@ class BookingLoaded extends BookingState {
     this.processingIds = const {},
   });
 
-  List<BookingRequest> get filtered {
+  List<BookingEntity> get filtered {
     switch (activeFilter) {
       case BookingFilter.all:
         return allBookings;
@@ -44,7 +44,7 @@ class BookingLoaded extends BookingState {
       allBookings.where((b) => b.status == BookingStatus.pending).length;
 
   BookingLoaded copyWith({
-    List<BookingRequest>? allBookings,
+    List<BookingEntity>? allBookings,
     BookingFilter? activeFilter,
     Set<String>? processingIds,
   }) {
@@ -59,4 +59,12 @@ class BookingLoaded extends BookingState {
 class BookingError extends BookingState {
   final String message;
   BookingError(this.message);
+}
+
+/// Emitted transiently when accept/decline fails — lets UI show a SnackBar
+/// then the Cubit re-emits the previous BookingLoaded state.
+class BookingActionError extends BookingState {
+  final String message;
+  final BookingLoaded previousState;
+  BookingActionError({required this.message, required this.previousState});
 }

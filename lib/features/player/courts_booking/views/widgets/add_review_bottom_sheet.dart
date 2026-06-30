@@ -6,7 +6,7 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/features/player/courts_booking/presentation/cubit/review_cubit.dart';
 
 class AddReviewBottomSheet extends StatefulWidget {
@@ -77,7 +77,10 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
               Text('Add Your Review', style: Style.textStyle18Bold),
               const Gap(16),
               // Star rating selector
-              Text('Rating', style: Style.textStyle14Bold.copyWith(color: Colors.grey)),
+              Text(
+                'Rating',
+                style: Style.textStyle14Bold.copyWith(color: Colors.grey),
+              ),
               const Gap(8),
               Row(
                 children: List.generate(5, (index) {
@@ -86,7 +89,9 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: Icon(
-                        index < _selectedRating ? Icons.star : Icons.star_border,
+                        index < _selectedRating
+                            ? Icons.star
+                            : Icons.star_border,
                         color: AppColors.warningColor,
                         size: 36,
                       ),
@@ -96,7 +101,10 @@ class _AddReviewBottomSheetState extends State<AddReviewBottomSheet> {
               ),
               const Gap(16),
               // Comment field
-              Text('Comment', style: Style.textStyle14Bold.copyWith(color: Colors.grey)),
+              Text(
+                'Comment',
+                style: Style.textStyle14Bold.copyWith(color: Colors.grey),
+              ),
               const Gap(8),
               TextField(
                 controller: _commentController,

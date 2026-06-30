@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
 import 'package:gap/gap.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
+import 'package:mala3bna/core/widgets/custom_error_widget.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/games_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_coach_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_courts_category.dart';
@@ -10,8 +12,6 @@ import 'package:mala3bna/features/player/home/presentation/views/widgets/popular
 import 'package:mala3bna/features/player/home/presentation/views/widgets/recent_bookings_section.dart';
 import 'package:mala3bna/core/widgets/section_title.dart';
 import 'package:mala3bna/features/player/home/presentation/view_model/courts_cubit/courts_cubit.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
-import 'package:mala3bna/core/widgets/custome_erorr_widget.dart';
 import 'package:mala3bna/core/utils/location_service.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 

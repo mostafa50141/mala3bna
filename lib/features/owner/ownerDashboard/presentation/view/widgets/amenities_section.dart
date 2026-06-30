@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/ownerDashboard/data/amenity_of_add_court.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/amenities_widget.dart';
 import 'package:mala3bna/features/owner/ownerDashboard/presentation/view/widgets/form_widgets.dart';
 
 class AmenitiesSection extends StatelessWidget {
-  const AmenitiesSection({super.key});
+  final ValueChanged<List<String>> onAmenitiesChanged;
+
+  const AmenitiesSection({super.key, required this.onAmenitiesChanged});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const AddCourtSectionHeader(
+        AddCourtSectionHeader(
           icon: Icons.check_circle_outline,
-          title: 'Amenities',
+          title: 'Amenities'.tr,
         ),
         const SizedBox(height: 12),
 
@@ -32,57 +33,8 @@ class AmenitiesSection extends StatelessWidget {
                 .where((a) => a.isSelected)
                 .map((a) => a.id)
                 .toList();
-            debugPrint('Selected: $selectedIds');
+            onAmenitiesChanged(selectedIds);
           },
-        ),
-
-        const SizedBox(height: 28),
-
-        // Save button
-        SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryColor,
-              foregroundColor: Colors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
-            child: const Text(
-              'Save Court',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
-              ),
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 10),
-
-        // Cancel button
-        SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: OutlinedButton(
-            onPressed: () => Navigator.maybePop(context),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.white70,
-              side: BorderSide(color: Colors.white.withOpacity(0.15), width: 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-            ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ),
         ),
       ],
     );

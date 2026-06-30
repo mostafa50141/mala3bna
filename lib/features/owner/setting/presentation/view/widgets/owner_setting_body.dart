@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
 import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_state.dart';
-import 'package:mala3bna/features/owner/setting/presentation/model/owner_profile_model.dart';
+import 'package:mala3bna/features/owner/setting/domain/entities/user_entity.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/edit_profile_view.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/profile_header_card.dart';
 import 'package:mala3bna/features/owner/setting/presentation/view/widgets/settings_appbar.dart';
@@ -36,7 +36,7 @@ class _OwnerSettingsBodyState extends State<OwnerSettingsBody>
     super.dispose();
   }
 
-  OwnerProfileModel _extractProfile(OwnerProfileState state) {
+  UserEntity _extractProfile(OwnerProfileState state) {
     if (state is OwnerProfileLoaded) return state.profile;
     if (state is OwnerProfileUpdating) return state.profile;
     if (state is OwnerProfileUpdateSuccess) return state.profile;
@@ -50,11 +50,11 @@ class _OwnerSettingsBodyState extends State<OwnerSettingsBody>
         content: Row(children: [
           Icon(
             isError ? Icons.error_outline : Icons.check_circle_outline,
-            color: Colors.white,
+            color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
             size: 18,
           ),
           const SizedBox(width: 8),
-          Expanded(child: Text(message)),
+          Expanded(child: Text(message, style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white))),
         ]),
         backgroundColor: isError ? Colors.redAccent : AppColors.primaryColor,
         behavior: SnackBarBehavior.floating,
@@ -115,11 +115,11 @@ class _OwnerSettingsBodyState extends State<OwnerSettingsBody>
                             const Divider(color: Colors.white10, height: 1),
                             const SizedBox(height: 16),
                             ProfileHeaderCard(
-                              username: profile.username,
-                              fullName: profile.fullName,
-                              birthDate: profile.birthDate,
-                              gender: profile.gender,
-                              imageUrl: profile.imageUrl,
+                              username: profile.email, // use email as identifier
+                              fullName: profile.name,
+                              birthDate: profile.dateOfBirth.toIso8601String().split('T').first,
+                              gender: profile.gender == Gender.female ? 'Female' : 'Male',
+                              imageUrl: profile.imageUrl ?? '',
                               onEditPressed: () {
                                 final cubit =
                                     ctx.read<OwnerProfileCubit>();
@@ -131,7 +131,7 @@ class _OwnerSettingsBodyState extends State<OwnerSettingsBody>
                                       child: const EditProfileView(),
                                     ),
                                   ),
-                                );
+                                ).then((_) => cubit.loadProfile());
                               },
                             ),
                             const SizedBox(height: 24),
@@ -243,11 +243,13 @@ class _Box extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color baseColor = isDark ? Colors.white : Colors.black;
     return Container(
       width: w,
       height: h,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: op),
+        color: baseColor.withValues(alpha: op),
         borderRadius: BorderRadius.circular(r),
       ),
     );

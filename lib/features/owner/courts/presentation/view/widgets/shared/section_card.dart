@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mala3bna/core/constants/app_colors.dart';
 
 /// A reusable card container used by Pricing, Amenities, Ratings, etc.
 class SectionCard extends StatelessWidget {
@@ -22,12 +21,12 @@ class SectionCard extends StatelessWidget {
       width: double.infinity,
       padding: padding ?? const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color ?? AppColors.colorBtnAndCard,
+        color: color ?? Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: accentLeft != null ? Border(left: accentLeft!) : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.25),
+            color: Theme.of(context).shadowColor.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -52,8 +51,9 @@ class SectionHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color:
+                Theme.of(context).textTheme.titleLarge?.color ?? Colors.black87,
             fontSize: 16,
             fontWeight: FontWeight.bold,
             letterSpacing: 0.2,

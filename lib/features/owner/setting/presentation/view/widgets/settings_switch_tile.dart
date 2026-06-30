@@ -28,13 +28,13 @@ class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Ink(
         decoration: BoxDecoration(
-          color: AppColors.colorBtnAndCard,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.12),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -48,7 +48,7 @@ class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.title, style: Style.textStyle14Bold),
+                    Text(widget.title, style: Style.textStyle16Bold),
                     const SizedBox(height: 3),
                     Text(
                       _isEnabled ? 'Enabled' : 'Disabled',
@@ -56,7 +56,7 @@ class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
                         color: _isEnabled
                             ? AppColors.primaryColor
                             : Colors.grey.shade600,
-                        fontSize: 11,
+                        fontSize: 13,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -65,7 +65,7 @@ class _SettingsSwitchTileState extends State<SettingsSwitchTile> {
               ),
               Switch(
                 value: _isEnabled,
-                activeColor: AppColors.primaryColor,
+                activeThumbColor: AppColors.primaryColor,
                 trackOutlineColor:
                     WidgetStateProperty.resolveWith((states) {
                   if (states.contains(WidgetState.selected)) {

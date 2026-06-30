@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
 
 class AmenitiesSectionCourtProfile extends StatelessWidget {
-  final CourtProfileModel vm;
+  final CourtEntity vm;
 
   const AmenitiesSectionCourtProfile({super.key, required this.vm});
 
@@ -14,20 +15,20 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionHeader(title: 'Amenities'),
+          SectionHeader(title: 'Amenities'.tr),
           const SizedBox(height: 16),
-          _buildAmenitiesWrap(),
+          _buildAmenitiesWrap(context),
         ],
       ),
     );
   }
 
-  Widget _buildAmenitiesWrap() {
+  Widget _buildAmenitiesWrap(BuildContext context) {
     if (vm.amenities.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Text(
-          'No amenities listed.',
+          'No amenities listed.'.tr,
           style: TextStyle(color: Colors.grey, fontSize: 13),
         ),
       );
@@ -36,11 +37,29 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
     return Wrap(
       spacing: 10,
       runSpacing: 10,
-      children: vm.amenities.map(_amenityChip).toList(),
+      children: vm.amenities.map((e) => _amenityChip(context, e)).toList(),
     );
   }
 
-  Widget _amenityChip(CourtAmenity item) {
+  Widget _amenityChip(BuildContext context, AmenityEntity item) {
+    IconData icon;
+    switch (item.id) {
+      case 'lights':
+        icon = Icons.lightbulb_outline;
+        break;
+      case 'showers':
+        icon = Icons.shower_outlined;
+        break;
+      case 'cafe':
+        icon = Icons.local_cafe_outlined;
+        break;
+      case 'equipment':
+        icon = Icons.sports_soccer_outlined;
+        break;
+      default:
+        icon = Icons.check_circle_outline;
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -54,12 +73,12 @@ class AmenitiesSectionCourtProfile extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(item.icon, color: AppColors.primaryColor, size: 16),
+          Icon(icon, color: AppColors.primaryColor, size: 16),
           const SizedBox(width: 6),
           Text(
-            item.title,
-            style: const TextStyle(
-              color: Colors.white,
+            item.title.tr,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black87,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),

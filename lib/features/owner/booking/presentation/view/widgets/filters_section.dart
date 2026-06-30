@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_state.dart';
@@ -23,14 +24,14 @@ class FiltersSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
               _FilterChip(
-                label: 'All',
+                label: 'All'.tr,
                 icon: Icons.grid_view_rounded,
                 isActive: active == BookingFilter.all,
                 onTap: () => cubit.setFilter(BookingFilter.all),
               ),
               const SizedBox(width: 8),
               _FilterChip(
-                label: 'Pending',
+                label: 'Pending'.tr,
                 icon: Icons.pending_actions_rounded,
                 isActive: active == BookingFilter.pending,
                 onTap: () => cubit.setFilter(BookingFilter.pending),
@@ -38,7 +39,7 @@ class FiltersSection extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               _FilterChip(
-                label: 'Approved',
+                label: 'Approved'.tr,
                 icon: Icons.check_circle_outline_rounded,
                 isActive: active == BookingFilter.approved,
                 onTap: () => cubit.setFilter(BookingFilter.approved),
@@ -46,7 +47,7 @@ class FiltersSection extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               _FilterChip(
-                label: 'Declined',
+                label: 'Declined'.tr,
                 icon: Icons.cancel_outlined,
                 isActive: active == BookingFilter.declined,
                 onTap: () => cubit.setFilter(BookingFilter.declined),
@@ -87,10 +88,10 @@ class _FilterChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isActive
               ? activeColor.withOpacity(0.15)
-              : const Color(0xFF1C1F26),
+              : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: isActive ? activeColor : Colors.white.withOpacity(0.08),
+            color: isActive ? activeColor : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.08) ?? Colors.white.withOpacity(0.08),
             width: 1,
           ),
         ),
@@ -101,13 +102,13 @@ class _FilterChip extends StatelessWidget {
             Icon(
               icon,
               size: 15,
-              color: isActive ? activeColor : Colors.white54,
+              color: isActive ? activeColor : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.54) ?? Colors.white54,
             ),
             const SizedBox(width: 6),
             Text(
               label,
               style: TextStyle(
-                color: isActive ? activeColor : Colors.white54,
+                color: isActive ? activeColor : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.54) ?? Colors.white54,
                 fontSize: 13,
                 fontWeight:
                     isActive ? FontWeight.w600 : FontWeight.w400,

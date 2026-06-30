@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
-import 'package:mala3bna/features/owner/booking/presentation/model/booking_request_model.dart';
+import 'package:mala3bna/features/owner/booking/domain/entities/booking_entity.dart';
 import 'package:mala3bna/features/owner/booking/presentation/view/widgets/top_info_booking_request_card.dart';
 
 class BookingCard extends StatelessWidget {
@@ -13,7 +14,7 @@ class BookingCard extends StatelessWidget {
     this.isProcessing = false,
   });
 
-  final BookingRequest booking;
+  final BookingEntity booking;
   final bool isProcessing;
 
   Color get _statusColor {
@@ -30,11 +31,11 @@ class BookingCard extends StatelessWidget {
   String get _statusLabel {
     switch (booking.status) {
       case BookingStatus.approved:
-        return 'Approved';
+        return 'Approved'.tr;
       case BookingStatus.declined:
-        return 'Declined';
+        return 'Declined'.tr;
       case BookingStatus.pending:
-        return 'Pending';
+        return 'Pending'.tr;
     }
   }
 
@@ -46,15 +47,15 @@ class BookingCard extends StatelessWidget {
       duration: const Duration(milliseconds: 350),
       margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: _statusColor.withOpacity(0.18),
+          color: _statusColor.withValues(alpha: 0.18),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.18),
+            color: Colors.black.withValues(alpha: 0.18),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -94,7 +95,7 @@ class BookingCard extends StatelessWidget {
 
                 const SizedBox(height: 10),
                 Divider(
-                    color: Colors.white.withOpacity(0.07),
+                    color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.07) ?? Colors.white.withValues(alpha: 0.07),
                     height: 1),
                 const SizedBox(height: 10),
 
@@ -115,7 +116,7 @@ class BookingCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryColor.withOpacity(0.1),
+                        color: AppColors.primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -148,7 +149,7 @@ class BookingCard extends StatelessWidget {
                           children: [
                             Expanded(
                               child: _ActionButton(
-                                label: 'Decline',
+                                label: 'Decline'.tr,
                                 icon: Icons.close_rounded,
                                 color: Colors.redAccent,
                                 outlined: true,
@@ -161,9 +162,9 @@ class BookingCard extends StatelessWidget {
                                       .showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          '${booking.name}\'s booking declined'),
+                                          '${booking.playerName} - ${'booking declined'.tr}'),
                                       backgroundColor:
-                                          Colors.redAccent.withOpacity(0.9),
+                                          Colors.redAccent.withValues(alpha: 0.9),
                                       behavior:
                                           SnackBarBehavior.floating,
                                       shape: RoundedRectangleBorder(
@@ -179,7 +180,7 @@ class BookingCard extends StatelessWidget {
                             const SizedBox(width: 10),
                             Expanded(
                               child: _ActionButton(
-                                label: 'Accept',
+                                label: 'Accept'.tr,
                                 icon: Icons.check_rounded,
                                 color: AppColors.primaryColor,
                                 outlined: false,
@@ -192,9 +193,9 @@ class BookingCard extends StatelessWidget {
                                       .showSnackBar(
                                     SnackBar(
                                       content: Text(
-                                          '${booking.name}\'s booking accepted ✓'),
+                                          '${booking.playerName} - ${'booking accepted ✓'.tr}'),
                                       backgroundColor:
-                                          AppColors.primaryColor.withOpacity(0.9),
+                                          AppColors.primaryColor.withValues(alpha: 0.9),
                                       behavior:
                                           SnackBarBehavior.floating,
                                       shape: RoundedRectangleBorder(
@@ -244,7 +245,7 @@ class _ActionButton extends StatelessWidget {
             style: TextStyle(
                 color: color, fontWeight: FontWeight.w600, fontSize: 13)),
         style: OutlinedButton.styleFrom(
-          side: BorderSide(color: color.withOpacity(0.6), width: 1),
+          side: BorderSide(color: color.withValues(alpha: 0.6), width: 1),
           padding: const EdgeInsets.symmetric(vertical: 11),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10)),

@@ -4,6 +4,8 @@ class OwnerProfileModel {
   final String birthDate;
   final String gender;
   final String phone;
+  final String email;
+  final String bio;
   final String imageUrl;
 
   OwnerProfileModel({
@@ -12,6 +14,8 @@ class OwnerProfileModel {
     required this.birthDate,
     required this.gender,
     required this.phone,
+    this.email = '',
+    this.bio = '',
     required this.imageUrl,
   });
 
@@ -21,6 +25,8 @@ class OwnerProfileModel {
     String? birthDate,
     String? gender,
     String? phone,
+    String? email,
+    String? bio,
     String? imageUrl,
   }) {
     return OwnerProfileModel(
@@ -29,6 +35,8 @@ class OwnerProfileModel {
       birthDate: birthDate ?? this.birthDate,
       gender: gender ?? this.gender,
       phone: phone ?? this.phone,
+      email: email ?? this.email,
+      bio: bio ?? this.bio,
       imageUrl: imageUrl ?? this.imageUrl,
     );
   }

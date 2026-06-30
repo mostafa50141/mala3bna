@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/features/owner/courts/presentation/model/court_profile_model.dart';
+import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/shared/section_card.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/stars_widget.dart';
 
 class RatingsSection extends StatelessWidget {
-  final CourtProfileModel vm;
+  final CourtEntity vm;
 
   const RatingsSection({super.key, required this.vm});
 
   @override
   Widget build(BuildContext context) {
-    final bars = vm.ratingDistribution.entries.toList()
+    // Mock distribution for UI since it's not in the domain model
+    final mockDistribution = {5: 0.6, 4: 0.2, 3: 0.1, 2: 0.05, 1: 0.05};
+    final bars = mockDistribution.entries.toList()
       ..sort((a, b) => b.key.compareTo(a.key));
 
     return SectionCard(
@@ -19,9 +22,9 @@ class RatingsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionHeader(
-            title: 'Reviews & Ratings',
+            title: 'Reviews & Ratings'.tr,
             trailing: Text(
-              '${vm.totalReviews} reviews',
+              '${vm.reviewCount} ${'reviews'.tr}',
               style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ),
@@ -35,7 +38,6 @@ class RatingsSection extends StatelessWidget {
                   Text(
                     vm.rating.toStringAsFixed(1),
                     style: const TextStyle(
-                      color: Colors.white,
                       fontSize: 44,
                       fontWeight: FontWeight.bold,
                       height: 1.0,
@@ -45,7 +47,7 @@ class RatingsSection extends StatelessWidget {
                   StarsWidget(rating: vm.rating),
                   const SizedBox(height: 6),
                   Text(
-                    'out of 5',
+                    'out of 5'.tr,
                     style: TextStyle(color: Colors.grey.shade500, fontSize: 11),
                   ),
                 ],
@@ -80,9 +82,11 @@ class _RatingBar extends StatelessWidget {
         children: [
           SizedBox(
             width: 10,
-            child: Text('$star',
-                style: const TextStyle(color: Colors.grey, fontSize: 11),
-                textAlign: TextAlign.center),
+            child: Text(
+              '$star',
+              style: const TextStyle(color: Colors.grey, fontSize: 11),
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(width: 4),
           Icon(Icons.star_rounded, color: AppColors.primaryColor, size: 12),
@@ -98,8 +102,7 @@ class _RatingBar extends StatelessWidget {
                   value: v,
                   minHeight: 6,
                   backgroundColor: Colors.white.withValues(alpha: 0.08),
-                  valueColor:
-                      AlwaysStoppedAnimation(AppColors.primaryColor),
+                  valueColor: AlwaysStoppedAnimation(AppColors.primaryColor),
                 ),
               ),
             ),

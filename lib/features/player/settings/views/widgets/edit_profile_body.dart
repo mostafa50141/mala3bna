@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/local_storage_helper.dart';
@@ -14,7 +15,6 @@ import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 import 'package:mala3bna/features/player/profile/data/repos/user_profile_repo.dart';
 import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_cubit.dart';
@@ -79,9 +79,9 @@ class _EditProfileContentState extends State<_EditProfileContent> {
 
       if (!await permanentFile.exists()) return;
 
-      await getIt
-          .get<LocalStorageHelper>()
-          .saveProfileImagePath(permanentFile.path);
+      await getIt.get<LocalStorageHelper>().saveProfileImagePath(
+        permanentFile.path,
+      );
 
       setState(() {
         _selectedImage = permanentFile;
@@ -112,10 +112,8 @@ class _EditProfileContentState extends State<_EditProfileContent> {
     if (_networkImageUrl != null && _networkImageUrl!.isNotEmpty) {
       return CachedNetworkImage(
         imageUrl: _networkImageUrl!,
-        imageBuilder: (ctx, imageProvider) => CircleAvatar(
-          radius: 50,
-          backgroundImage: imageProvider,
-        ),
+        imageBuilder: (ctx, imageProvider) =>
+            CircleAvatar(radius: 50, backgroundImage: imageProvider),
         placeholder: (ctx, url) => CircleAvatar(
           radius: 50,
           backgroundColor: Colors.grey.shade800,
@@ -217,16 +215,18 @@ class _EditProfileContentState extends State<_EditProfileContent> {
                               _fullNameController.text.isNotEmpty
                                   ? _fullNameController.text
                                   : '—',
-                              style: Style.textStyle20Bold
-                                  .copyWith(color: Colors.white),
+                              style: Style.textStyle20Bold.copyWith(
+                                color: Colors.white,
+                              ),
                             ),
                             const Gap(4),
                             Text(
                               _usernameController.text.isNotEmpty
                                   ? '@${_usernameController.text}'
                                   : '',
-                              style: Style.textStyle14
-                                  .copyWith(color: Colors.grey),
+                              style: Style.textStyle14.copyWith(
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         );
@@ -244,8 +244,7 @@ class _EditProfileContentState extends State<_EditProfileContent> {
                 hintText: 'Enter your full name',
                 fillcolor: AppColors.colorBtnAndCard,
                 border: border,
-                prefixIcon:
-                    const Icon(Icons.person, color: Colors.white70),
+                prefixIcon: const Icon(Icons.person, color: Colors.white70),
               ),
 
               _buildLabel('Username'),
@@ -254,8 +253,10 @@ class _EditProfileContentState extends State<_EditProfileContent> {
                 hintText: 'Enter your username',
                 fillcolor: AppColors.colorBtnAndCard,
                 border: border,
-                prefixIcon: const Icon(Icons.alternate_email,
-                    color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.alternate_email,
+                  color: Colors.white70,
+                ),
               ),
 
               _buildLabel('Phone Number'),
@@ -265,8 +266,7 @@ class _EditProfileContentState extends State<_EditProfileContent> {
                 keyboardType: TextInputType.phone,
                 fillcolor: AppColors.colorBtnAndCard,
                 border: border,
-                prefixIcon:
-                    const Icon(Icons.phone, color: Colors.white70),
+                prefixIcon: const Icon(Icons.phone, color: Colors.white70),
               ),
 
               _buildLabel('Bio'),
@@ -275,8 +275,10 @@ class _EditProfileContentState extends State<_EditProfileContent> {
                 hintText: 'Tell us about yourself',
                 fillcolor: AppColors.colorBtnAndCard,
                 border: border,
-                prefixIcon: const Icon(Icons.info_outline,
-                    color: Colors.white70),
+                prefixIcon: const Icon(
+                  Icons.info_outline,
+                  color: Colors.white70,
+                ),
               ),
 
               const Gap(40),
@@ -297,12 +299,12 @@ class _EditProfileContentState extends State<_EditProfileContent> {
                     weightText: FontWeight.bold,
                     onTap: () {
                       context.read<UserProfileCubit>().updateProfile(
-                            fullName: _fullNameController.text.trim(),
-                            username: _usernameController.text.trim(),
-                            phoneNumber: _phoneController.text.trim(),
-                            bio: _bioController.text.trim(),
-                            profileImage: _selectedImage,
-                          );
+                        fullName: _fullNameController.text.trim(),
+                        username: _usernameController.text.trim(),
+                        phoneNumber: _phoneController.text.trim(),
+                        bio: _bioController.text.trim(),
+                        profileImage: _selectedImage,
+                      );
                     },
                   );
                 },

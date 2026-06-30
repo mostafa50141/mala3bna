@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_cubit.dart';
 import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_state.dart';
 import 'package:mala3bna/features/welcome_screen/presentation/views/welcome_screen.dart';
@@ -100,8 +100,7 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
               Text(
                 'This action is permanent and cannot be undone. '
                 'All your bookings and data will be lost forever.',
-                style:
-                    Style.textStyle14.copyWith(color: Colors.grey.shade400),
+                style: Style.textStyle14.copyWith(color: Colors.grey.shade400),
               ),
               const Gap(20),
 
@@ -132,9 +131,8 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                           : Icons.visibility,
                       color: Colors.grey,
                     ),
-                    onPressed: () => setState(
-                      () => _obscurePassword = !_obscurePassword,
-                    ),
+                    onPressed: () =>
+                        setState(() => _obscurePassword = !_obscurePassword),
                   ),
                 ),
               ),
@@ -162,21 +160,24 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                               backgroundColor: AppColors.colorBtnAndCard,
                               title: Text(
                                 'Are you sure?',
-                                style: Style.textStyle18Bold
-                                    .copyWith(color: Colors.white),
+                                style: Style.textStyle18Bold.copyWith(
+                                  color: Colors.white,
+                                ),
                               ),
                               content: Text(
                                 'Your account will be permanently deleted.',
-                                style: Style.textStyle14
-                                    .copyWith(color: Colors.grey),
+                                style: Style.textStyle14.copyWith(
+                                  color: Colors.grey,
+                                ),
                               ),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(dialogCtx),
                                   child: Text(
                                     'Cancel',
-                                    style: Style.textStyle14Bold
-                                        .copyWith(color: Colors.grey),
+                                    style: Style.textStyle14Bold.copyWith(
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ),
                                 TextButton(
@@ -185,15 +186,15 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                                     context
                                         .read<UserProfileCubit>()
                                         .deleteAccount(
-                                          password: _passwordController
-                                              .text
+                                          password: _passwordController.text
                                               .trim(),
                                         );
                                   },
                                   child: Text(
                                     'Delete',
-                                    style: Style.textStyle14Bold
-                                        .copyWith(color: Colors.red),
+                                    style: Style.textStyle14Bold.copyWith(
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -209,8 +210,9 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                         ),
                         child: Text(
                           'Delete My Account',
-                          style: Style.textStyle16Bold
-                              .copyWith(color: Colors.white),
+                          style: Style.textStyle16Bold.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -223,8 +225,7 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     'Cancel',
-                    style:
-                        Style.textStyle16Bold.copyWith(color: Colors.grey),
+                    style: Style.textStyle16Bold.copyWith(color: Colors.grey),
                   ),
                 ),
               ),

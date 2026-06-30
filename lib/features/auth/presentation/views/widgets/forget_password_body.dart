@@ -8,7 +8,7 @@ import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 import 'package:mala3bna/features/auth/data/Repos/reset_password_repo.dart';

@@ -15,9 +15,10 @@ class CustomBtn extends StatelessWidget {
     this.colorText,
     this.sizeText,
     this.weightText,
-    this.isLoading = false, this.icon,
+    this.isLoading = false,
+    this.icon,
   });
-final IconData? icon;
+  final IconData? icon;
   final String text;
   final Function()? onTap;
   final double height;
@@ -47,10 +48,13 @@ final IconData? icon;
           ),
           child: Center(
             child: isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 20,
                     width: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: colorText ?? Colors.white,
+                    ),
                   )
                 : customText(
                     text: text,

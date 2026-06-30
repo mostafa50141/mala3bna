@@ -37,7 +37,7 @@ class ProfileHeaderCard extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             AppColors.primaryColor.withValues(alpha: 0.12),
-            AppColors.colorBtnAndCard,
+            Theme.of(context).cardColor,
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
@@ -67,7 +67,7 @@ class ProfileHeaderCard extends StatelessWidget {
                     color: AppColors.primaryColor,
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: AppColors.colorBtnAndCard, width: 2),
+                        color: Theme.of(context).cardColor, width: 2),
                   ),
                 ),
               ),

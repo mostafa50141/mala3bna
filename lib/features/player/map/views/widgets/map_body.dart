@@ -8,7 +8,7 @@ import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/core/utils/location_service.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
-import 'package:mala3bna/core/widgets/custome_circular_laoding.dart';
+import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/features/player/home/data/models/court_model.dart';
 import 'package:mala3bna/features/player/home/presentation/view_model/courts_cubit/courts_cubit.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/court_map_marker.dart';

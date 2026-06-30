@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_cubit.dart';
 import 'package:mala3bna/features/owner/booking/presentation/cubit/booking_state.dart';
@@ -13,7 +14,18 @@ class BookingRequestBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<BookingCubit, BookingState>(
       listener: (context, state) {
-        // Show snackbar feedback after accept/decline completes
+        if (state is BookingActionError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.redAccent.withValues(alpha: 0.9),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
       },
       builder: (context, state) {
         if (state is BookingLoading) {
@@ -41,7 +53,7 @@ class BookingRequestBody extends StatelessWidget {
                   onPressed: () =>
                       context.read<BookingCubit>().loadBookings(),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Retry'),
+                  label: Text('Retry'.tr),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
                     foregroundColor: Colors.white,
@@ -70,7 +82,7 @@ class BookingRequestBody extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      '${bookings.length} request${bookings.length != 1 ? 's' : ''}',
+                      '${bookings.length} ${bookings.length == 1 ? 'request'.tr : 'requests'.tr}',
                       style: const TextStyle(
                           color: Colors.grey, fontSize: 13),
                     ),
@@ -115,17 +127,17 @@ class _EmptyState extends StatelessWidget {
           Icon(Icons.inbox_rounded,
               color: Colors.grey[700], size: 60),
           const SizedBox(height: 16),
-          const Text(
-            'No bookings found',
-            style: TextStyle(
+          Text(
+            'No bookings found'.tr,
+            style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 16,
                 fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 6),
-          const Text(
-            'Try changing the filter above',
-            style: TextStyle(color: Colors.grey, fontSize: 13),
+          Text(
+            'Try changing the filter above'.tr,
+            style: const TextStyle(color: Colors.grey, fontSize: 13),
           ),
         ],
       ),

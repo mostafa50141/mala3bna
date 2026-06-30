@@ -1,34 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
-class ImageUploadSection extends StatefulWidget {
-  const ImageUploadSection({super.key});
+class ImageUploadSection extends StatelessWidget {
+  final MultiImagePickerController controller;
 
-  @override
-  State<ImageUploadSection> createState() => _ImageUploadSectionState();
-}
-
-class _ImageUploadSectionState extends State<ImageUploadSection> {
-  final ImagePicker _picker = ImagePicker();
-  late final MultiImagePickerController _imageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _imageController = MultiImagePickerController(
-      maxImages: 10,
-      images: [],
-      picker: (int pickCount, Object? params) async {
-        final pickedFiles = await _picker.pickMultiImage();
-        return pickedFiles
-            .take(pickCount)
-            .map((xFile) => convertXFileToImageFile(xFile))
-            .toList();
-      },
-    );
-  }
+  const ImageUploadSection({super.key, required this.controller});
 
   /*void _submit() {
     final images = _imageController.images;
@@ -49,7 +27,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: AppColors.primaryColor.withOpacity(0.25),
@@ -59,7 +37,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: MultiImagePickerView(
-          controller: _imageController,
+          controller: controller,
           padding: const EdgeInsets.all(4),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
@@ -82,7 +60,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
                   top: 5,
                   right: 5,
                   child: GestureDetector(
-                    onTap: () => _imageController.removeImage(imageFile),
+                    onTap: () => controller.removeImage(imageFile),
                     child: Container(
                       padding: const EdgeInsets.all(3),
                       decoration: const BoxDecoration(
@@ -101,7 +79,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
             );
           },
           initialWidget: GestureDetector(
-            onTap: _imageController.pickImages,
+            onTap: controller.pickImages,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -118,22 +96,22 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
                     child: Icon(
                       Icons.cloud_upload_outlined,
                       size: 32,
-                      color: AppColors.primaryColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Tap to upload images',
+                  Text(
+                    'Tap to upload images'.tr,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'PNG, JPG up to 5MB',
-                    style: TextStyle(color: Colors.white38, fontSize: 12),
+                  Text(
+                    'PNG, JPG up to 5MB'.tr,
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.38) ?? Colors.white38, fontSize: 12),
                   ),
                 ],
               ),
@@ -145,7 +123,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
               size: 30,
               color: AppColors.primaryColor,
             ),
-            onPressed: _imageController.pickImages,
+            onPressed: controller.pickImages,
           ),
         ),
       ),

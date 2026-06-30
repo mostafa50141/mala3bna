@@ -1,22 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:mala3bna/core/utils/style.dart';
+// DEPRECATED — replaced by SplashTagline (splash_tagline.dart).
+// This file is kept to avoid breaking any existing imports during migration.
+// It can be safely deleted once all references have been updated.
+//
+// Original: animated slide-in tagline driven by a single AnimationController.
+// Successor: SplashTagline — pure fade-in with gradient dividers, driven by
+//            the main Interval-based AnimationController in SplashScreenBody.
 
-class SlidingText extends StatelessWidget {
-  final Animation<Offset> slidingAnimation;
-
-  const SlidingText({Key? key, required this.slidingAnimation})
-    : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: slidingAnimation,
-      builder: (context, child) {
-        return SlideTransition(
-          position: slidingAnimation,
-          child: Text('Play • Train • Win', style: Style.textStyle16Bold),
-        );
-      },
-    );
-  }
-}
+export 'package:mala3bna/features/splash/presentation/views/widgets/splash_tagline.dart';

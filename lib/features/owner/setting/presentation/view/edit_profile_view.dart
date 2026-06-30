@@ -1,11 +1,446 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_body.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_cubit.dart';
+import 'package:mala3bna/features/owner/setting/presentation/cubit/owner_profile_state.dart';
+import 'package:mala3bna/features/owner/setting/domain/entities/user_entity.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_picture.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_form_section.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_save_button.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/widgets/edit_profile_connected_accounts.dart';
 
-class EditProfileView extends StatelessWidget {
+class EditProfileView extends StatefulWidget {
   const EditProfileView({super.key});
 
   @override
+  State<EditProfileView> createState() => _EditProfileViewState();
+}
+
+class _EditProfileViewState extends State<EditProfileView>
+    with SingleTickerProviderStateMixin {
+  final _formKey = GlobalKey<FormState>();
+  final _fullNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _dobController = TextEditingController();
+
+  DateTime _selectedDob = DateTime(2000);
+  String _username = '';
+  String? _initialImageUrl;
+  File? _profileImageFile;
+  bool _isInitialized = false;
+  bool _hasChanges = false;
+
+  late final AnimationController _fadeController;
+  late final Animation<double> _fadeAnimation;
+
+  // ─── Lifecycle ──────────────────────────────────────────────────────
+
+  @override
+  void initState() {
+    super.initState();
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _dobController.dispose();
+    _fadeController.dispose();
+    super.dispose();
+  }
+
+  // ─── Helpers ────────────────────────────────────────────────────────
+
+  void _populateFields(UserEntity profile) {
+    if (_isInitialized) return;
+    _fullNameController.text = profile.name;
+    _emailController.text = profile.email;
+    _phoneController.text = profile.phoneNumber ?? '';
+    _selectedDob = profile.dateOfBirth;
+    _dobController.text = _selectedDob.toIso8601String().split('T').first;
+    _initialImageUrl = profile.imageUrl;
+    _username = profile.email; // use email as display identifier
+    _isInitialized = true;
+    _fadeController.forward();
+  }
+
+  UserEntity? _extractProfile(OwnerProfileState state) {
+    if (state is OwnerProfileLoaded) return state.profile;
+    if (state is OwnerProfileUpdating) return state.profile;
+    if (state is OwnerProfileUpdateError) return state.profile;
+    if (state is OwnerProfileUpdateSuccess) return state.profile;
+    return null;
+  }
+
+  void _markDirty() {
+    if (!_hasChanges) setState(() => _hasChanges = true);
+  }
+
+  void _showSnack(String message, {bool isError = false}) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(
+                isError ? Icons.error_outline : Icons.check_circle_outline,
+                color: Colors.white,
+                size: 20,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  message,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor:
+              isError ? Colors.redAccent.shade700 : AppColors.primaryColor,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          margin: const EdgeInsets.all(16),
+          duration: Duration(seconds: isError ? 4 : 2),
+        ),
+      );
+  }
+
+  void _saveProfile() {
+    if (!_formKey.currentState!.validate()) return;
+    FocusScope.of(context).unfocus();
+    // Get current profile to preserve fields not shown in the form
+    final currentState = context.read<OwnerProfileCubit>().state;
+    final current = _extractProfile(currentState);
+    final updated = UserEntity(
+      name: _fullNameController.text.trim(),
+      email: _emailController.text.trim(),
+      dateOfBirth: _selectedDob,
+      gender: current?.gender ?? Gender.male,
+      imageUrl: current?.imageUrl,
+      phoneNumber: _phoneController.text.trim(),
+    );
+    context.read<OwnerProfileCubit>().updateProfile(updated, imageFile: _profileImageFile);
+  }
+
+  Future<bool> _confirmDiscard() async {
+    if (!_hasChanges) return true;
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (ctx) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        return AlertDialog(
+          backgroundColor: Theme.of(ctx).cardColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Text(
+            'Discard changes?'.tr,
+            style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+          ),
+          content: Text(
+            'You have unsaved changes. Are you sure?'.tr,
+            style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text('Keep Editing'.tr,
+                  style: TextStyle(color: AppColors.primaryColor)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, true),
+              child: Text('Discard'.tr,
+                  style: const TextStyle(color: Colors.redAccent)),
+            ),
+          ],
+        );
+      },
+    );
+    return result ?? false;
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDob,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: (isDark ? const ColorScheme.dark() : const ColorScheme.light()).copyWith(
+              primary: AppColors.primaryColor,
+              surface: Theme.of(context).cardColor,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      setState(() {
+        _selectedDob = picked;
+        _dobController.text = picked.toIso8601String().split('T').first;
+        _markDirty();
+      });
+    }
+  }
+
+  // ─── State Listener ─────────────────────────────────────────────────
+
+  void _onStateChanged(BuildContext context, OwnerProfileState state) {
+    if (state is OwnerProfileUpdateSuccess) {
+      _hasChanges = false;
+      _showSnack('Profile updated successfully!'.tr);
+      Navigator.pop(context);
+    } else if (state is OwnerProfileUpdateError) {
+      _showSnack(state.message, isError: true);
+    }
+  }
+
+  // ─── Build ──────────────────────────────────────────────────────────
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: EditProfileBody());
+    return PopScope(
+      canPop: !_hasChanges,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        final shouldPop = await _confirmDiscard();
+        if (shouldPop && context.mounted) Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: _buildAppBar(),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: BlocConsumer<OwnerProfileCubit, OwnerProfileState>(
+            listener: _onStateChanged,
+            builder: _buildBody,
+          ),
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return AppBar(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      leading: IconButton(
+        icon: Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            Icons.arrow_back_ios_new,
+            size: 18,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+        ),
+        onPressed: () async {
+          if (_hasChanges) {
+            final shouldPop = await _confirmDiscard();
+            if (shouldPop && mounted) Navigator.of(context).pop();
+          } else {
+            Navigator.of(context).pop();
+          }
+        },
+      ),
+      title: Text(
+        'Edit Profile'.tr,
+        style: TextStyle(
+          color: isDark ? Colors.white : Colors.black87,
+          fontSize: 18,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.3,
+        ),
+      ),
+      centerTitle: true,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.notifications_none_rounded,
+            color: AppColors.primaryColor,
+            size: 22,
+          ),
+        ),
+        const SizedBox(width: 4),
+      ],
+    );
+  }
+
+  // ─── Body ───────────────────────────────────────────────────────────
+
+  Widget _buildBody(BuildContext context, OwnerProfileState state) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black87;
+
+    // Loading
+    if (state is OwnerProfileLoading || state is OwnerProfileInitial) {
+      return Center(
+        child: CircularProgressIndicator(color: AppColors.primaryColor),
+      );
+    }
+
+    // Error
+    if (state is OwnerProfileError) {
+      return _buildError(context, state.message);
+    }
+
+    // Profile loaded
+    final profile = _extractProfile(state);
+    if (profile != null) _populateFields(profile);
+    final isUpdating = state is OwnerProfileUpdating;
+
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+          physics: const BouncingScrollPhysics(),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                // Avatar
+                const SizedBox(height: 4),
+                EditProfilePicture(
+                  initialImageUrl: _initialImageUrl,
+                  onImagePicked: (f) {
+                    _profileImageFile = f;
+                    _markDirty();
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                // Name + Username
+                Text(
+                  _fullNameController.text.isNotEmpty
+                      ? _fullNameController.text
+                      : 'Your Name',
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '@$_username',
+                  style: TextStyle(
+                    color: isDark ? Colors.white.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.4),
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 28),
+
+                // Form fields
+                EditProfileFormSection(
+                  fullNameController: _fullNameController,
+                  emailController: _emailController,
+                  phoneController: _phoneController,
+                  dobController: _dobController,
+                  onFieldChanged: _markDirty,
+                  onDobTap: _pickDate,
+                ),
+                const SizedBox(height: 32),
+
+                // Save button
+                EditProfileSaveButton(
+                  isLoading: isUpdating,
+                  onPressed: _saveProfile,
+                ),
+                const SizedBox(height: 32),
+
+                // Divider
+                Divider(
+                  color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.06),
+                  height: 1,
+                ),
+                const SizedBox(height: 24),
+
+                // Connected Accounts
+                const EditProfileConnectedAccounts(),
+                const SizedBox(height: 24),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildError(BuildContext context, String message) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.redAccent.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.error_outline,
+                color: Colors.redAccent,
+                size: 48,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white70
+                    : Colors.black87,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () =>
+                  context.read<OwnerProfileCubit>().loadProfile(),
+              icon: const Icon(Icons.refresh, size: 18),
+              label: Text('Retry'.tr),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
