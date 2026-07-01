@@ -35,10 +35,10 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
   Future<BookingModel> acceptBooking(String id) async {
     try {
       // Some backends require a body; try with empty body first.
-      // If 400 persists, backend may need: data: {'status': 'accepted'}
+      // If 400 persists, backend may need: data: {'status': 'approved'}
       final response = await dioClient.post(
         ApiEndpoints.bookingAccept(id),
-        data: {'status': 'accepted'},
+        data: {'status': 'approved'},
       );
       print('[Bookings] accept response: $response');
       if (response == null || response == '') {

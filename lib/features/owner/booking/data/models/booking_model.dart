@@ -27,14 +27,50 @@ class BookingModel {
 
   factory BookingModel.fromJson(Map<String, dynamic> json) {
     print('[BookingModel] Parsing JSON keys: ${json.keys.toList()}');
+
+    String extractName() {
+      if (json['player_name'] != null && json['player_name'] != '') return json['player_name'].toString();
+      if (json['user_name'] != null && json['user_name'] != '') return json['user_name'].toString();
+      if (json['user'] is Map) {
+        final user = json['user'];
+        final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
+        if (name.isNotEmpty) return name;
+        if (user['name'] != null) return user['name'].toString();
+      }
+      if (json['player'] is Map) {
+        final player = json['player'];
+        final name = '${player['first_name'] ?? ''} ${player['last_name'] ?? ''}'.trim();
+        if (name.isNotEmpty) return name;
+        if (player['name'] != null) return player['name'].toString();
+      }
+      if (json['user'] is String) return json['user'].toString();
+      return 'Unknown Player';
+    }
+
+    String extractImage() {
+      if (json['player_image'] != null && json['player_image'] != '') return json['player_image'].toString();
+      if (json['user_image'] != null && json['user_image'] != '') return json['user_image'].toString();
+      if (json['avatar_url'] != null && json['avatar_url'] != '') return json['avatar_url'].toString();
+      if (json['user'] is Map) {
+        if (json['user']['image'] != null) return json['user']['image'].toString();
+        if (json['user']['avatar'] != null) return json['user']['avatar'].toString();
+        if (json['user']['profile_image'] != null) return json['user']['profile_image'].toString();
+      }
+      if (json['player'] is Map) {
+        if (json['player']['image'] != null) return json['player']['image'].toString();
+        if (json['player']['avatar'] != null) return json['player']['avatar'].toString();
+      }
+      return '';
+    }
+
     return BookingModel(
       id: json['booking_id']?.toString() ?? json['id']?.toString() ?? '',
-      playerName: json['player_name']?.toString() ?? json['user']?.toString() ?? 'Unknown Player',
+      playerName: extractName(),
       sport: json['sport_type']?.toString() ?? json['sport']?.toString() ?? 'Football',
       duration: json['duration']?.toString() ?? '60',
       dateTime: '${json['booking_date'] ?? ''} ${json['start_time'] ?? ''}'.trim(),
       price: json['total_price']?.toString() ?? json['price']?.toString() ?? '0',
-      avatarUrl: json['player_image']?.toString() ?? json['avatar_url']?.toString() ?? '',
+      avatarUrl: extractImage(),
       fieldId: json['field']?.toString() ?? json['field_id']?.toString() ?? '',
       fieldTitle: json['field_name']?.toString() ?? json['field_title']?.toString() ?? 'Unknown Field',
       statusString: json['status']?.toString() ?? 'pending',
