@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' hide Transition;
+import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:gap/gap.dart';
 import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/core/widgets/custom_error_widget.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/games_category.dart';
-import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_coach_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_courts_category.dart';
-import 'package:mala3bna/features/player/home/presentation/views/widgets/list_view_of_academic_category.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/user_info_search_field_container.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/popular_sports_grid.dart';
 import 'package:mala3bna/features/player/home/presentation/views/widgets/recent_bookings_section.dart';
@@ -146,19 +145,73 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       const RecentBookingsSection(),
 
                       const Gap(25),
-
-                      SectionTitle(title: 'Featured Coaches'),
-                      ListViewOfCoachCategory(
-                        selectedSport: selectedIndex,
-                        searchQuery: searchQuery,
-                      ),
-
-                      const Gap(25),
-
-                      SectionTitle(title: 'Training Academies'),
-                      ListViewOfAcademicCategory(
-                        selectedSport: selectedIndex,
-                        searchQuery: searchQuery,
+                      
+                      // Coming Soon Widget
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.primaryColor.withOpacity(0.8),
+                              AppColors.fieldBackground.withOpacity(0.8),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppColors.primaryColor.withOpacity(0.3),
+                            width: 1,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.15),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.rocket_launch_rounded,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                            ),
+                            const Gap(16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Coming Soon!',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const Gap(6),
+                                  Text(
+                                    'Coaches & Academies features are on the way. Stay tuned!',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.85),
+                                      fontSize: 14,
+                                      height: 1.3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
                       const Gap(20),

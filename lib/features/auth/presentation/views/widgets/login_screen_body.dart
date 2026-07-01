@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
-import 'package:mala3bna/core/utils/assets_data.dart';
 import 'package:mala3bna/core/utils/style.dart';
 import 'package:mala3bna/core/role/user_role.dart';
 import 'package:mala3bna/core/widgets/custom_animateds_snack_bar.dart';
@@ -11,11 +10,9 @@ import 'package:mala3bna/core/widgets/custom_circular_loading.dart';
 import 'package:mala3bna/features/auth/presentation/data/auth_controller.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/forget_password_body.dart';
 import 'package:mala3bna/features/auth/presentation/views/sign_up_screen.dart';
-import 'package:mala3bna/features/auth/presentation/views/widgets/contuie_with.dart';
 import 'package:mala3bna/features/auth/presentation/views/widgets/password_text_field.dart';
 import 'package:mala3bna/core/widgets/custom_btn.dart';
 import 'package:mala3bna/core/widgets/custom_circular_avatar.dart';
-import 'package:mala3bna/core/widgets/custome_gradiant.dart';
 import 'package:mala3bna/core/widgets/custome_text_field.dart';
 import 'package:mala3bna/features/auth/presentation/views_model/cubit/auth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,163 +64,159 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: GradientBackground(
-            child: Form(
-              key: formkay,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(40),
-                  const CustomeCirculerAvtar(
-                    backgroundImage: AssetImage(AssetsData.logo),
+          child: Form(
+            key: formkay,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(40),
+                const CustomeCirculerAvtar(
+                  backgroundImage: AssetImage('assets/images/app_icon.png'),
+                ),
+                const Gap(40),
+                Center(
+                  child: Text("Welcome Back!", style: Style.textStyle30Bold),
+                ),
+                Center(
+                  child: Text(
+                    "Log in to continue your journey",
+                    style: Style.textStyle16.copyWith(
+                      color: AppColors.fieldBackground,
+                    ),
                   ),
-                  const Gap(40),
-                  Center(
-                    child: Text("Welcome Back!", style: Style.textStyle30Bold),
+                ),
+                const Gap(80),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Text("Email Address", style: Style.textStyle16Bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: CustomTextfield(
+                    controller: email,
+                    hintText: "Email",
+                    obscureText: false,
+                    width: 350,
+                    fillcolor: Color(0xFF2C3617).withOpacity(0.3),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "⚠️ Please enter an email";
+                      } else if (!RegExp(
+                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                      ).hasMatch(value)) {
+                        return "⚠️ Please enter a valid email";
+                      }
+                      return null;
+                    },
                   ),
-                  Center(
-                    child: Text(
-                      "Log in to continue your journey",
+                ),
+                const Gap(20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Text("Password", style: Style.textStyle16Bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: PasswordTextField(controller: password),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 36),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Get.to(() => const ForgetPasswordBody());
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: Style.textStyle16.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Gap(48),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthSuccess) {
+                      authController.setRole(
+                        _mapUserTypeToRole(state.user.userType),
+                      );
+                      // Navigate based on role
+                      switch (state.user.userType) {
+                        case 'owner':
+                          Get.offAll(() => const OwnerMainNavigation());
+                          break;
+                        case 'coach':
+                          Get.offAll(() => const PlayerMainNavigation());
+                          break;
+                        case 'player':
+                        default:
+                          Get.offAll(() => const PlayerMainNavigation());
+                          break;
+                      }
+                    } else if (state is AuthFailure) {
+                      print(state.errorMessage);
+                      showAnimatedSnackDialog(
+                        context,
+                        message: state.errorMessage,
+                        type: AnimatedSnackBarType.error,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return Center(
+                      child: state is AuthLoading
+                          ? const CustomeCircularLaoding()
+                          : CustomBtn(
+                              text: ' Log In ',
+                              height: 50,
+                              width: 350,
+                              radius: 25,
+                              weightText: FontWeight.bold,
+                              sizeText: 18,
+                              onTap: () {
+                                if (!formkay.currentState!.validate()) {
+                                  return;
+                                }
+                                context.read<AuthCubit>().login(
+                                  email: email.text.trim(),
+                                  password: password.text.trim(),
+                                );
+                              },
+                            ),
+                    );
+                  },
+                ),
+                const Gap(40),
+                Row(
+                  children: [
+                    const Spacer(flex: 2),
+                    Text(
+                      "Don't have an account?",
                       style: Style.textStyle16.copyWith(
                         color: AppColors.fieldBackground,
                       ),
                     ),
-                  ),
-                  const Gap(80),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    child: Text("Email Address", style: Style.textStyle16Bold),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: CustomTextfield(
-                      controller: email,
-                      hintText: "Email",
-                      obscureText: false,
-                      width: 350,
-                      fillcolor: Color(0xFF2C3617).withOpacity(0.3),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "⚠️ Please enter an email";
-                        } else if (!RegExp(
-                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                        ).hasMatch(value)) {
-                          return "⚠️ Please enter a valid email";
-                        }
-                        return null;
+                    TextButton(
+                      onPressed: () {
+                        Get.to(() => const SignUpScreen());
                       },
-                    ),
-                  ),
-                  const Gap(20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    child: Text("Password", style: Style.textStyle16Bold),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: PasswordTextField(controller: password),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 36),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Get.to(() => const ForgetPasswordBody());
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: Style.textStyle16.copyWith(
-                            color: AppColors.primaryColor,
-                          ),
+                      child: Text(
+                        'Sign Up',
+                        style: Style.textStyle16Bold.copyWith(
+                          color: AppColors.primaryColor,
                         ),
                       ),
                     ),
-                  ),
-                  const Gap(48),
-                  BlocConsumer<AuthCubit, AuthState>(
-                    listener: (context, state) {
-                      if (state is AuthSuccess) {
-                        authController.setRole(
-                          _mapUserTypeToRole(state.user.userType),
-                        );
-                        // Navigate based on role
-                        switch (state.user.userType) {
-                          case 'owner':
-                            Get.offAll(() => const OwnerMainNavigation());
-                            break;
-                          case 'coach':
-                            Get.offAll(() => const PlayerMainNavigation());
-                            break;
-                          case 'player':
-                          default:
-                            Get.offAll(() => const PlayerMainNavigation());
-                            break;
-                        }
-                      } else if (state is AuthFailure) {
-                        print(state.errorMessage);
-                        showAnimatedSnackDialog(
-                          context,
-                          message: state.errorMessage,
-                          type: AnimatedSnackBarType.error,
-                          
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      return Center(
-                        child: state is AuthLoading
-                            ? const CustomeCircularLaoding()
-                            : CustomBtn(
-                                text: ' Log In ',
-                                height: 50,
-                                width: 350,
-                                radius: 25,
-                                weightText: FontWeight.bold,
-                                sizeText: 18,
-                                onTap: () {
-                                  if (!formkay.currentState!.validate()) {
-                                    return;
-                                  }
-                                  context.read<AuthCubit>().login(
-                                    email: email.text.trim(),
-                                    password: password.text.trim(),
-                                  );
-                                },
-                              ),
-                      );
-                    },
-                  ),
-                  const Gap(40),
-                  const CustomeContinueWith(),
-                  const Gap(25),
-                  Row(
-                    children: [
-                      const Spacer(flex: 2),
-                      Text(
-                        "Don't have an account?",
-                        style: Style.textStyle16.copyWith(
-                          color: AppColors.fieldBackground,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Get.to(() => const SignUpScreen());
-                        },
-                        child: Text(
-                          'Sign Up',
-                          style: Style.textStyle16Bold.copyWith(
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      ),
-                      const Spacer(flex: 2),
-                    ],
-                  ),
-                ],
-              ),
+                    const Spacer(flex: 2),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
