@@ -47,13 +47,13 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
   Future<void> _saveBooking() async {
     // Parse selectedTime to derive startTime/endTime strings
     final startTime = widget.selectedTime ?? '00:00';
-    final timeParts = startTime.split(':');
-    final startHour = int.tryParse(timeParts[0]) ?? 0;
-    final endHour = (startHour + 1) % 24;
+    final parsedStartTime = DateFormat('h:mm a').tryParse(startTime);
+    final startHour = parsedStartTime?.hour ?? 0;
+    final startMinute = parsedStartTime?.minute ?? 0;
     final endTime =
-        '${endHour.toString().padLeft(2, '0')}:${timeParts.length > 1 ? timeParts[1] : '00'}:00';
+        '${((startHour + 1) % 24).toString().padLeft(2, '0')}:${startMinute.toString().padLeft(2, '0')}:00';
     final startTimeFmt =
-        '${timeParts[0].padLeft(2, '0')}:${timeParts.length > 1 ? timeParts[1] : '00'}:00';
+        '${startHour.toString().padLeft(2, '0')}:${startMinute.toString().padLeft(2, '0')}:00';
 
     final booking = BookingModel(
       id: widget.bookingId,
@@ -128,7 +128,6 @@ class _ConfirmedBookingBodyPageState extends State<ConfirmedBookingBodyPage> {
                   },
                 ),
                 NavigationButtonCard(
-                  
                   title: "Contact Owner",
                   icon: Icons.phone,
                   onPressed: () {},

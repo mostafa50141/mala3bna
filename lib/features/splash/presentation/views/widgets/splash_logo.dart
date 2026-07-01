@@ -43,6 +43,8 @@ class SplashLogo extends StatelessWidget {
                 child: Image.asset(
                   AssetsData.splashscreenLogo,
                   fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) =>
+                      Image.asset(AssetsData.logo, fit: BoxFit.contain),
                 ),
               ),
             ),

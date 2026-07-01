@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
+import 'package:mala3bna/core/controllers/locale_controller.dart';
 import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/core/utils/style.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/widgets/language_bottom_sheet.dart';
+import 'package:mala3bna/features/owner/setting/presentation/view/widgets/theme_bottom_sheet.dart';
 import 'package:mala3bna/features/player/profile/data/repos/user_profile_repo.dart';
 import 'package:mala3bna/features/player/profile/presentation/cubit/user_profile_cubit.dart';
 import 'package:mala3bna/features/player/settings/views/change_password_view.dart';
+import 'package:mala3bna/features/player/settings/views/edit_profile_view.dart';
 import 'package:mala3bna/features/player/settings/views/widgets/delete_account_bottom_sheet.dart';
 import 'package:mala3bna/features/player/settings/views/widgets/settings_section.dart';
-import 'package:mala3bna/features/player/settings/views/widgets/settings_tile.dart';
 import 'package:mala3bna/features/player/settings/views/widgets/settings_switch_tile.dart';
-import 'package:mala3bna/features/player/settings/views/edit_profile_view.dart';
-import 'package:get/get.dart';
+import 'package:mala3bna/features/player/settings/views/widgets/settings_tile.dart';
 
 class SettingsBody extends StatefulWidget {
   const SettingsBody({super.key});
@@ -21,53 +24,19 @@ class SettingsBody extends StatefulWidget {
 }
 
 class _SettingsBodyState extends State<SettingsBody> {
-  String _selectedLanguage = 'English';
+  void _showThemeBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const ThemeBottomSheet(),
+    );
+  }
 
   void _showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.colorBtnAndCard,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 16),
-          Text(
-            'Select Language',
-            style: Style.textStyle18Bold.copyWith(color: Colors.white),
-          ),
-          const Divider(color: Colors.white24),
-          ListTile(
-            title: Text(
-              'English',
-              style: Style.textStyle16Bold.copyWith(color: Colors.white),
-            ),
-            trailing: _selectedLanguage == 'English'
-                ? Icon(Icons.check, color: AppColors.primaryColor)
-                : null,
-            onTap: () {
-              setState(() => _selectedLanguage = 'English');
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: Text(
-              'العربية',
-              style: Style.textStyle16Bold.copyWith(color: Colors.white),
-            ),
-            trailing: _selectedLanguage == 'Arabic'
-                ? Icon(Icons.check, color: AppColors.primaryColor)
-                : null,
-            onTap: () {
-              setState(() => _selectedLanguage = 'Arabic');
-              Navigator.pop(context);
-            },
-          ),
-          const SizedBox(height: 16),
-        ],
-      ),
+      backgroundColor: Colors.transparent,
+      builder: (_) => const LanguageBottomSheet(),
     );
   }
 
@@ -106,13 +75,31 @@ class _SettingsBodyState extends State<SettingsBody> {
                 title: 'Preferences',
                 children: [
                   SettingsTile(
+                    icon: Icons.brightness_6_rounded,
+                    title: 'App Theme',
+                    subtitle: 'Customize your visual experience',
+                    trailing: Text(
+                      Theme.of(context).brightness == Brightness.dark
+                          ? 'Dark'
+                          : 'Light',
+                      style: Style.textStyle14.copyWith(
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    onTap: () {
+                      _showThemeBottomSheet(context);
+                    },
+                  ),
+                  SettingsTile(
                     icon: Icons.language,
                     title: 'Language',
                     subtitle: 'Change app language',
-                    trailing: Text(
-                      _selectedLanguage,
-                      style: Style.textStyle14.copyWith(
-                        color: AppColors.primaryColor,
+                    trailing: GetBuilder<LocaleController>(
+                      builder: (localeCtrl) => Text(
+                        localeCtrl.isArabic ? 'Arabic' : 'English',
+                        style: Style.textStyle14.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -158,4 +145,3 @@ class _SettingsBodyState extends State<SettingsBody> {
     );
   }
 }
-

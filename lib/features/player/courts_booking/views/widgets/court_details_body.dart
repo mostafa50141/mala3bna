@@ -198,26 +198,73 @@ class _CourtDetailsBodyState extends State<CourtDetailsBody> {
                     const Gap(10),
                     Text(' Select Date & Time', style: Style.textStyle18Bold),
                     const Gap(10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2B3A41),
-                        borderRadius: BorderRadius.circular(20),
+                    if (!widget.court.isActive)
+                      Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 8,
+                        ),
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.red.shade900.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Colors.red.shade700.withOpacity(0.5),
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.construction,
+                              color: Colors.red.shade400,
+                              size: 20,
+                            ),
+                            const Gap(10),
+                            Expanded(
+                              child: Text(
+                                'This court is currently unavailable - Under maintenance',
+                                style: Style.textStyle14.copyWith(
+                                  color: Colors.red.shade300,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: CustomTableCalendar(
-                        onDateSelected: (date) {
-                          setState(() {
-                            _selectedDay = date;
-                          });
-                        },
+                    IgnorePointer(
+                      ignoring: !widget.court.isActive,
+                      child: Opacity(
+                        opacity: widget.court.isActive ? 1.0 : 0.35,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2B3A41),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: CustomTableCalendar(
+                            onDateSelected: (date) {
+                              setState(() {
+                                _selectedDay = date;
+                              });
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     const Gap(20),
-                    CustomeChoiceChipTime(
-                      onTimeSelected: (time) {
-                        setState(() {
-                          selectedOption = time;
-                        });
-                      },
+                    IgnorePointer(
+                      ignoring: !widget.court.isActive,
+                      child: Opacity(
+                        opacity: widget.court.isActive ? 1.0 : 0.35,
+                        child: CustomeChoiceChipTime(
+                          onTimeSelected: (time) {
+                            setState(() {
+                              selectedOption = time;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                     const Gap(30),
 
@@ -356,23 +403,41 @@ class _CourtDetailsBodyState extends State<CourtDetailsBody> {
                     const Gap(20),
 
                     Center(
-                      child: CustomBtn(
-                        text: ' Book Now ',
-                        height: 50,
-                        width: 350,
-                        radius: 25,
-                        weightText: FontWeight.bold,
-                        sizeText: 18,
-                        onTap: () {
-                          Get.to(
-                            () => CourtBookingSummry(
-                              court: widget.court,
-                              selectedDate: _selectedDay,
-                              selectedTime: selectedOption,
+                      child: !widget.court.isActive
+                          ? Container(
+                              width: 350,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade800.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(color: Colors.grey.shade700),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Booking Unavailable',
+                                  style: Style.textStyle16Bold.copyWith(
+                                    color: Colors.grey.shade500,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : CustomBtn(
+                              text: ' Book Now ',
+                              height: 50,
+                              width: 350,
+                              radius: 25,
+                              weightText: FontWeight.bold,
+                              sizeText: 18,
+                              onTap: () {
+                                Get.to(
+                                  () => CourtBookingSummry(
+                                    court: widget.court,
+                                    selectedDate: _selectedDay,
+                                    selectedTime: selectedOption,
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                     const Gap(30),
                   ],

@@ -129,7 +129,20 @@ class LocalStorageHelper {
     final raw = await _storage.read(key: 'bookings');
     if (raw == null || raw.isEmpty) return [];
     final List decoded = jsonDecode(raw);
-    return decoded.map((item) => BookingModel.fromJson(jsonDecode(item))).toList();
+    final bookings = <BookingModel>[];
+
+    for (final item in decoded) {
+      try {
+        final bookingJson = item is String ? jsonDecode(item) : item;
+        if (bookingJson is Map<String, dynamic>) {
+          bookings.add(BookingModel.fromJson(bookingJson));
+        }
+      } catch (_) {
+        // Ignore old or malformed cached booking entries.
+      }
+    }
+
+    return bookings;
   }
 
   Future<void> cancelBooking(String bookingId) async {

@@ -1,6 +1,6 @@
 class AssetsData {
   static const splashscreenLogo =
-      "assets/images/Gemini_Generated_Image_71apxo71apxo71ap.png";
+      "assets/images/mala3bna-splashscreen-logo.png";
   static const splashscreenBackground =
       "assets/images/mala3bna-splashscreen-background.png";
   static const wlcscreenBackground = "assets/images/back.jpeg";
