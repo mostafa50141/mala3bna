@@ -329,19 +329,22 @@ class _BookingsTab extends StatelessWidget {
 
     // Build a lookup: weekdayIndex (0=Mon) → hour → list of bookings
     final now = DateTime.now();
-    final weekStart = now.subtract(Duration(days: now.weekday - 1));
+    final today = DateTime(now.year, now.month, now.day);
+    final weekStart = today.subtract(Duration(days: today.weekday - 1));
+    final weekEnd = weekStart.add(const Duration(days: 7));
     // Map: day index (0-6) -> hour (int) -> bookings
     final Map<int, Map<int, List<BookingEntity>>> grid = {
       for (int i = 0; i < 7; i++) i: {},
     };
 
     for (final b in courtBookings) {
-      final parsed = DateTime.tryParse(b.dateTime);
+      final parsed = DateTime.tryParse(b.dateTime)?.toLocal();
       if (parsed == null) continue;
-      final dayIdx = parsed.weekday - 1; // 0=Mon
+      
       // Only show current week
-      final weekEnd = weekStart.add(const Duration(days: 7));
-      if (parsed.isBefore(weekStart) || parsed.isAfter(weekEnd)) continue;
+      if (parsed.isBefore(weekStart) || !parsed.isBefore(weekEnd)) continue;
+      
+      final dayIdx = parsed.weekday - 1; // 0=Mon
       final hour = parsed.hour;
       grid[dayIdx]!.putIfAbsent(hour, () => []).add(b);
     }
