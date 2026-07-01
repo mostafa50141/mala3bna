@@ -63,7 +63,10 @@ class _OwnerMainNavigationState extends State<OwnerMainNavigation> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      OwnerDashboardView(onCourtAdded: _onCourtAdded),
+      BlocProvider.value(
+        value: _bookingCubit,
+        child: OwnerDashboardView(onCourtAdded: _onCourtAdded),
+      ),
       // Pass the lifted cubit so BookingRequestView shares the same instance
       BlocProvider.value(
         value: _bookingCubit,
