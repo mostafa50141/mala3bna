@@ -199,7 +199,7 @@ class _DetailsTab extends StatelessWidget {
         const SizedBox(height: 16),
         RatingsSection(vm: vm),
         const SizedBox(height: 16),
-        const ReviewsList(reviews: []),
+        ReviewsList(fieldId: int.tryParse(vm.id) ?? 0),
       ],
     );
   }

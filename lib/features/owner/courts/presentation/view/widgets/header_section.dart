@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/owner/courts/domain/entities/court_entity.dart';
+import 'package:mala3bna/features/player/courts_booking/presentation/cubit/review_cubit.dart';
 
 class HeaderSection extends StatefulWidget {
   final CourtEntity vm;
@@ -193,41 +195,52 @@ class _HeaderSectionState extends State<HeaderSection> {
                 ),
                 const SizedBox(width: 12),
                 // Rating badge
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryColor.withValues(alpha: 0.45),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
+                BlocBuilder<ReviewCubit, ReviewState>(
+                  builder: (context, reviewState) {
+                    double rating = widget.vm.rating;
+                    if (reviewState is ReviewLoaded && reviewState.reviews.isNotEmpty) {
+                      rating = reviewState.reviews.map((e) => e.rating).reduce((a, b) => a + b) / reviewState.reviews.length;
+                    } else if (reviewState is ReviewEmpty || (reviewState is ReviewLoaded && reviewState.reviews.isEmpty)) {
+                      rating = 0.0;
+                    }
+                    
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.star_rounded,
-                        color: Colors.white,
-                        size: 14,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primaryColor.withValues(alpha: 0.45),
+                            blurRadius: 10,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.vm.rating.toStringAsFixed(1),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star_rounded,
+                            color: Colors.white,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            rating.toStringAsFixed(1),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),

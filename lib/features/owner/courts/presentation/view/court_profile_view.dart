@@ -4,6 +4,8 @@ import 'package:mala3bna/core/utils/service_locator.dart';
 import 'package:mala3bna/features/owner/courts/domain/repositories/court_repository.dart';
 import 'package:mala3bna/features/owner/courts/presentation/cubit/court_profile_cubit.dart';
 import 'package:mala3bna/features/owner/courts/presentation/view/widgets/my_court_body.dart';
+import 'package:mala3bna/features/player/courts_booking/data/repos/review_repo.dart';
+import 'package:mala3bna/features/player/courts_booking/presentation/cubit/review_cubit.dart';
 
 class CourtProfileView extends StatelessWidget {
   final String? fieldId;
@@ -16,11 +18,21 @@ class CourtProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     if (fromNavigation) {
       // Cubit is already in the widget tree from OwnerMainNavigation
-      return const Scaffold(body: CourtProfileBody());
+      return BlocProvider(
+        create: (_) => ReviewCubit(getIt<ReviewRepo>()),
+        child: const Scaffold(body: CourtProfileBody()),
+      );
     }
-    return BlocProvider(
-      create: (_) =>
-          CourtProfileCubit(getIt<CourtRepository>())..loadCourtProfile(fieldId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) =>
+              CourtProfileCubit(getIt<CourtRepository>())..loadCourtProfile(fieldId),
+        ),
+        BlocProvider(
+          create: (_) => ReviewCubit(getIt<ReviewRepo>()),
+        ),
+      ],
       child: const Scaffold(body: CourtProfileBody()),
     );
   }

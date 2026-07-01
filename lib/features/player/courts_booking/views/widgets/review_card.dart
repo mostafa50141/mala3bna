@@ -10,12 +10,23 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.colorBtnAndCard,
+        color: isDark ? AppColors.colorBtnAndCard : Colors.white,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: isDark
+            ? []
+            : [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                )
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +50,9 @@ class ReviewCard extends StatelessWidget {
                   children: [
                     Text(
                       review.userName,
-                      style: Style.textStyle14Bold.copyWith(color: Colors.white),
+                      style: Style.textStyle14Bold.copyWith(
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
                     ),
                     Row(
                       children: List.generate(5, (index) => Icon(
@@ -56,7 +69,9 @@ class ReviewCard extends StatelessWidget {
           const Gap(8),
           Text(
             review.comment,
-            style: Style.textStyle14.copyWith(color: Colors.grey.shade300),
+            style: Style.textStyle14.copyWith(
+              color: isDark ? Colors.grey.shade300 : Colors.black54,
+            ),
           ),
         ],
       ),
