@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/onboarding/presentation/views/widgets/onboarding_constants.dart';
 
@@ -10,11 +10,13 @@ import 'package:mala3bna/features/onboarding/presentation/views/widgets/onboardi
 class OnboardingPageIndicator extends StatelessWidget {
   final int currentPage;
   final int pageCount;
+  final Color accentColor;
 
   const OnboardingPageIndicator({
     super.key,
     required this.currentPage,
     required this.pageCount,
+    this.accentColor = AppColors.primaryColor,
   });
 
   @override
@@ -29,7 +31,7 @@ class OnboardingPageIndicator extends StatelessWidget {
     final isActive = index == currentPage;
     return AnimatedContainer(
       duration: OnboardingConstants.dotAnimDuration,
-      curve: Curves.easeOut,
+      curve: Curves.easeOutCubic,
       margin: const EdgeInsets.symmetric(
         horizontal: OnboardingConstants.dotSpacing / 2,
       ),
@@ -39,9 +41,18 @@ class OnboardingPageIndicator extends StatelessWidget {
       height: OnboardingConstants.dotHeight,
       decoration: BoxDecoration(
         color: isActive
-            ? AppColors.primaryColor
-            : AppColors.primaryColor.withValues(alpha: 0.30),
+            ? accentColor
+            : accentColor.withValues(alpha: 0.28),
         borderRadius: BorderRadius.circular(OnboardingConstants.dotBorderRadius),
+        boxShadow: isActive
+            ? [
+                BoxShadow(
+                  color: accentColor.withValues(alpha: 0.45),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : null,
       ),
     );
   }

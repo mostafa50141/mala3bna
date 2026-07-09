@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/features/onboarding/presentation/views_model/cubit/onboarding_cubit.dart';
 import 'package:mala3bna/features/onboarding/presentation/views/widgets/onboarding_constants.dart';
 
-/// "Skip" text button placed at the top-right of the onboarding screen.
+/// \"Skip\" pill button placed at the top-right of the onboarding screen.
 ///
 /// Hidden (zero opacity + ignore pointer) on the last page because
-/// "Skip" makes no sense when "Get Started" is already shown.
+/// \"Skip\" makes no sense when \"Get Started\" is already shown.
 class OnboardingSkipButton extends StatelessWidget {
   final bool isLastPage;
 
@@ -19,21 +19,26 @@ class OnboardingSkipButton extends StatelessWidget {
       opacity: isLastPage ? 0.0 : 1.0,
       child: IgnorePointer(
         ignoring: isLastPage,
-        child: TextButton(
-          onPressed: () => context.read<OnboardingCubit>().skipAll(),
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.white70,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+        child: GestureDetector(
+          onTap: () => context.read<OnboardingCubit>().skipAll(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.15),
+                width: 1,
+              ),
             ),
-          ),
-          child: Text(
-            'تخطّى',
-            style: TextStyle(
-              fontSize: OnboardingConstants.skipButtonFontSize,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.3,
+            child: Text(
+              'تخطّى',
+              style: TextStyle(
+                fontSize: OnboardingConstants.skipButtonFontSize,
+                fontWeight: FontWeight.w500,
+                color: Colors.white.withValues(alpha: 0.80),
+                letterSpacing: 0.3,
+              ),
             ),
           ),
         ),

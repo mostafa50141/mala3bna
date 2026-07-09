@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mala3bna/core/constants/app_colors.dart';
 import 'package:mala3bna/features/onboarding/presentation/views_model/cubit/onboarding_cubit.dart';
@@ -35,7 +35,6 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
   void initState() {
     super.initState();
     _initAnimations();
-    // Play the content animation for the first page.
     _contentAnimController.forward();
   }
 
@@ -47,12 +46,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
           OnboardingConstants.contentAnimDelay,
     );
 
-    // Title animates immediately over the first 350ms
     _titleSlide = Tween<Offset>(begin: const Offset(0.0, 0.4), end: Offset.zero)
         .animate(
           CurvedAnimation(
             parent: _contentAnimController,
-            curve: const Interval(0.0, 0.8, curve: Curves.easeOut),
+            curve: const Interval(0.0, 0.8, curve: Curves.easeOutCubic),
           ),
         );
 
@@ -63,12 +61,11 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
       ),
     );
 
-    // Description animates with a slight delay
     _descSlide = Tween<Offset>(begin: const Offset(0.0, 0.6), end: Offset.zero)
         .animate(
           CurvedAnimation(
             parent: _contentAnimController,
-            curve: const Interval(0.2, 1.0, curve: Curves.easeOut),
+            curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
           ),
         );
 
@@ -91,7 +88,6 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
     return BlocConsumer<OnboardingCubit, OnboardingState>(
       listener: (context, state) {
         if (state is OnboardingPageChanged) {
-          // Re-trigger the text animation whenever the page changes.
           _contentAnimController.forward(from: 0.0);
         }
       },
@@ -99,6 +95,7 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
         final cubit = context.read<OnboardingCubit>();
         final currentPage = cubit.currentPage;
         final isLastPage = cubit.isLastPage;
+        final accentColor = OnboardingConstants.pages[currentPage].accentColor;
 
         return TweenAnimationBuilder<Color?>(
           duration: OnboardingConstants.bgGradientDuration,
@@ -114,82 +111,161 @@ class _OnboardingPageViewState extends State<OnboardingPageView>
                   colors: [
                     topColor ?? AppColors.backgroundColor,
                     AppColors.backgroundColor,
+                    const Color(0xFF0A1215),
                   ],
-                  stops: const [0.0, 0.5],
+                  stops: const [0.0, 0.55, 1.0],
                 ),
               ),
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    // ── Skip Button ──────────────────────────────────────────
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8, right: 16),
-                        child: OnboardingSkipButton(isLastPage: isLastPage),
+              child: Stack(
+                children: [
+                  // â”€â”€ Decorative radial glow (bottom, accent per page) â”€â”€â”€â”€â”€â”€â”€
+                  TweenAnimationBuilder<Color?>(
+                    duration: OnboardingConstants.bgGradientDuration,
+                    tween: ColorTween(end: accentColor),
+                    builder: (context, glowColor, _) => Positioned(
+                      bottom: -100,
+                      right: -80,
+                      child: Container(
+                        width: 320,
+                        height: 320,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              (glowColor ?? accentColor).withValues(alpha: 0.18),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
                       ),
                     ),
+                  ),
 
-                    // ── Scrollable Illustrations ─────────────────────────────
-                    Expanded(
-                      flex: OnboardingConstants.illustrationAreaFlex.toInt(),
-                      child: PageView.builder(
-                        controller: cubit.pageController,
-                        onPageChanged: cubit.onPageChanged,
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: OnboardingConstants.pageCount,
-                        itemBuilder: (context, index) {
-                          return Center(
-                            child: OnboardingIllustration(
-                              page: OnboardingConstants.pages[index],
-                              pageIndex: index,
-                            ),
-                          );
-                        },
+                  // â”€â”€ Top-left soft glow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                  Positioned(
+                    top: -60,
+                    left: -60,
+                    child: Container(
+                      width: 220,
+                      height: 220,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            (topColor ?? AppColors.primaryColor)
+                                .withValues(alpha: 0.12),
+                            Colors.transparent,
+                          ],
+                        ),
                       ),
                     ),
+                  ),
 
-                    // ── Text Content & Bottom Controls ───────────────────────
-                    Expanded(
-                      flex: OnboardingConstants.contentAreaFlex.toInt(),
-                      child: Column(
-                        children: [
-                          OnboardingPageContent(
-                            page: OnboardingConstants.pages[currentPage],
-                            titleOpacity: _titleOpacity,
-                            titleSlide: _titleSlide,
-                            descOpacity: _descOpacity,
-                            descSlide: _descSlide,
+                  // â”€â”€ Main content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                  SafeArea(
+                    child: Column(
+                      children: [
+                        // â”€â”€ Top bar: progress + skip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(24, 12, 16, 0),
+                          child: Row(
+                            children: [
+                              // Linear progress bar
+                              Expanded(
+                                child: TweenAnimationBuilder<double>(
+                                  duration: OnboardingConstants.bgGradientDuration,
+                                  tween: Tween<double>(
+                                    begin: 0,
+                                    end: (currentPage + 1) /
+                                        OnboardingConstants.pageCount,
+                                  ),
+                                  builder: (context, progress, _) =>
+                                      ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: LinearProgressIndicator(
+                                      value: progress,
+                                      minHeight: 3,
+                                      backgroundColor: Colors.white
+                                          .withValues(alpha: 0.10),
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
+                                        accentColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              OnboardingSkipButton(isLastPage: isLastPage),
+                            ],
                           ),
+                        ),
 
-                          const Spacer(),
-
-                          OnboardingPageIndicator(
-                            currentPage: currentPage,
-                            pageCount: OnboardingConstants.pageCount,
+                        // â”€â”€ Scrollable Illustrations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                        Expanded(
+                          flex: OnboardingConstants.illustrationAreaFlex.toInt(),
+                          child: PageView.builder(
+                            controller: cubit.pageController,
+                            onPageChanged: cubit.onPageChanged,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: OnboardingConstants.pageCount,
+                            itemBuilder: (context, index) {
+                              return Center(
+                                child: OnboardingIllustration(
+                                  page: OnboardingConstants.pages[index],
+                                  pageIndex: index,
+                                ),
+                              );
+                            },
                           ),
+                        ),
 
-                          const SizedBox(
-                            height:
-                                OnboardingConstants.spacingIndicatorToButton,
-                          ),
+                        // â”€â”€ Text Content & Bottom Controls â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                        Expanded(
+                          flex: OnboardingConstants.contentAreaFlex.toInt(),
+                          child: Column(
+                            children: [
+                              OnboardingPageContent(
+                                page: OnboardingConstants.pages[currentPage],
+                                titleOpacity: _titleOpacity,
+                                titleSlide: _titleSlide,
+                                descOpacity: _descOpacity,
+                                descSlide: _descSlide,
+                              ),
 
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal:
-                                  OnboardingConstants.contentHorizontalPadding,
-                            ),
-                            child: OnboardingNextButton(isLastPage: isLastPage),
-                          ),
+                              const Spacer(),
 
-                          const SizedBox(
-                            height: OnboardingConstants.bottomSafeAreaPadding,
+                              OnboardingPageIndicator(
+                                currentPage: currentPage,
+                                pageCount: OnboardingConstants.pageCount,
+                                accentColor: accentColor,
+                              ),
+
+                              const SizedBox(
+                                height: OnboardingConstants.spacingIndicatorToButton,
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal:
+                                      OnboardingConstants.contentHorizontalPadding,
+                                ),
+                                child: OnboardingNextButton(
+                                  isLastPage: isLastPage,
+                                  accentColor: accentColor,
+                                ),
+                              ),
+
+                              const SizedBox(
+                                height: OnboardingConstants.bottomSafeAreaPadding,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           },

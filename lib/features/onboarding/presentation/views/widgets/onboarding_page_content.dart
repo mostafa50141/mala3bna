@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:mala3bna/features/onboarding/data/models/onboarding_page_model.dart';
 import 'package:mala3bna/features/onboarding/presentation/views/widgets/onboarding_constants.dart';
 
@@ -34,20 +34,27 @@ class OnboardingPageContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // ── Animated title ───────────────────────────────────────────────
+          // â”€â”€ Animated title with gradient â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           FadeTransition(
             opacity: titleOpacity,
             child: SlideTransition(
               position: titleSlide,
-              child: Text(
-                page.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: OnboardingConstants.titleFontSize,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  letterSpacing: OnboardingConstants.titleLetterSpacing,
-                  height: 1.2,
+              child: ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [Colors.white, page.accentColor],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ).createShader(bounds),
+                child: Text(
+                  page.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: OnboardingConstants.titleFontSize,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    letterSpacing: OnboardingConstants.titleLetterSpacing,
+                    height: 1.2,
+                  ),
                 ),
               ),
             ),
@@ -55,7 +62,7 @@ class OnboardingPageContent extends StatelessWidget {
 
           const SizedBox(height: OnboardingConstants.spacingTitleToDesc),
 
-          // ── Animated description ─────────────────────────────────────────
+          // â”€â”€ Animated description â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
           FadeTransition(
             opacity: descOpacity,
             child: SlideTransition(
@@ -66,8 +73,9 @@ class OnboardingPageContent extends StatelessWidget {
                 style: TextStyle(
                   fontSize: OnboardingConstants.descFontSize,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white60,
+                  color: Colors.white.withValues(alpha: 0.65),
                   height: OnboardingConstants.descLineHeight,
+                  letterSpacing: 0.2,
                 ),
               ),
             ),
