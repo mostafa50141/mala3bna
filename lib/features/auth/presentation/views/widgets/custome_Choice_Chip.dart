@@ -15,7 +15,7 @@ class _CustomeChoiceChipState extends State<CustomeChoiceChip> {
   UserRole selectedRole = UserRole.player;
 
   final Map<UserRole, String> options = {
-    // UserRole.player: "PLAYER",
+    UserRole.player: "PLAYER",
     UserRole.coach: "COACH",
     UserRole.owner: "OWNER",
   };
